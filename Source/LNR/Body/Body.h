@@ -30,7 +30,9 @@ public:
 	int RunSpeed = 500;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int SprintSpeed = 800;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float PatrolDistance = 50;
+	
 	virtual void Restart() override;
 	virtual void BeginPlay() override;
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,

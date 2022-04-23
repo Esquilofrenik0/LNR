@@ -10,6 +10,7 @@ public class LNR : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[] {"Core", "CoreUObject", "Engine", "InputCore", "UMG"});
 		PublicDependencyModuleNames.AddRange(new string[] {"GameplayAbilities", "GameplayTags", "GameplayTasks"});
+		PublicDependencyModuleNames.AddRange(new string[] {"AIModule", "NavigationSystem"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {});
 
