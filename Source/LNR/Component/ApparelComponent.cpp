@@ -1,7 +1,7 @@
 ﻿#include "ApparelComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
-#include "LNR/Game/LNRGameMode.h"
+#include "LNR/Game/BitlonerGameMode.h"
 #include "LNR/Item/Armor.h"
 #include "LNR/Item/Outfit.h"
 #include "Net/UnrealNetwork.h"

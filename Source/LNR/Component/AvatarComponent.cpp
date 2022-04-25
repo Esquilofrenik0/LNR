@@ -1,7 +1,7 @@
 ﻿#include "AvatarComponent.h"
 #include "ApparelComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "LNR/Game/LNRGameMode.h"
+#include "LNR/Game/BitlonerGameMode.h"
 #include "Net/UnrealNetwork.h"
 
 UAvatarComponent::UAvatarComponent()
@@ -24,7 +24,7 @@ void UAvatarComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 void UAvatarComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	GameMode = Cast<ALNRGameMode>(UGameplayStatics::GetGameMode(GetOwner()));
+	GameMode = Cast<ABitlonerGameMode>(UGameplayStatics::GetGameMode(GetOwner()));
 	RefreshAvatar();
 }
 
@@ -35,30 +35,43 @@ void UAvatarComponent::Setup(UApparelComponent* nApparel)
 
 void UAvatarComponent::RefreshAvatar()
 {
-	if (AvatarData.Body == Male) Apparel->Mesh->SetSkeletalMesh(GameMode->HumanData.Body[0]);
-	else if (AvatarData.Body == Female) Apparel->Mesh->SetSkeletalMesh(GameMode->HumanData.Body[1]);
-	Apparel->HairMesh->SetSkeletalMesh(GameMode->HumanData.Hair[AvatarData.Hair]);
-	Apparel->BeardMesh->SetSkeletalMesh(GameMode->HumanData.Beard[AvatarData.Beard]);
-	Apparel->SimgloveMesh->SetSkeletalMesh(GameMode->HumanData.Simglove);
+	Apparel->Mesh->SetSkeletalMesh(GameMode->AvatarGlobals.Body[AvatarData.Body]);
+	Apparel->HairMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Hair[AvatarData.Hair]);
+	Apparel->BeardMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Beard[AvatarData.Beard]);
+	Apparel->SimgloveMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Simglove);
 }
 
-void UAvatarComponent::SetBodyType(EGender bodyType)
+void UAvatarComponent::NextBody()
 {
-	AvatarData.Body = bodyType;
+	AvatarData.Body += 1;
+	AvatarData.Body %= GameMode->AvatarGlobals.Body.Num();
+	SetBody(AvatarData.Body);
+}
+
+void UAvatarComponent::PreviousBody()
+{
+	AvatarData.Body -= 1;
+	if (AvatarData.Body < 0) AvatarData.Body = GameMode->AvatarGlobals.Body.Num() - 1;
+	SetBody(AvatarData.Body);
+}
+
+void UAvatarComponent::SetBody(int val)
+{
+	AvatarData.Body = val;
 	RefreshAvatar();
 }
 
 void UAvatarComponent::NextHair()
 {
 	AvatarData.Hair += 1;
-	AvatarData.Hair %= GameMode->HumanData.Hair.Num();
+	AvatarData.Hair %= GameMode->AvatarGlobals.Hair.Num();
 	SetHair(AvatarData.Hair);
 }
 
 void UAvatarComponent::PreviousHair()
 {
 	AvatarData.Hair -= 1;
-	if (AvatarData.Hair < 0) AvatarData.Hair = GameMode->HumanData.Hair.Num() - 1;
+	if (AvatarData.Hair < 0) AvatarData.Hair = GameMode->AvatarGlobals.Hair.Num() - 1;
 	SetHair(AvatarData.Hair);
 }
 
@@ -71,14 +84,14 @@ void UAvatarComponent::SetHair(int val)
 void UAvatarComponent::NextBeard()
 {
 	AvatarData.Beard += 1;
-	AvatarData.Beard %= GameMode->HumanData.Beard.Num();
+	AvatarData.Beard %= GameMode->AvatarGlobals.Beard.Num();
 	SetBeard(AvatarData.Beard);
 }
 
 void UAvatarComponent::PreviousBeard()
 {
 	AvatarData.Beard -= 1;
-	if (AvatarData.Beard < 0) AvatarData.Beard = GameMode->HumanData.Beard.Num() - 1;
+	if (AvatarData.Beard < 0) AvatarData.Beard = GameMode->AvatarGlobals.Beard.Num() - 1;
 	SetBeard(AvatarData.Beard);
 }
 

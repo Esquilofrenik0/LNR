@@ -17,7 +17,7 @@ public:
 	void OnRep_AvatarData(FAvatarData nAvatarData);
 
 	UPROPERTY(BlueprintReadWrite)
-	class ALNRGameMode* GameMode;
+	class ABitlonerGameMode* GameMode;
 	UPROPERTY(BlueprintReadWrite)
 	class UApparelComponent* Apparel;
 
@@ -27,7 +27,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RefreshAvatar();
 	UFUNCTION(BlueprintCallable)
-	void SetBodyType(EGender bodyType);
+	void NextBody();
+	UFUNCTION(BlueprintCallable)
+	void PreviousBody();
+	UFUNCTION(BlueprintCallable)
+	void SetBody(int val);
 	UFUNCTION(BlueprintCallable)
 	void NextHair();
 	UFUNCTION(BlueprintCallable)

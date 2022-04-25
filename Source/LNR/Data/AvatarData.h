@@ -2,18 +2,28 @@
 #include "Engine/DataTable.h"
 #include "AvatarData.generated.h"
 
-UENUM()
-enum EGender { Male, Female };
-
 USTRUCT(BlueprintType)
 struct LNR_API FAvatarData : public FTableRowBase
 {
 	GENERATED_BODY()
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<EGender> Body = Male;
+	int Body = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Hair = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Beard = 0;
+};
+
+USTRUCT(BlueprintType)
+struct LNR_API FAvatarGlobals : public FTableRowBase
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<USkeletalMesh*> Body;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<USkeletalMesh*> Hair;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<USkeletalMesh*> Beard;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USkeletalMesh* Simglove;
 };

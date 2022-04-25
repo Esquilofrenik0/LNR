@@ -16,18 +16,8 @@ EBTNodeResult::Type UBTGetPatrolPoint::ExecuteTask(UBehaviorTreeComponent& Owner
 			OwnerComp.GetBlackboardComponent()->SetValueAsVector("Destination", result.Location);
 			const ABody* body = Cast<ABody>(npc->GetPawn());
 			body->GetCharacterMovement()->MaxWalkSpeed = body->WalkSpeed;
-			GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Set new destination!");
 			return EBTNodeResult::Succeeded;
 		}
-		else
-		{
-			GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Couldn't find reachable point!");
-			return EBTNodeResult::Failed;
-		}
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Couldn't find navigation system!");
-		return EBTNodeResult::Failed;
-	}
+	return EBTNodeResult::Failed;
 }
