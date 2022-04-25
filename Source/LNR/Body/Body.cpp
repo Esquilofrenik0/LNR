@@ -1,4 +1,6 @@
 #include "Body.h"
+
+#include "NavigationInvokerComponent.h"
 #include "LNR/LNR.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -14,6 +16,7 @@ ABody::ABody()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = false;
+	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>("Navigation Invoker");
 	Action = CreateDefaultSubobject<UActionComponent>("Action");
 	Action->SetIsReplicated(true);
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
@@ -23,7 +26,10 @@ ABody::ABody()
 	Equipment = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
 	Equipment->Setup(this);
 	GetCapsuleComponent()->InitCapsuleSize(35.f, 85.0f);
-	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 700.f;

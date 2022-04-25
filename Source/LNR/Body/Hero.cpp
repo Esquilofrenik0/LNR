@@ -16,9 +16,7 @@ AHero::AHero()
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
 	TurnRateGamepad = 50.f;
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 	TpArm = CreateDefaultSubobject<USpringArmComponent>("TpArm");
 	TpArm->SetupAttachment(RootComponent);
 	TpArm->TargetArmLength = 300.0f;

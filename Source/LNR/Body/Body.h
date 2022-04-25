@@ -11,6 +11,8 @@ class LNR_API ABody : public ACharacter
 public:
 	ABody();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	class UNavigationInvokerComponent* NavigationInvoker;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UActionComponent* Action;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UAttributesComponent* Attributes;
@@ -30,9 +32,7 @@ public:
 	int RunSpeed = 500;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int SprintSpeed = 800;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float PatrolDistance = 50;
-	
+
 	virtual void Restart() override;
 	virtual void BeginPlay() override;
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -46,10 +46,10 @@ public:
 	void Action2();
 	void Action3();
 	void Action4();
-	
+
 	UFUNCTION(BlueprintCallable)
 	int UpdateMovementDirection();
-	
+
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	bool AttackPressed;
 	UFUNCTION(BlueprintCallable)

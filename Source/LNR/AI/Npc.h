@@ -14,11 +14,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NPC)
 	class UBehaviorTreeComponent* BehaviorTree;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NPC)
-	UBlackboardComponent* BlackboardComponent;
+	class UBlackboardComponent* BlackboardComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NPC)
 	FName TargetKey;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NPC)
 	FName DestinationKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float PatrolDistance = 50;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sense)
 	float SightRadius = 1000.0f;

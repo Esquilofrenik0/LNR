@@ -11,9 +11,12 @@
 
 ANpc::ANpc()
 {
-	PrimaryActorTick.bCanEverTick = true;
-	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
-	SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("Perception")));
+	bReplicates = true;
+	PrimaryActorTick.bCanEverTick = false;
+	bStartAILogicOnPossess = true;
+	bAttachToPawn = true;
+	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>("Sight");
+	SetPerceptionComponent(*CreateDefaultSubobject<UAIPerceptionComponent>("Perception"));
 	SightConfig->SightRadius = SightRadius;
 	SightConfig->LoseSightRadius = LooseSightRadius;
 	SightConfig->PeripheralVisionAngleDegrees = FieldOfView;
@@ -21,8 +24,8 @@ ANpc::ANpc()
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	BehaviorTree = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("Behavior Tree"));
-	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
+	BehaviorTree = CreateDefaultSubobject<UBehaviorTreeComponent>("Behavior Tree");
+	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>("Blackboard");
 	TargetKey = "Target";
 	DestinationKey = "Destination";
 }
@@ -30,18 +33,17 @@ ANpc::ANpc()
 void ANpc::OnConstruction(const FTransform& transform)
 {
 	Super::OnConstruction(transform);
+	Body = Cast<ABody>(GetOwner());
 	GetPerceptionComponent()->SetDominantSense(*SightConfig->GetSenseImplementation());
 	GetPerceptionComponent()->ConfigureSense(*SightConfig);
 	GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ANpc::OnPawnDetected);
-	SpawnPoint = transform.GetLocation();
+	BlackboardComponent->InitializeBlackboard(*BlackboardComponent->GetBlackboardAsset());
 }
 
 void ANpc::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	Body = Cast<ABody>(InPawn);
-	BlackboardComponent->InitializeBlackboard(*BlackboardComponent->GetBlackboardAsset());
-	BrainComponent->StartLogic();
+	SpawnPoint = InPawn->GetActorLocation();
 }
 
 void ANpc::OnPawnDetected(const TArray<AActor*>& DetectedPawns)
@@ -92,13 +94,13 @@ bool ANpc::TryTarget(ABody* nBody)
 		// if (!Hostile && Body->IsCitizen && nBody->Attributes->Hate >= 20) Hostile = true;
 		// if (Hostile)
 		// {
-			Target = nBody;
-			BlackboardComponent->SetValueAsObject(TargetKey, Target);
-			GetWorldTimerManager().ClearTimer(LooseTargetHandle);
-			GetWorldTimerManager().SetTimer(LooseTargetHandle, this, &ANpc::CanSeeTarget, 4, true);
-			Body->GetCharacterMovement()->MaxWalkSpeed = Body->RunSpeed;
-			BehaviorTree->RestartTree();
-			return true;
+		Target = nBody;
+		BlackboardComponent->SetValueAsObject(TargetKey, Target);
+		GetWorldTimerManager().ClearTimer(LooseTargetHandle);
+		GetWorldTimerManager().SetTimer(LooseTargetHandle, this, &ANpc::CanSeeTarget, 4, true);
+		Body->GetCharacterMovement()->MaxWalkSpeed = Body->RunSpeed;
+		BehaviorTree->RestartTree();
+		return true;
 		// }
 	}
 	return false;
