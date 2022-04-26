@@ -5,6 +5,12 @@
 #include "LNR/Item/Armor.h"
 #include "LNR/Widget/SlotWidget.h"
 
+void UEquipmentWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	Refresh();
+}
+
 void UEquipmentWidget::Init(AHero* nHero)
 {
 	Hero = nHero;

@@ -30,6 +30,7 @@ public:
 	class USlotWidget* RightOffHandSlot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* LeftOffHandSlot;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;
 	void RefreshArmor(class UApparelComponent* apparel) const;

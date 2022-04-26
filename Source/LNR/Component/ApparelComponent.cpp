@@ -165,6 +165,9 @@ void UApparelComponent::EquipArmor(UArmor* nArmor)
 
 void UApparelComponent::UnequipArmor(int slot)
 {
-	if (Hero) Hero->Inventory->Add(Armor[slot]);
-	SetArmor(slot, nullptr);
+	if (Hero)
+	{
+		if(Hero->Inventory->Add(Armor[slot])) SetArmor(slot, nullptr);
+	}
+	else SetArmor(slot, nullptr);
 }

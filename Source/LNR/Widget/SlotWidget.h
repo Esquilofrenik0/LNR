@@ -21,5 +21,5 @@ public:
 	virtual void NativeConstruct() override;
 	void Setup(UTexture2D* icon) const;
 	UFUNCTION(BlueprintCallable)
-	void Click();
+	virtual void Click();
 };

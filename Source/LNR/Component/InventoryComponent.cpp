@@ -36,6 +36,7 @@ bool UInventoryComponent::Add(UItem* item, int amount)
 			return true;
 		}
 	}
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Inventory full!");
 	return false;
 }
 

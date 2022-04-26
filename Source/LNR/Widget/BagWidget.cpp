@@ -1,16 +1,8 @@
 ﻿#include "BagWidget.h"
-#include "SlotWidget.h"
+#include "SlotInventoryWidget.h"
 #include "Components/WrapBox.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/InventoryComponent.h"
-
-void UBagWidget::NativeConstruct()
-{
-	Super::NativeConstruct();
-	Slots.Empty();
-	TArray<UWidget*> s = SlotBox->GetAllChildren();
-	for (int i = 0; i < s.Num(); i++) Slots.Add(Cast<USlotWidget>(s[i]));
-}
 
 void UBagWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -21,6 +13,15 @@ void UBagWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 void UBagWidget::Init(AHero* nHero)
 {
 	Hero = nHero;
+	Slots.Empty();
+	TArray<UWidget*> s = SlotBox->GetAllChildren();
+	for (int i = 0; i < s.Num(); i++)
+	{
+		USlotInventoryWidget* slot = Cast<USlotInventoryWidget>(s[i]);
+		slot->SlotNumber = i;
+		slot->Init(Hero);
+		Slots.Add(slot);
+	}
 }
 
 void UBagWidget::Refresh() const

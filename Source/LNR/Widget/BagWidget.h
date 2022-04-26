@@ -17,8 +17,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UTextBlock* InfoText;
 	UPROPERTY(BlueprintReadWrite)
-	TArray<class USlotWidget*> Slots;
-	virtual void NativeConstruct() override;
+	TArray<class USlotInventoryWidget*> Slots;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;
