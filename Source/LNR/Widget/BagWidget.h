@@ -8,6 +8,8 @@ class LNR_API UBagWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(BlueprintReadWrite)
+	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UTextBlock* LabelText;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -17,5 +19,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<class USlotWidget*> Slots;
 	virtual void NativeConstruct() override;
-	void Refresh(class UInventoryComponent* inventory) const;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	void Init(AHero* nHero);
+	void Refresh() const;
 };

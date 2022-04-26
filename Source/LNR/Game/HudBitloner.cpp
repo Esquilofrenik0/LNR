@@ -48,6 +48,6 @@ void AHudBitloner::ShowInventory(bool val)
 
 void AHudBitloner::RefreshInventory()
 {
-	HudWidget->InventoryWidget->BagWidget->Refresh(Hero->Inventory);
-	HudWidget->InventoryWidget->EquipmentWidget->Refresh(Hero->Apparel, Hero->Equipment);
+	HudWidget->InventoryWidget->BagWidget->Refresh();
+	HudWidget->InventoryWidget->EquipmentWidget->Refresh();
 }

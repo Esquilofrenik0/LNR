@@ -31,7 +31,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* LeftOffHandSlot;
 	void Init(AHero* nHero);
-	void Refresh(class UApparelComponent* apparel, class UEquipmentComponent* equipment) const;
-	void RefreshArmor(UApparelComponent* apparel) const;
-	void RefreshWeapon(UEquipmentComponent* equipment) const;
+	void Refresh() const;
+	void RefreshArmor(class UApparelComponent* apparel) const;
+	void RefreshWeapon(class UEquipmentComponent* equipment) const;
 };

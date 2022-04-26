@@ -9,7 +9,7 @@ class LNR_API UActionBarWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	class UActionComponent* Action;
+	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* Action1Slot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -18,6 +18,6 @@ public:
 	class USlotWidget* Action3Slot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* Action4Slot;
-	void Init(UActionComponent* nAction);
+	void Init(AHero* nHero);
 	void Refresh() const;
 };

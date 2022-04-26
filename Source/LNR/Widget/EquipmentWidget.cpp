@@ -1,5 +1,4 @@
 ﻿#include "EquipmentWidget.h"
-#include "Components/Button.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/ApparelComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
@@ -17,10 +16,10 @@ void UEquipmentWidget::Init(AHero* nHero)
 	FeetSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipFeet);
 }
 
-void UEquipmentWidget::Refresh(UApparelComponent* apparel, UEquipmentComponent* equipment) const
+void UEquipmentWidget::Refresh() const
 {
-	RefreshArmor(apparel);
-	RefreshWeapon(equipment);
+	RefreshArmor(Hero->Apparel);
+	RefreshWeapon(Hero->Equipment);
 }
 
 void UEquipmentWidget::RefreshArmor(UApparelComponent* apparel) const
