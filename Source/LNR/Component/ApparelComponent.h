@@ -20,9 +20,11 @@ public:
 	class UOutfit* Outfit;
 	UFUNCTION()
 	void OnRep_Outfit(UOutfit* nOutfit);
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	USkeletalMeshComponent* Mesh;
+	UPROPERTY(BlueprintReadWrite)
+	class AHero* Hero;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	USkeletalMeshComponent* HeadMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
@@ -41,7 +43,7 @@ public:
 	USkeletalMeshComponent* BeardMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	USkeletalMeshComponent* SimgloveMesh;
-	
+
 	virtual void BeginPlay() override;
 	virtual void OnComponentCreated() override;
 	void Setup(USkeletalMeshComponent* nMesh);
@@ -49,9 +51,28 @@ public:
 	void CreateDynamicMaterial();
 	TArray<UMaterialInstanceDynamic*> GetCharacterMaterials();
 	void SetMask(UTexture2D* mask);
-	UFUNCTION(BlueprintCallable)
 	void SetOutfit(UOutfit* nOutfit);
 	UFUNCTION(Server, Reliable)
 	void ServerSetOutfit(UOutfit* nOutfit);
 	void ServerSetOutfit_Implementation(UOutfit* nOutfit) { SetOutfit(nOutfit); }
+	void SetArmor(int slot, UArmor* nArmor);
+	UFUNCTION(Server, Reliable)
+	void ServerSetArmor(int slot, UArmor* nArmor);
+	void ServerSetArmor_Implementation(int slot, UArmor* nArmor) { SetArmor(slot, nArmor); }
+
+	UFUNCTION(BlueprintCallable)
+	void EquipArmor(UArmor* nArmor);
+	UFUNCTION(BlueprintCallable)
+	void UnequipArmor(int slot);
+
+	UFUNCTION(BlueprintCallable)
+	void UnequipHead() { UnequipArmor(0); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipBack() { UnequipArmor(1); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipChest() { UnequipArmor(2); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipLegs() { UnequipArmor(3); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipFeet() { UnequipArmor(4); };
 };

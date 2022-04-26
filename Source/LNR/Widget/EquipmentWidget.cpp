@@ -10,6 +10,11 @@ void UEquipmentWidget::Init(AHero* nHero)
 {
 	Hero = nHero;
 	WeaponSwapSlot->OnClick.AddDynamic(Hero, &AHero::TryWeaponSwap);
+	HeadSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipHead);
+	BackSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipBack);
+	ChestSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipChest);
+	LegsSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipLegs);
+	FeetSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipFeet);
 }
 
 void UEquipmentWidget::Refresh(UApparelComponent* apparel, UEquipmentComponent* equipment) const

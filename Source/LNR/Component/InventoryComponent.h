@@ -12,4 +12,8 @@ public:
 	UInventoryComponent();
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FSlot> Slots;
+	UFUNCTION(BlueprintCallable)
+	bool Add(UItem* item, int amount = 1);
+	UFUNCTION(BlueprintCallable)
+	void Remove(int slot, int amount = 1);
 };

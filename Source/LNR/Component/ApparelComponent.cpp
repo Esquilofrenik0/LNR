@@ -1,6 +1,9 @@
 ﻿#include "ApparelComponent.h"
+
+#include "InventoryComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "LNR/Body/Hero.h"
 #include "LNR/Game/BitlonerGameMode.h"
 #include "LNR/Item/Armor.h"
 #include "LNR/Item/Outfit.h"
@@ -34,6 +37,7 @@ void UApparelComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 void UApparelComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Hero = Cast<AHero>(GetOwner());
 	Dress();
 }
 
@@ -92,15 +96,15 @@ void UApparelComponent::Dress()
 	}
 	else
 	{
-		if(Armor[0]) HeadMesh->SetSkeletalMesh(Armor[0]->SkeletalMesh);
+		if (Armor[0]) HeadMesh->SetSkeletalMesh(Armor[0]->SkeletalMesh);
 		else HeadMesh->SetSkeletalMesh(nullptr);
-		if(Armor[1]) BackMesh->SetSkeletalMesh(Armor[1]->SkeletalMesh);
+		if (Armor[1]) BackMesh->SetSkeletalMesh(Armor[1]->SkeletalMesh);
 		else BackMesh->SetSkeletalMesh(nullptr);
-		if(Armor[2]) ChestMesh->SetSkeletalMesh(Armor[2]->SkeletalMesh);
+		if (Armor[2]) ChestMesh->SetSkeletalMesh(Armor[2]->SkeletalMesh);
 		else ChestMesh->SetSkeletalMesh(nullptr);
-		if(Armor[3]) LegsMesh->SetSkeletalMesh(Armor[3]->SkeletalMesh);
+		if (Armor[3]) LegsMesh->SetSkeletalMesh(Armor[3]->SkeletalMesh);
 		else LegsMesh->SetSkeletalMesh(nullptr);
-		if(Armor[4]) FeetMesh->SetSkeletalMesh(Armor[4]->SkeletalMesh);
+		if (Armor[4]) FeetMesh->SetSkeletalMesh(Armor[4]->SkeletalMesh);
 		else FeetMesh->SetSkeletalMesh(nullptr);
 		OutfitMesh->SetSkeletalMesh(nullptr);
 		SetMask(nullptr);
@@ -142,4 +146,25 @@ void UApparelComponent::SetOutfit(UOutfit* nOutfit)
 		Dress();
 	}
 	else ServerSetOutfit(nOutfit);
+}
+
+void UApparelComponent::SetArmor(int slot, UArmor* nArmor)
+{
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		Armor[slot] = nArmor;
+		Dress();
+	}
+	else ServerSetArmor(slot, nArmor);
+}
+
+void UApparelComponent::EquipArmor(UArmor* nArmor)
+{
+	SetArmor(nArmor->Type, nArmor);
+}
+
+void UApparelComponent::UnequipArmor(int slot)
+{
+	if (Hero) Hero->Inventory->Add(Armor[slot]);
+	SetArmor(slot, nullptr);
 }
