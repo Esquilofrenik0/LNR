@@ -2,6 +2,11 @@
 #include "Components/ProgressBar.h"
 #include "LNR/Component/AttributesComponent.h"
 
+void UAttributesWidget::Init(UAttributesComponent* nAttributes)
+{
+	Attributes = nAttributes;
+}
+
 void UAttributesWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);

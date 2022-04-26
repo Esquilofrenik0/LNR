@@ -9,6 +9,7 @@ class LNR_API UActionComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 public:
+	UActionComponent();
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<TSubclassOf<UAbility>> Default;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

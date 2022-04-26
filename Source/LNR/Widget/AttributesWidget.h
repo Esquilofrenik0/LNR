@@ -18,5 +18,6 @@ public:
 	class UProgressBar* EnergyBar;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UProgressBar* WantedBar;
+	void Init(UAttributesComponent* nAttributes);
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };

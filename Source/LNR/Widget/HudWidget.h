@@ -17,6 +17,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	UImage* InteractionImage;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UActionBarWidget* ActionBarWidget;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UAttributesWidget* AttributesWidget;
 	void Init(AHudBitloner* nHud);
 	void ShowInteractionIcon(bool val);
