@@ -7,13 +7,6 @@
 void UHudWidget::Init(AHudBitloner* nHud)
 {
 	Hud = nHud;
-	ShowInteractionIcon(false);
 	ActionBarWidget->Init(Hud->Hero->Action);
 	AttributesWidget->Init(Hud->Hero->Attributes);
-}
-
-void UHudWidget::ShowInteractionIcon(bool val)
-{
-	if (val) InteractionImage->SetVisibility(ESlateVisibility::Visible);
-	else InteractionImage->SetVisibility(ESlateVisibility::Hidden);
 }

@@ -78,13 +78,14 @@ public:
 	void StartCycleCamera();
 	void StartHolster();
 	void StartFlashlight();
+	void StartInventory();
 	
 	void StartAction1();
-	void StartAction2();
-	void StartAction3();
-	void StartAction4();
 	void StopAction1();
+	void StartAction2();
 	void StopAction2();
+	void StartAction3();
 	void StopAction3();
+	void StartAction4();
 	void StopAction4();
 };

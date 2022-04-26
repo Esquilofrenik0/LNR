@@ -23,5 +23,4 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UInventoryWidget* InventoryWidget;
 	void Init(AHudBitloner* nHud);
-	void ShowInteractionIcon(bool val);
 };

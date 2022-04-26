@@ -16,6 +16,7 @@
 #include "LNR/Game/Playor.h"
 #include "LNR/Widget/ActionBarWidget.h"
 #include "LNR/Widget/HudWidget.h"
+#include "LNR/Widget/InventoryWidget.h"
 #include "LNR/Widget/SlotWidget.h"
 
 AHero::AHero()
@@ -103,14 +104,15 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &AHero::StartDodge);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AHero::StartInteract);
 	PlayerInputComponent->BindAction("CycleCamera", IE_Pressed, this, &AHero::StartCycleCamera);
+	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AHero::StartInventory);
 
 	PlayerInputComponent->BindAction("Action1", IE_Pressed, this, &AHero::StartAction1);
-	PlayerInputComponent->BindAction("Action2", IE_Pressed, this, &AHero::StartAction2);
-	PlayerInputComponent->BindAction("Action3", IE_Pressed, this, &AHero::StartAction3);
-	PlayerInputComponent->BindAction("Action4", IE_Pressed, this, &AHero::StartAction4);
 	PlayerInputComponent->BindAction("Action1", IE_Released, this, &AHero::StopAction1);
+	PlayerInputComponent->BindAction("Action2", IE_Pressed, this, &AHero::StartAction2);
 	PlayerInputComponent->BindAction("Action2", IE_Released, this, &AHero::StopAction2);
+	PlayerInputComponent->BindAction("Action3", IE_Pressed, this, &AHero::StartAction3);
 	PlayerInputComponent->BindAction("Action3", IE_Released, this, &AHero::StopAction3);
+	PlayerInputComponent->BindAction("Action4", IE_Pressed, this, &AHero::StartAction4);
 	PlayerInputComponent->BindAction("Action4", IE_Released, this, &AHero::StopAction4);
 }
 
@@ -296,10 +298,21 @@ void AHero::StartFlashlight()
 	GetWorldTimerManager().ClearTimer(ReloadHeldTimer);
 }
 
+void AHero::StartInventory()
+{
+	if (Player->Hud->HudWidget->InventoryWidget->IsVisible()) Player->Hud->ShowInventory(false);
+	else Player->Hud->ShowInventory(true);
+}
+
 void AHero::StartAction1()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action1Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
 	Action1();
+}
+
+void AHero::StopAction1()
+{
+	Player->Hud->HudWidget->ActionBarWidget->Action1Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
 }
 
 void AHero::StartAction2()
@@ -308,31 +321,26 @@ void AHero::StartAction2()
 	Action2();
 }
 
+void AHero::StopAction2()
+{
+	Player->Hud->HudWidget->ActionBarWidget->Action2Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
+}
+
 void AHero::StartAction3()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action3Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
 	Action3();
 }
 
+void AHero::StopAction3()
+{
+	Player->Hud->HudWidget->ActionBarWidget->Action3Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
+}
+
 void AHero::StartAction4()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action4Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
 	Action4();
-}
-
-void AHero::StopAction1()
-{
-	Player->Hud->HudWidget->ActionBarWidget->Action1Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
-}
-
-void AHero::StopAction2()
-{
-	Player->Hud->HudWidget->ActionBarWidget->Action2Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
-}
-
-void AHero::StopAction3()
-{
-	Player->Hud->HudWidget->ActionBarWidget->Action3Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
 }
 
 void AHero::StopAction4()
