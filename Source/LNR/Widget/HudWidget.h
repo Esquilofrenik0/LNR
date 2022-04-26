@@ -20,6 +20,8 @@ public:
 	class UActionBarWidget* ActionBarWidget;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UAttributesWidget* AttributesWidget;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UInventoryWidget* InventoryWidget;
 	void Init(AHudBitloner* nHud);
 	void ShowInteractionIcon(bool val);
 };
