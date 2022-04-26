@@ -1,5 +1,4 @@
 #include "Item.h"
-#include "LNR/LNR.h"
 #include "LNR/Body/Hero.h"
 
 UItem::UItem()
@@ -13,13 +12,13 @@ UItem::UItem()
 
 void UItem::UseItem(AHero* hero, int amount)
 {
-	Print(Name.ToString() + " used");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, Name.ToString() + " used");
 }
 
 bool UItem::Compare(UItem* item)
 {
-	if(item == nullptr) return false;
-	else if(item->Name == Name) return true;
+	if (item == nullptr) return false;
+	else if (item->Name == Name) return true;
 	else return false;
 }
 
@@ -28,6 +27,6 @@ FString UItem::PrintItemData(bool withDescription)
 	FString data = "Name: " + Name.ToString() + "\r";
 	data += "Price: " + FString::SanitizeFloat(Price) + "\r";
 	data += "Weight: " + FString::SanitizeFloat(Weight) + "\r";
-	if(withDescription) data += "Description: " + Description + "\r";
+	if (withDescription) data += "Description: " + Description + "\r";
 	return data;
 }

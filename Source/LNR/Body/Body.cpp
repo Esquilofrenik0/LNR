@@ -9,7 +9,7 @@
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
-#include "LNR/Data/DamageType/MeleeDamage.h"
+#include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/Component/InfoComponent.h"
 #include "Net/UnrealNetwork.h"
 

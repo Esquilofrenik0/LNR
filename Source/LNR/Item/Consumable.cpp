@@ -1,13 +1,12 @@
 #include "Consumable.h"
-
 #include "LNR/Body/Hero.h"
+#include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 // #include "LNR/Component/InventoryComponent.h"
-// #include "LNR/Component/MantlingComponent.h"
 
 void UConsumable::UseItem(AHero* nHero, int amount)
 {
-	Print("Consumable Use Item Not Implemented!");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Consumable Use Item not Implemented!");
 	// if (nHero != nullptr)
 	// {
 	// 	nHero->Equipment->EquipConsumable(this, amount);
@@ -27,21 +26,20 @@ FString UConsumable::PrintItemData(bool withDescription)
 
 void UConsumable::Consume_Implementation(ABody* nBody)
 {
-	Print("Consume_Implementation");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Consume Implementation!");
 }
 
 void UConsumable::UseConsumable(ABody* nBody)
 {
-	Print("Consumable Use Consumable Not Implemented!");
-	// Body = nBody;
-	// if (Body->HasAuthority())
-	// {
-	// 	Body->State = Reacting;
-	// 	USkeletalMeshComponent* nMesh = Body->GetMesh();
-	// 	nBody->MultiPlayMontage(nMesh, Montage);
-	// 	PlayMontage(Body, nMesh, Montage);
-	// }
-	// else ServerUseConsumable(Body);
+	Body = nBody;
+	if (Body->HasAuthority())
+	{
+		Body->Combat->State = Reacting;
+		USkeletalMeshComponent* nMesh = Body->GetMesh();
+		nBody->MultiPlayMontage(nMesh, Montage);
+		PlayMontage(Body, nMesh, Montage);
+	}
+	else ServerUseConsumable(Body);
 }
 
 void UConsumable::PlayMontage(ABody* nBody, USkeletalMeshComponent* nMesh, UAnimMontage* nMontage)
@@ -62,11 +60,10 @@ void UConsumable::OnNotifyBegin(FName nName, const FBranchingPointNotifyPayload&
 
 void UConsumable::OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted)
 {
-	Print("Consumable OnAnimationBlendOut Not Implemented!");	
-	// if(Body->State == Dead) return;
-	// else
-	// {
-	// 	Body->State = Idle;
-	// 	if(Body->IsBlocking) Body->Block();
-	// }
+	if (Body->Combat->State == Dead) return;
+	else
+	{
+		Body->Combat->State = Idle;
+		if (Body->BlockPressed) Body->Block();
+	}
 }

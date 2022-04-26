@@ -1,6 +1,5 @@
 #pragma once
 #include "CoreMinimal.h"
-#include "LNR/LNR.h"
 #include "UObject/NoExportTypes.h"
 #include "Item.generated.h"
 

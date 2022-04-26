@@ -250,7 +250,6 @@ void AHero::StartInteract()
 
 void AHero::StartWeaponSwap()
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Start Weapon Swap!");
 	WeaponSwapHeld = true;
 	GetWorldTimerManager().ClearTimer(WeaponSwapHeldTimer);
 	GetWorldTimerManager().SetTimer(WeaponSwapHeldTimer, this, &AHero::StartHolster, 0.5);

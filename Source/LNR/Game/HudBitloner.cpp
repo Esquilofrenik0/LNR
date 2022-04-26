@@ -1,9 +1,7 @@
 ﻿#include "HudBitloner.h"
 #include "Blueprint/UserWidget.h"
 #include "LNR/Body/Hero.h"
-#include "LNR/Widget/EquipmentWidget.h"
 #include "LNR/Widget/HudWidget.h"
-#include "LNR/Widget/BagWidget.h"
 #include "LNR/Widget/InventoryWidget.h"
 
 AHudBitloner::AHudBitloner()
@@ -38,16 +36,6 @@ void AHudBitloner::ShowInteractionIcon(bool val)
 
 void AHudBitloner::ShowInventory(bool val)
 {
-	if (val)
-	{
-		RefreshInventory();
-		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-	}
+	if (val) HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 	else HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
-}
-
-void AHudBitloner::RefreshInventory()
-{
-	HudWidget->InventoryWidget->BagWidget->Refresh();
-	HudWidget->InventoryWidget->EquipmentWidget->Refresh();
 }

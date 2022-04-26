@@ -9,7 +9,3 @@ enum EDamageType
 	Physics = 2,
 	Pickup = 3,
 };
-
-static void Print(FString print);
-static void Print(int print);
-static void Print(float print);

@@ -3,6 +3,8 @@
 UInventoryComponent::UInventoryComponent()
 {
 	Slots.Init(FSlot(), 64);
+	SetIsReplicatedByDefault(true);
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 bool UInventoryComponent::Add(UItem* item, int amount)

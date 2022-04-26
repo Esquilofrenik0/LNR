@@ -8,7 +8,7 @@ UBuildable::UBuildable()
 
 void UBuildable::UseItem(AHero* hero, int amount)
 {
-	Print("Buildable UseItem Not Implemented!");	
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Buildable - Use Item not Implemented!");
 	// Print("Started Building " + Id.ToString());
 	// hero->StartBuild(this);
 }

@@ -20,6 +20,4 @@ public:
 	void ShowInteractionIcon(bool val);
 	UFUNCTION(BlueprintCallable)
 	void ShowInventory(bool val);
-	UFUNCTION(BlueprintCallable)
-	void RefreshInventory();
 };

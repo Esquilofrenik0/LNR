@@ -2,9 +2,10 @@
 #include "LNR/Body/Body.h"
 #include "LNR/Component/CombatComponent.h"
 
-void UANShoot::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration)
+void UANShoot::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration,
+                           const FAnimNotifyEventReference& EventReference)
 {
-	Super::NotifyBegin(MeshComp, Animation, TotalDuration);
+	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	AActor* owner = MeshComp->GetOwner();
 	if (owner->HasAuthority())
 	{

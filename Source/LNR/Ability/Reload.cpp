@@ -16,7 +16,7 @@ void UReload::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
                               const FGameplayAbilityActivationInfo ActivationInfo,
                               const FGameplayEventData* TriggerEventData)
 {
-	Print("Reload Activated!");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Reload Activated!");
 	if (ABody* body = Cast<ABody>(ActorInfo->AvatarActor))
 	{
 		Body = body;

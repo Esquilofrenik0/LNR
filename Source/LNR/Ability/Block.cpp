@@ -17,7 +17,6 @@ void UBlock::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
                              const FGameplayAbilityActivationInfo ActivationInfo,
                              const FGameplayEventData* TriggerEventData)
 {
-	Print("Block");
 	if (ABody* body = Cast<ABody>(ActorInfo->AvatarActor))
 	{
 		Body = body;

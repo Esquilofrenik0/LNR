@@ -5,8 +5,8 @@
 #include "WeaponComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "LNR/Body/Body.h"
-#include "LNR/Data/DamageType/MeleeDamage.h"
-#include "LNR/Data/DamageType/RangedDamage.h"
+#include "LNR/DamageType/MeleeDamage.h"
+#include "LNR/DamageType/RangedDamage.h"
 #include "LNR/Item/Weapon.h"
 #include "Net/UnrealNetwork.h"
 
@@ -42,14 +42,16 @@ void UCombatComponent::RefreshState()
 
 UAnimMontage* UCombatComponent::GetCombatMontage()
 {
-	if (Body->Equipment->GetWeapon(0) != nullptr)
+	if (UWeapon* w = Body->Equipment->GetWeapon(0))
 	{
-		Print("Weapon[0] is not null. Name is: " + Body->Equipment->GetWeapon(0)->GetName());
-		return Body->Equipment->GetWeapon(0)->CombatMontage[Combo];
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red,
+		                                 "Weapon[0] is not null. Name is: " + w->GetName());
+		return w->CombatMontage[Combo];
 	}
 	else
 	{
-		Print("Weapon[0] is null! Returning Unarmed Montage...");
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red,
+		                                 "Weapon[0] is null! Returning Unarmed Montage...");
 		return UnarmedMontage[Combo];
 	}
 }
