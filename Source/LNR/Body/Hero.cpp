@@ -110,7 +110,7 @@ void AHero::Tick(float DeltaSeconds)
 
 void AHero::ServerTick() const
 {
-	Attributes->Regenerate();
+	Attributes->Regenerate(0.1);
 }
 
 void AHero::ClientTick()

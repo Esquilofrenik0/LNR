@@ -4,14 +4,7 @@
 
 UAttributesComponent::UAttributesComponent()
 {
-	MaxHealth = 100 + (Vitality * 10);
-	MaxStamina = 100 + (Agility * 10);
-	MaxEnergy = 100 + (Charisma * 10);
-	HealthRegeneration = Vitality * 0.1;
-	StaminaRegeneration = Agility * 0.1;
-	FocusRegeneration = Charisma * 0.1;
-	BaseDamage = Strength;
-	BaseDefense = Charisma;
+	RefreshStats();
 	Damage = BaseDamage;
 	Defense = BaseDefense;
 	Health = MaxHealth;
@@ -46,28 +39,28 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxWanted, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, HealthRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, StaminaRegeneration, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, FocusRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, EnergyRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, WantedRegeneration, COND_None, REPNOTIFY_Always);
 }
 
 void UAttributesComponent::RefreshStats()
 {
-	MaxHealth = 100 + (Vitality * 10);
-	MaxStamina = 100 + (Agility * 10);
-	MaxEnergy = 100 + (Charisma * 10);
-	HealthRegeneration = Vitality * 0.1;
-	StaminaRegeneration = Agility * 0.1;
-	FocusRegeneration = Charisma * 0.1;
 	BaseDamage = Strength;
 	BaseDefense = Charisma;
+	MaxHealth = 100 + (Vitality * 10);
+	MaxStamina = 100 + (Agility * 10);
+	MaxEnergy = 100 + (Wisdom * 10);
+	HealthRegeneration = Vitality * 0.5;
+	StaminaRegeneration = Agility * 0.5;
+	EnergyRegeneration = Wisdom * 0.5;
 }
 
-void UAttributesComponent::Regenerate()
+void UAttributesComponent::Regenerate(float deltaTime)
 {
-	ChangeHealth(HealthRegeneration);
-	ChangeStamina(StaminaRegeneration);
-	ChangeEnergy(FocusRegeneration);
-	ChangeWanted(-WantedRegeneration);
+	ChangeHealth(HealthRegeneration * deltaTime);
+	ChangeStamina(StaminaRegeneration * deltaTime);
+	ChangeEnergy(EnergyRegeneration * deltaTime);
+	ChangeWanted(-WantedRegeneration * deltaTime);
 }
 
 void UAttributesComponent::ChangeHealth(float value)
@@ -125,7 +118,7 @@ FString UAttributesComponent::GetStaminaText()
 FString UAttributesComponent::GetEnergyText()
 {
 	return "Focus: " + FString::FromInt(Energy) + " / " + FString::FromInt(MaxEnergy) + " (+" +
-		FString::FromInt(FocusRegeneration) + "/s)";
+		FString::FromInt(EnergyRegeneration) + "/s)";
 }
 
 FString UAttributesComponent::GetDamageText()

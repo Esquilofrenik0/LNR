@@ -84,14 +84,14 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float StaminaRegeneration;
 	UPROPERTY(Replicated, BlueprintReadWrite)
-	float FocusRegeneration;
+	float EnergyRegeneration;
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float WantedRegeneration;
 
 	UFUNCTION(BlueprintCallable)
 	void RefreshStats();
 	UFUNCTION(BlueprintCallable)
-	void Regenerate();
+	void Regenerate(float deltaTime);
 
 	UFUNCTION(BlueprintCallable)
 	void ChangeHealth(float value);
