@@ -10,6 +10,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
+#include "LNR/Game/HudBitloner.h"
+#include "LNR/Game/Playor.h"
+#include "LNR/Widget/HudWidget.h"
 
 AHero::AHero()
 {
@@ -54,6 +57,13 @@ void AHero::Restart()
 		GetWorldTimerManager().ClearTimer(ClientTickTimer);
 		GetWorldTimerManager().SetTimer(ClientTickTimer, this, &AHero::ClientTick, 0.1, true);
 	}
+}
+
+void AHero::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	Player = Cast<APlayor>(NewController);
+	Player->Init(this);
 }
 
 void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -109,6 +119,7 @@ void AHero::CheckView()
 	{
 		Execute_OnShowInfo(Inter, this, false);
 		Inter = nullptr;
+		Player->Hud->ShowInteractionIcon(false);
 	}
 	if (FHitResult hit; UKismetSystemLibrary::LineTraceSingle(GetWorld(), start, end, TraceTypeQuery1, true,
 	                                                          toIgnore, EDrawDebugTrace::None, hit, true))
@@ -119,6 +130,7 @@ void AHero::CheckView()
 			{
 				Inter = hitActor;
 				Execute_OnShowInfo(Inter, this, true);
+				Player->Hud->ShowInteractionIcon(true);
 			}
 		}
 	}

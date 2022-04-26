@@ -1,7 +1,7 @@
 #pragma once
-
 #include "CoreMinimal.h"
 #include "Human.h"
+#include "LNR/Game/Playor.h"
 #include "Hero.generated.h"
 
 UCLASS()
@@ -10,7 +10,6 @@ class LNR_API AHero : public AHuman
 	GENERATED_BODY()
 public:
 	AHero();
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class USpringArmComponent* TpArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -20,6 +19,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class USpotLightComponent* Flashlight;
 
+	UPROPERTY(BlueprintReadWrite)
+	APlayor* Player;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -43,6 +45,7 @@ public:
 	
 	virtual void BeginPlay() override;
 	virtual void Restart() override;
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaSeconds) override;
 

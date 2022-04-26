@@ -16,4 +16,6 @@ public:
 	TSubclassOf<class UHudWidget> HudTemplate;
 	UPROPERTY(BlueprintReadWrite)
 	UHudWidget* HudWidget;
+	UFUNCTION(BlueprintCallable)
+	void ShowInteractionIcon(bool val);
 };

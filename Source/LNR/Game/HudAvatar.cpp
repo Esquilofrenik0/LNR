@@ -21,7 +21,7 @@ void AHudAvatar::BeginPlay()
 		HudAvatarWidget = CreateWidget<UHudAvatarWidget>(GetWorld(), HudAvatarTemplate);
 		if (HudAvatarWidget)
 		{
-			HudAvatarWidget->Hud = this;
+			HudAvatarWidget->Init(this);
 			HudAvatarWidget->AddToViewport();
 		}
 	}

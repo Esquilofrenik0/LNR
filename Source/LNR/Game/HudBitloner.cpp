@@ -22,8 +22,13 @@ void AHudBitloner::BeginPlay()
 		HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudTemplate);
 		if (HudWidget)
 		{
-			HudWidget->Hud = this;
+			HudWidget->Init(this);
 			HudWidget->AddToViewport();
 		}
 	}
+}
+
+void AHudBitloner::ShowInteractionIcon(bool val)
+{
+	if(HudWidget) HudWidget->ShowInteractionIcon(val);
 }

@@ -1,14 +1,13 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "HudAvatarWidget.generated.h"
+#include "AttributesWidget.generated.h"
 
 UCLASS()
-class LNR_API UHudAvatarWidget : public UUserWidget
+class LNR_API UAttributesWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	class AHudAvatar* Hud;
-	void Init(AHudAvatar* nHud);
+	class UAttributesComponent* Attributes;
 };

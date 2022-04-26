@@ -76,7 +76,6 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 {
 	if (Combat->State == Dead) return 0;
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	Info->StartTimer(2);
 	ABody* instigator = Cast<ABody>(DamageCauser);
 	// if (Npc)
 	// {
@@ -242,6 +241,7 @@ void ABody::ServerShowWorldDamage_Implementation(int amount, EDamageType nDamage
 
 void ABody::MultiShowWorldDamage_Implementation(int amount, EDamageType nDamageType, FVector hitLocation)
 {
+	Info->StartTimer(2);
 	OnShowWorldDamage(amount, nDamageType, hitLocation);
 }
 
