@@ -6,10 +6,11 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
+#include "LNR/Component/InfoComponent.h"
 #include "LNR/Game/HudBitloner.h"
 #include "LNR/Game/Playor.h"
 #include "LNR/Widget/HudWidget.h"
@@ -57,6 +58,11 @@ void AHero::Restart()
 		GetWorldTimerManager().ClearTimer(ClientTickTimer);
 		GetWorldTimerManager().SetTimer(ClientTickTimer, this, &AHero::ClientTick, 0.1, true);
 	}
+	if (HasAuthority())
+	{
+		GetWorldTimerManager().ClearTimer(ServerTickTimer);
+		GetWorldTimerManager().SetTimer(ServerTickTimer, this, &AHero::ServerTick, 0.1, true);
+	}
 }
 
 void AHero::PossessedBy(AController* NewController)
@@ -100,6 +106,11 @@ void AHero::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	if (HasAuthority()) RefreshPitch();
+}
+
+void AHero::ServerTick() const
+{
+	Attributes->Regenerate();
 }
 
 void AHero::ClientTick()

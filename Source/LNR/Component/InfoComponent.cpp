@@ -1,7 +1,6 @@
 ﻿#include "InfoComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
-#include "LNR/LNR.h"
 
 UInfoComponent::UInfoComponent()
 {
@@ -17,15 +16,7 @@ UInfoComponent::UInfoComponent()
 void UInfoComponent::OnComponentCreated()
 {
 	Super::OnComponentCreated();
-	SetComponentTickEnabled(false);
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
-}
-
-void UInfoComponent::BeginPlay()
-{
-	Super::BeginPlay();
-	Init();
-	ClearTimer();
 }
 
 void UInfoComponent::Init()
@@ -33,13 +24,33 @@ void UInfoComponent::Init()
 	if (UUserWidget* widget = GetWidget())
 	{
 		InfoWidget = Cast<UInfoWidget>(widget);
-		if (InfoWidget) InfoWidget->Info = this;
+		if (InfoWidget)
+		{
+			InfoWidget->Info = this;
+			InfoWidget->Refresh();
+		}
 	}
+	ClearTimer();
+}
+
+void UInfoComponent::Init(UAttributesComponent* nAttributes)
+{
+	if (UUserWidget* widget = GetWidget())
+	{
+		InfoWidget = Cast<UInfoWidget>(widget);
+		if (InfoWidget)
+		{
+			InfoWidget->Info = this;
+			InfoWidget->Attributes = nAttributes;
+			InfoWidget->Refresh();
+		}
+	}
+	ClearTimer();
 }
 
 void UInfoComponent::Show(bool val)
 {
-	if(!HideInfoTimerActive) SetVisibility(val);
+	if (!HideInfoTimerActive) SetVisibility(val);
 }
 
 void UInfoComponent::StartTimer(float time)

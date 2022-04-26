@@ -98,6 +98,7 @@ void UEquipmentComponent::SetWeapon(UWeapon* nWeapon, int index)
 	if (GetOwnerRole() == ROLE_Authority)
 	{
 		Weapon[index] = nWeapon;
+		Body->RefreshAttributes();
 		Dress();
 	}
 	else ServerSetWeapon(nWeapon, index);
@@ -129,7 +130,7 @@ void UEquipmentComponent::WeaponSwap()
 		if (Body)
 		{
 			Body->Combat->Combo = 0;
-			// Body->RefreshAttributes();
+			Body->RefreshAttributes();
 		}
 	}
 	else ServerWeaponSwap();

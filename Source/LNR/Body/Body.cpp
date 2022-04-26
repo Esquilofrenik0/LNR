@@ -62,6 +62,8 @@ void ABody::OnConstruction(const FTransform& Transform)
 void ABody::BeginPlay()
 {
 	Super::BeginPlay();
+	RefreshAttributes();
+	Info->Init(Attributes);
 }
 
 void ABody::Restart()
@@ -86,7 +88,7 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	EDamageType dt = Ranged;
 	if (Combat->State == Blocking)
 	{
-		Attributes->Stamina -= DamageAmount;
+		Attributes->ChangeStamina(-DamageAmount);
 		DamageAmount = 0;
 	}
 	if (DamageEvent.DamageTypeClass == UMeleeDamage::StaticClass())
@@ -108,7 +110,7 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 			Combat->ResetCombo();
 		}
 	}
-	Attributes->Health -= DamageAmount;
+	Attributes->ChangeHealth(-DamageAmount);
 	ShowWorldDamage(DamageAmount, dt, GetActorLocation());
 	// if (Attributes->Health <= 0) Die();
 	return DamageAmount;
@@ -252,4 +254,21 @@ void ABody::OnInteract_Implementation(AHero* hero)
 void ABody::OnShowInfo_Implementation(AHero* hero, bool val)
 {
 	Info->Show(val);
+}
+
+void ABody::RefreshAttributes()
+{
+	Attributes->RefreshStats();
+	Attributes->Damage = Attributes->BaseDamage;
+	Attributes->Defense = Attributes->BaseDefense;
+	if (UWeapon* mw = Equipment->GetWeapon(0))
+	{
+		Attributes->Damage += mw->Damage;
+		Attributes->Defense += mw->Defense;
+	}
+	if (UWeapon* ow = Equipment->GetWeapon(1))
+	{
+		Attributes->Damage += ow->Damage;
+		Attributes->Defense += ow->Defense;
+	}
 }

@@ -39,6 +39,8 @@ public:
 	FTimerHandle WeaponSwapHeldTimer;
 
 	UPROPERTY(BlueprintReadWrite)
+	FTimerHandle ServerTickTimer;
+	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle ClientTickTimer;
 	UPROPERTY(BlueprintReadWrite)
 	AActor* Inter = nullptr;
@@ -48,7 +50,7 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaSeconds) override;
-
+	void ServerTick() const;
 	void ClientTick();
 	void CheckView();
 	void ResetCamera();

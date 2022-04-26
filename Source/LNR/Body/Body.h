@@ -99,4 +99,7 @@ public:
 	virtual void OnInteract_Implementation(AHero* hero) override;
 	UFUNCTION(BlueprintCallable)
 	virtual void OnShowInfo_Implementation(AHero* hero, bool val) override;
+
+	UFUNCTION(BlueprintCallable)
+	void RefreshAttributes();
 };

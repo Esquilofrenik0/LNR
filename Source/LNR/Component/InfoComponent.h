@@ -28,9 +28,9 @@ public:
 	FTimerHandle HideInfoTimer;
 
 	virtual void OnComponentCreated() override;
-	virtual void BeginPlay() override;
 	void Setup(ACharacter* character);
 	void Init();
+	void Init(UAttributesComponent* nAttributes);
 	UFUNCTION(BlueprintCallable)
 	void Show(bool val);
 	UFUNCTION(BlueprintCallable)

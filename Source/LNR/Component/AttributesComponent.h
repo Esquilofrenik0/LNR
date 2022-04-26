@@ -50,10 +50,10 @@ public:
 	float Stamina;
 	UFUNCTION()
 	virtual void OnRep_Stamina(float oldStamina);
-	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_Focus)
-	float Focus;
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_Energy)
+	float Energy;
 	UFUNCTION()
-	virtual void OnRep_Focus(float oldFocus);
+	virtual void OnRep_Energy(float oldEnergy);
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_Damage)
 	float Damage;
 	UFUNCTION()
@@ -76,7 +76,7 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float MaxStamina;
 	UPROPERTY(Replicated, BlueprintReadWrite)
-	float MaxFocus;
+	float MaxEnergy;
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float MaxWanted;
 	UPROPERTY(Replicated, BlueprintReadWrite)
@@ -88,6 +88,9 @@ public:
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float WantedRegeneration;
 
+	UFUNCTION(BlueprintCallable)
+	void RefreshStats();
+	UFUNCTION(BlueprintCallable)
 	void Regenerate();
 
 	UFUNCTION(BlueprintCallable)
@@ -95,24 +98,18 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ChangeStamina(float value);
 	UFUNCTION(BlueprintCallable)
-	void ChangeFocus(float value);
+	void ChangeEnergy(float value);
 	UFUNCTION(BlueprintCallable)
 	void ChangeWanted(float value);
-
-	UFUNCTION(BlueprintCallable)
-	void RefreshStats();
-	UFUNCTION(Server, Reliable)
-	void ServerRefreshStats();
-	void ServerRefreshStats_Implementation() { RefreshStats(); }
-
+	
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() { return Health / MaxHealth; };
 	UFUNCTION(BlueprintCallable)
 	float GetStaminaPercent() { return Stamina / MaxStamina; };
 	UFUNCTION(BlueprintCallable)
-	float GetFocusPercent() { return Focus / MaxFocus; };
+	float GetEnergyPercent() { return Energy / MaxEnergy; };
 	UFUNCTION(BlueprintCallable)
-	float GetHatePercent() { return Wanted / MaxWanted; };
+	float GetWantedPercent() { return Wanted / MaxWanted; };
 
 	UFUNCTION(BlueprintCallable)
 	FString GetStatsText();
@@ -120,26 +117,22 @@ public:
 	FString GetAttributesText();
 
 	UFUNCTION(BlueprintCallable)
-	FString GetStrengthText() { return "Strength: " + FString::FromInt(Strength); }
-
+	FString GetStrengthText() { return "Strength: " + FString::FromInt(Strength); };
 	UFUNCTION(BlueprintCallable)
-	FString GetCharismaText() { return "Charisma: " + FString::FromInt(Charisma); }
-
+	FString GetCharismaText() { return "Charisma: " + FString::FromInt(Charisma); };
 	UFUNCTION(BlueprintCallable)
-	FString GetVitalityText() { return "Vitality: " + FString::FromInt(Vitality); }
-
+	FString GetVitalityText() { return "Vitality: " + FString::FromInt(Vitality); };
 	UFUNCTION(BlueprintCallable)
-	FString GetAgilityText() { return "Agility: " + FString::FromInt(Agility); }
-
+	FString GetAgilityText() { return "Agility: " + FString::FromInt(Agility); };
 	UFUNCTION(BlueprintCallable)
-	FString GetWisdomText() { return "Wisdom: " + FString::FromInt(Wisdom); }
+	FString GetWisdomText() { return "Wisdom: " + FString::FromInt(Wisdom); };
 
 	UFUNCTION(BlueprintCallable)
 	FString GetHealthText();
 	UFUNCTION(BlueprintCallable)
 	FString GetStaminaText();
 	UFUNCTION(BlueprintCallable)
-	FString GetFocusText();
+	FString GetEnergyText();
 	UFUNCTION(BlueprintCallable)
 	FString GetDamageText();
 	UFUNCTION(BlueprintCallable)

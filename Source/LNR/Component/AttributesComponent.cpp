@@ -5,18 +5,19 @@
 UAttributesComponent::UAttributesComponent()
 {
 	MaxHealth = 100 + (Vitality * 10);
-	Health = MaxHealth;
 	MaxStamina = 100 + (Agility * 10);
-	Stamina = MaxStamina;
-	MaxFocus = 100 + (Charisma * 10);
-	Focus = MaxFocus;
-	HealthRegeneration = 1 + (Vitality * 0.1);
-	StaminaRegeneration = 1 + (Agility * 0.1);
-	FocusRegeneration = 1 + (Charisma * 0.1);
+	MaxEnergy = 100 + (Charisma * 10);
+	HealthRegeneration = Vitality * 0.1;
+	StaminaRegeneration = Agility * 0.1;
+	FocusRegeneration = Charisma * 0.1;
 	BaseDamage = Strength;
 	BaseDefense = Charisma;
 	Damage = BaseDamage;
 	Defense = BaseDefense;
+	Health = MaxHealth;
+	Stamina = MaxStamina;
+	Energy = MaxEnergy;
+	Wanted = 0;
 	MaxWanted = 100;
 	WantedRegeneration = 0.01;
 }
@@ -33,7 +34,7 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Wisdom, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Stamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Focus, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Energy, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Wanted, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, BaseDamage, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Damage, COND_None, REPNOTIFY_Always);
@@ -41,7 +42,7 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Defense, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxStamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxFocus, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxEnergy, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxWanted, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, HealthRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, StaminaRegeneration, COND_None, REPNOTIFY_Always);
@@ -51,25 +52,21 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 
 void UAttributesComponent::RefreshStats()
 {
-	if (GetOwningActor()->HasAuthority())
-	{
-		BaseDamage = Strength;
-		BaseDefense = Charisma;
-		MaxHealth = 100 + (Vitality * 10);
-		HealthRegeneration = 1 + (Vitality * 0.1);
-		MaxStamina = 100 + (Agility * 10);
-		StaminaRegeneration = 1 + (Agility * 0.1);
-		MaxFocus = 100 + (Charisma * 10);
-		FocusRegeneration = 1 + (Charisma * 0.1);
-	}
-	else ServerRefreshStats();
+	MaxHealth = 100 + (Vitality * 10);
+	MaxStamina = 100 + (Agility * 10);
+	MaxEnergy = 100 + (Charisma * 10);
+	HealthRegeneration = Vitality * 0.1;
+	StaminaRegeneration = Agility * 0.1;
+	FocusRegeneration = Charisma * 0.1;
+	BaseDamage = Strength;
+	BaseDefense = Charisma;
 }
 
 void UAttributesComponent::Regenerate()
 {
 	ChangeHealth(HealthRegeneration);
 	ChangeStamina(StaminaRegeneration);
-	ChangeFocus(FocusRegeneration);
+	ChangeEnergy(FocusRegeneration);
 	ChangeWanted(-WantedRegeneration);
 }
 
@@ -87,11 +84,11 @@ void UAttributesComponent::ChangeStamina(float value)
 	else if (Stamina < 0) Stamina = 0;
 }
 
-void UAttributesComponent::ChangeFocus(float value)
+void UAttributesComponent::ChangeEnergy(float value)
 {
-	Focus += value;
-	if (Focus > MaxFocus) Focus = MaxFocus;
-	else if (Focus < 0) Focus = 0;
+	Energy += value;
+	if (Energy > MaxEnergy) Energy = MaxEnergy;
+	else if (Energy < 0) Energy = 0;
 }
 
 void UAttributesComponent::ChangeWanted(float value)
@@ -109,7 +106,7 @@ FString UAttributesComponent::GetStatsText()
 
 FString UAttributesComponent::GetAttributesText()
 {
-	return GetHealthText() + "\n" + GetStaminaText() + "\n" + GetFocusText() + "\n"
+	return GetHealthText() + "\n" + GetStaminaText() + "\n" + GetEnergyText() + "\n"
 		+ GetDamageText() + "\n" + GetDefenseText();
 }
 
@@ -125,9 +122,9 @@ FString UAttributesComponent::GetStaminaText()
 		FString::FromInt(StaminaRegeneration) + "/s)";
 }
 
-FString UAttributesComponent::GetFocusText()
+FString UAttributesComponent::GetEnergyText()
 {
-	return "Focus: " + FString::FromInt(Focus) + " / " + FString::FromInt(MaxFocus) + " (+" +
+	return "Focus: " + FString::FromInt(Energy) + " / " + FString::FromInt(MaxEnergy) + " (+" +
 		FString::FromInt(FocusRegeneration) + "/s)";
 }
 
@@ -151,9 +148,9 @@ void UAttributesComponent::OnRep_Stamina(float oldStamina)
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributesComponent, Stamina, oldStamina);
 }
 
-void UAttributesComponent::OnRep_Focus(float oldFocus)
+void UAttributesComponent::OnRep_Energy(float oldEnergy)
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributesComponent, Focus, oldFocus);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributesComponent, Energy, oldEnergy);
 }
 
 void UAttributesComponent::OnRep_Damage(float oldDamage)

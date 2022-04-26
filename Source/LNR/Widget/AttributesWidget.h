@@ -10,4 +10,13 @@ class LNR_API UAttributesWidget : public UUserWidget
 public:
 	UPROPERTY(BlueprintReadWrite)
 	class UAttributesComponent* Attributes;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UProgressBar* HealthBar;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UProgressBar* StaminaBar;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UProgressBar* EnergyBar;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UProgressBar* WantedBar;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };
