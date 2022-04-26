@@ -26,7 +26,7 @@ public:
 	bool FirstPerson = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool FlashlightActive = false;
-
+	
 	UPROPERTY(BlueprintReadWrite)
 	bool ReloadHeld;
 	UPROPERTY(BlueprintReadWrite)
@@ -35,10 +35,20 @@ public:
 	FTimerHandle ReloadHeldTimer;
 	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle WeaponSwapHeldTimer;
+
+	UPROPERTY(BlueprintReadWrite)
+	FTimerHandle ClientTickTimer;
+	UPROPERTY(BlueprintReadWrite)
+	AActor* Inter = nullptr;
 	
-	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
+	virtual void Restart() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	void ClientTick();
+	void CheckView();
+	void ResetCamera();
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -60,8 +70,9 @@ public:
 	void StartDodge();
 	void StartInteract();
 	void StartCycleCamera();
-	void ResetCamera();
 	
 	void StartHolster();
 	void StartFlashlight();
+
+
 };

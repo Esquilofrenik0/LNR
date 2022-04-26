@@ -10,8 +10,10 @@ public:
 	AHudAvatar();
 	virtual void DrawHUD() override;
 	virtual void BeginPlay() override;
-	// UPROPERTY(EditDefaultsOnly, Category = "Interactive")
-	// TSubclassOf<UUserWidget> HitComboWidgetClass;
-// private:
-	// UHitComboWidget* HitComboWidget;
+	UPROPERTY(BlueprintReadWrite)
+	class AAvatar* Avatar;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UHudAvatarWidget> HudAvatarTemplate;
+	UPROPERTY(BlueprintReadWrite)
+	UHudAvatarWidget* HudAvatarWidget;
 };

@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "LNR/Component/CombatComponent.h"
@@ -36,27 +37,23 @@ AHero::AHero()
 	Flashlight = CreateDefaultSubobject<USpotLightComponent>("Flashlight");
 	Flashlight->SetupAttachment(FpCamera);
 	Flashlight->SetVisibility(false);
-	Flashlight->SetRelativeLocation(FVector(5,0,0));
+	Flashlight->SetRelativeLocation(FVector(5, 0, 0));
 	FlashlightActive = false;
-}
-
-void AHero::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-	if (HasAuthority())
-	{
-		if (Combat->State != Climbing)
-		{
-			FRotator rot = UKismetMathLibrary::ComposeRotators(GetControlRotation(), FRotator(0, -180, 0));
-			Pitch = -rot.Pitch;
-		}
-		else Pitch = 0;
-	}
 }
 
 void AHero::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AHero::Restart()
+{
+	Super::Restart();
+	if (IsLocallyControlled())
+	{
+		GetWorldTimerManager().ClearTimer(ClientTickTimer);
+		GetWorldTimerManager().SetTimer(ClientTickTimer, this, &AHero::ClientTick, 0.1, true);
+	}
 }
 
 void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -87,6 +84,58 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &AHero::StartDodge);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AHero::StartInteract);
 	PlayerInputComponent->BindAction("CycleCamera", IE_Pressed, this, &AHero::StartCycleCamera);
+}
+
+void AHero::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (HasAuthority()) RefreshPitch();
+}
+
+void AHero::ClientTick()
+{
+	CheckView();
+}
+
+void AHero::CheckView()
+{
+	FVector start;
+	FRotator rot;
+	Controller->GetPlayerViewPoint(start, rot);
+	FVector end = start + (rot.Vector() * 1000.0f);
+	TArray<AActor*> toIgnore;
+	toIgnore.Add(this);
+	if (Inter != nullptr)
+	{
+		Execute_OnShowInfo(Inter, this, false);
+		Inter = nullptr;
+	}
+	if (FHitResult hit; UKismetSystemLibrary::LineTraceSingle(GetWorld(), start, end, TraceTypeQuery1, true,
+	                                                          toIgnore, EDrawDebugTrace::None, hit, true))
+	{
+		if (AActor* hitActor = hit.GetActor())
+		{
+			if (hitActor->Implements<UInteract>())
+			{
+				Inter = hitActor;
+				Execute_OnShowInfo(Inter, this, true);
+			}
+		}
+	}
+}
+
+void AHero::ResetCamera()
+{
+	if (FirstPerson)
+	{
+		TpCamera->SetActive(false);
+		FpCamera->SetActive(true);
+	}
+	else
+	{
+		FpCamera->SetActive(false);
+		TpCamera->SetActive(true);
+	}
 }
 
 void AHero::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
@@ -152,6 +201,12 @@ void AHero::StartInteract()
 	{
 		if (AActor* hitActor = hit.GetActor())
 		{
+			// if (hitActor->Implements<IInteract>()) Execute_OnInteract(hitActor, this);
+			// else if (Cast<AInstancedFoliageActor>(hitActor))
+			// {
+			// UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit, GetController(),
+			// this, UPickupDamage::StaticClass());
+			// }
 		}
 	}
 }
@@ -210,20 +265,6 @@ void AHero::StartCycleCamera()
 {
 	FirstPerson = !FirstPerson;
 	ResetCamera();
-}
-
-void AHero::ResetCamera()
-{
-	if (FirstPerson)
-	{
-		TpCamera->SetActive(false);
-		FpCamera->SetActive(true);
-	}
-	else
-	{
-		FpCamera->SetActive(false);
-		TpCamera->SetActive(true);
-	}
 }
 
 void AHero::TurnAtRate(float Rate)

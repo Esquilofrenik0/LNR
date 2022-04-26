@@ -1,30 +1,23 @@
 #include "Body.h"
-
 #include "NavigationInvokerComponent.h"
 #include "LNR/LNR.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "LNR/Component/ActionComponent.h"
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Data/DamageType/MeleeDamage.h"
+#include "LNR/Component/InfoComponent.h"
 #include "Net/UnrealNetwork.h"
 
 ABody::ABody()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = false;
-	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>("Navigation Invoker");
-	Action = CreateDefaultSubobject<UActionComponent>("Action");
-	Action->SetIsReplicated(true);
-	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
-	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
-	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
-	Combat->Setup(this);
-	Equipment = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
-	Equipment->Setup(this);
+
 	GetCapsuleComponent()->InitCapsuleSize(35.f, 85.0f);
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -38,6 +31,18 @@ ABody::ABody()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->GravityScale = 1.75f;
+
+	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>("Navigation Invoker");
+	Info = CreateDefaultSubobject<UInfoComponent>("Info");
+	Info->Setup(this);
+	Action = CreateDefaultSubobject<UActionComponent>("Action");
+	Action->SetIsReplicated(true);
+	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
+	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
+	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
+	Combat->Setup(this);
+	Equipment = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
+	Equipment->Setup(this);
 }
 
 void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -49,11 +54,9 @@ void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 	DOREPLIFETIME_CONDITION_NOTIFY(ABody, BlockPressed, COND_None, REPNOTIFY_Always);
 }
 
-void ABody::Restart()
+void ABody::OnConstruction(const FTransform& Transform)
 {
-	Super::Restart();
-	Action->InitAbilityActorInfo(this, this);
-	if (HasAuthority())Action->InitializeAbilities();
+	Super::OnConstruction(Transform);
 }
 
 void ABody::BeginPlay()
@@ -61,11 +64,19 @@ void ABody::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ABody::Restart()
+{
+	Super::Restart();
+	Action->InitAbilityActorInfo(this, this);
+	if (HasAuthority()) Action->InitializeAbilities();
+}
+
 float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
                         AActor* DamageCauser)
 {
 	if (Combat->State == Dead) return 0;
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	Info->StartTimer(2);
 	ABody* instigator = Cast<ABody>(DamageCauser);
 	// if (Npc)
 	// {
@@ -161,6 +172,16 @@ int ABody::UpdateMovementDirection()
 	return MovementDirection;
 }
 
+void ABody::RefreshPitch()
+{
+	if (Combat->State != Climbing)
+	{
+		FRotator rot = UKismetMathLibrary::ComposeRotators(GetControlRotation(), FRotator(0, -180, 0));
+		Pitch = -rot.Pitch;
+	}
+	else Pitch = 0;
+}
+
 void ABody::SetAttackPressed(bool val)
 {
 	if (HasAuthority()) AttackPressed = val;
@@ -222,4 +243,13 @@ void ABody::ServerShowWorldDamage_Implementation(int amount, EDamageType nDamage
 void ABody::MultiShowWorldDamage_Implementation(int amount, EDamageType nDamageType, FVector hitLocation)
 {
 	OnShowWorldDamage(amount, nDamageType, hitLocation);
+}
+
+void ABody::OnInteract_Implementation(AHero* hero)
+{
+}
+
+void ABody::OnShowInfo_Implementation(AHero* hero, bool val)
+{
+	Info->Show(val);
 }
