@@ -1,6 +1,5 @@
 #include "Hero.h"
 #include "Camera/CameraComponent.h"
-#include "Components/Button.h"
 #include "Components/InputComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -11,7 +10,7 @@
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
-#include "LNR/Component/InfoComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 #include "LNR/Game/HudBitloner.h"
 #include "LNR/Game/Playor.h"
 #include "LNR/Widget/ActionBarWidget.h"
@@ -26,6 +25,7 @@ AHero::AHero()
 	PrimaryActorTick.bCanEverTick = true;
 	TurnRateGamepad = 50.f;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	Inventory = CreateDefaultSubobject<UInventoryComponent>("Inventory");
 	TpArm = CreateDefaultSubobject<USpringArmComponent>("TpArm");
 	TpArm->SetupAttachment(RootComponent);
 	TpArm->TargetArmLength = 300.0f;

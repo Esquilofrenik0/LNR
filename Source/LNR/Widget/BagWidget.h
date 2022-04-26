@@ -17,4 +17,5 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TArray<class USlotWidget*> Slots;
 	virtual void NativeConstruct() override;
+	void Refresh(class UInventoryComponent* inventory) const;
 };

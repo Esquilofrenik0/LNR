@@ -10,6 +10,8 @@ class LNR_API AHero : public AHuman
 	GENERATED_BODY()
 public:
 	AHero();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	class UInventoryComponent* Inventory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class USpringArmComponent* TpArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

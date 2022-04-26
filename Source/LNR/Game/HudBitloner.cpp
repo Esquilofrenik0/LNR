@@ -3,6 +3,7 @@
 #include "LNR/Body/Hero.h"
 #include "LNR/Widget/EquipmentWidget.h"
 #include "LNR/Widget/HudWidget.h"
+#include "LNR/Widget/BagWidget.h"
 #include "LNR/Widget/InventoryWidget.h"
 
 AHudBitloner::AHudBitloner()
@@ -47,5 +48,6 @@ void AHudBitloner::ShowInventory(bool val)
 
 void AHudBitloner::RefreshInventory()
 {
+	HudWidget->InventoryWidget->BagWidget->Refresh(Hero->Inventory);
 	HudWidget->InventoryWidget->EquipmentWidget->Refresh(Hero->Apparel, Hero->Equipment);
 }

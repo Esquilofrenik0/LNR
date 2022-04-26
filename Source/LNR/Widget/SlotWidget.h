@@ -12,4 +12,5 @@ public:
 	class UImage* Image;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UButton* Button;
+	void Setup(UTexture2D* icon);
 };
