@@ -16,4 +16,5 @@ public:
 	class UCraftWidget* CraftWidget;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UContainerWidget* ContainerWidget;
+	void Init(class AHero* nHero) const;
 };

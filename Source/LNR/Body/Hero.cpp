@@ -250,6 +250,7 @@ void AHero::StartInteract()
 
 void AHero::StartWeaponSwap()
 {
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Start Weapon Swap!");
 	WeaponSwapHeld = true;
 	GetWorldTimerManager().ClearTimer(WeaponSwapHeldTimer);
 	GetWorldTimerManager().SetTimer(WeaponSwapHeldTimer, this, &AHero::StartHolster, 0.5);
@@ -257,7 +258,7 @@ void AHero::StartWeaponSwap()
 
 void AHero::StopWeaponSwap()
 {
-	if (WeaponSwapHeld && Combat->State == Idle) Equipment->WeaponSwap();
+	if (WeaponSwapHeld) TryWeaponSwap();
 	WeaponSwapHeld = false;
 	GetWorldTimerManager().ClearTimer(WeaponSwapHeldTimer);
 }
@@ -346,6 +347,11 @@ void AHero::StartAction4()
 void AHero::StopAction4()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action4Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
+}
+
+void AHero::TryWeaponSwap()
+{
+	if (Combat->State == Idle) Equipment->WeaponSwap();
 }
 
 void AHero::StartCycleCamera()

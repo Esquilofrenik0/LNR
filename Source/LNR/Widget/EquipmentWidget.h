@@ -8,6 +8,8 @@ class LNR_API UEquipmentWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(BlueprintReadWrite)
+	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* HeadSlot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -28,6 +30,7 @@ public:
 	class USlotWidget* RightOffHandSlot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* LeftOffHandSlot;
+	void Init(AHero* nHero);
 	void Refresh(class UApparelComponent* apparel, class UEquipmentComponent* equipment) const;
 	void RefreshArmor(UApparelComponent* apparel) const;
 	void RefreshWeapon(UEquipmentComponent* equipment) const;

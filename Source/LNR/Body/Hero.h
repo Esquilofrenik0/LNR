@@ -90,4 +90,7 @@ public:
 	void StopAction3();
 	void StartAction4();
 	void StopAction4();
+
+	UFUNCTION(BlueprintCallable)
+	void TryWeaponSwap();
 };

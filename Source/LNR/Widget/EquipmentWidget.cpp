@@ -1,9 +1,16 @@
 ﻿#include "EquipmentWidget.h"
-#include "Components/Image.h"
+#include "Components/Button.h"
+#include "LNR/Body/Hero.h"
 #include "LNR/Component/ApparelComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Item/Armor.h"
 #include "LNR/Widget/SlotWidget.h"
+
+void UEquipmentWidget::Init(AHero* nHero)
+{
+	Hero = nHero;
+	WeaponSwapSlot->OnClick.AddDynamic(Hero, &AHero::TryWeaponSwap);
+}
 
 void UEquipmentWidget::Refresh(UApparelComponent* apparel, UEquipmentComponent* equipment) const
 {
