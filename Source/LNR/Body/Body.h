@@ -1,12 +1,14 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "LNR/LNR.h"
+#include "LNR/Component/ActionComponent.h"
 #include "LNR/Interface/Interact.h"
 #include "Body.generated.h"
 
 UCLASS()
-class LNR_API ABody : public ACharacter, public IInteract
+class LNR_API ABody : public ACharacter, public IAbilitySystemInterface, public IInteract
 {
 	GENERATED_BODY()
 public:
@@ -36,20 +38,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int SprintSpeed = 800;
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return Action; }
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
 	virtual void Restart() override;
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
 	                         AActor* DamageCauser) override;
-	void Attack();
-	void Block();
-	void Sprint();
-	void Dodge();
-	void Reload();
-	void Action1();
-	void Action2();
-	void Action3();
-	void Action4();
+	void Attack() const;
+	void Block() const;
+	void Sprint() const;
+	void Dodge() const;
+	void Reload() const;
+	void Action1() const;
+	void Action2() const;
+	void Action3() const;
+	void Action4() const;
 
 	UFUNCTION(BlueprintCallable)
 	int UpdateMovementDirection();

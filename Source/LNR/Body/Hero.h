@@ -59,6 +59,7 @@ public:
 	void MoveRight(float Value);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
+	
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
 	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 	void StartAttack();
@@ -75,9 +76,15 @@ public:
 	void StartDodge();
 	void StartInteract();
 	void StartCycleCamera();
-	
 	void StartHolster();
 	void StartFlashlight();
-
-
+	
+	void StartAction1();
+	void StartAction2();
+	void StartAction3();
+	void StartAction4();
+	void StopAction1();
+	void StopAction2();
+	void StopAction3();
+	void StopAction4();
 };

@@ -64,13 +64,13 @@ void ABody::BeginPlay()
 	Super::BeginPlay();
 	RefreshAttributes();
 	Info->Init(Attributes);
+	Action->InitAbilityActorInfo(this, this);
+	if (HasAuthority()) Action->InitializeAbilities();
 }
 
 void ABody::Restart()
 {
 	Super::Restart();
-	Action->InitAbilityActorInfo(this, this);
-	if (HasAuthority()) Action->InitializeAbilities();
 }
 
 float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -116,47 +116,47 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	return DamageAmount;
 }
 
-void ABody::Attack()
+void ABody::Attack() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Attack);
 }
 
-void ABody::Sprint()
+void ABody::Sprint() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Sprint);
 }
 
-void ABody::Dodge()
+void ABody::Dodge() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Dodge);
 }
 
-void ABody::Block()
+void ABody::Block() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Block);
 }
 
-void ABody::Reload()
+void ABody::Reload() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Reload);
 }
 
-void ABody::Action1()
+void ABody::Action1() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Action1);
 }
 
-void ABody::Action2()
+void ABody::Action2() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Action2);
 }
 
-void ABody::Action3()
+void ABody::Action3() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Action3);
 }
 
-void ABody::Action4()
+void ABody::Action4() const
 {
 	if (Combat->State == Idle) Action->Execute(EAbilityInput::Action4);
 }
