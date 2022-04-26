@@ -40,7 +40,20 @@ bool UInventoryComponent::Add(UItem* item, int amount)
 	return false;
 }
 
-void UInventoryComponent::Remove(int slot, int amount)
+bool UInventoryComponent::Remove(UItem* item, int amount)
 {
-	Slots[slot].Amount -= amount;
+	for (int i = 0; i < Slots.Num(); i++)
+	{
+		if (Slots[i].Item != nullptr)
+		{
+			if (Slots[i].Item == item && Slots[i].Amount >= amount)
+			{
+				Slots[i].Amount -= amount;
+				if (Slots[i].Amount <= 0) Slots[i].Item = nullptr;
+				return true;
+			}
+		}
+	}
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Could not remove item!");
+	return false;
 }

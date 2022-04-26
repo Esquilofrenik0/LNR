@@ -1,7 +1,7 @@
 #include "Ammo.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/EquipmentComponent.h"
-// #include "LNR/Component/InventoryComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 
 UAmmo::UAmmo()
 {
@@ -10,7 +10,7 @@ UAmmo::UAmmo()
 
 void UAmmo::UseItem(AHero* hero, int amount)
 {
-	Print("Ammo Use Item Not Implemented!");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Ammo Use Item Not Implemented!");
 	// hero->Equipment->EquipAmmo(this, amount);
 	// hero->Inventory->RemoveItem(this, amount);
 }

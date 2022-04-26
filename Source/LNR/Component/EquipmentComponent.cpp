@@ -1,8 +1,10 @@
 ﻿#include "EquipmentComponent.h"
 #include "CombatComponent.h"
+#include "InventoryComponent.h"
 #include "WeaponComponent.h"
 #include "GameFramework/Character.h"
 #include "LNR/Body/Body.h"
+#include "LNR/Body/Hero.h"
 #include "LNR/Item/Weapon.h"
 #include "Net/UnrealNetwork.h"
 
@@ -30,6 +32,7 @@ void UEquipmentComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 void UEquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Hero = Cast<AHero>(GetOwner());
 	Dress();
 }
 
@@ -112,6 +115,42 @@ void UEquipmentComponent::SetHolster(bool val)
 		Dress();
 	}
 	else ServerSetHolster(val);
+}
+
+void UEquipmentComponent::EquipWeapon(UWeapon* nWeapon)
+{
+	int slot = 0;
+	switch (nWeapon->Slot)
+	{
+	case EWeaponSlot::RightHand:
+		slot = 0;
+		if (Weapon[0] != nullptr) UnequipWeapon(0);
+		break;
+	case EWeaponSlot::AnyHand:
+		slot = 0;
+		if (Weapon[0] != nullptr) UnequipWeapon(0);
+		break;
+	case EWeaponSlot::LeftHand:
+		slot = 1;
+		if (Weapon[1] != nullptr) UnequipWeapon(1);
+		break;
+	case EWeaponSlot::TwoHand:
+		slot = 0;
+		if (Weapon[0] != nullptr) UnequipWeapon(0);
+		if (Weapon[1] != nullptr) UnequipWeapon(1);
+		break;
+	default: break;
+	}
+	SetWeapon(nWeapon, slot);
+}
+
+void UEquipmentComponent::UnequipWeapon(int slot)
+{
+	if (Hero)
+	{
+		if (Hero->Inventory->Add(Weapon[slot])) SetWeapon(nullptr, slot);
+	}
+	else SetWeapon(nullptr, slot);
 }
 
 void UEquipmentComponent::WeaponSwap()

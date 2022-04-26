@@ -7,6 +7,4 @@ UCLASS(Abstract)
 class LNR_API UMelee : public UWeapon
 {
 	GENERATED_BODY()
-public:
-	virtual void Attack(class ABody* body, class USkeletalMeshComponent* weapon) override;
 };

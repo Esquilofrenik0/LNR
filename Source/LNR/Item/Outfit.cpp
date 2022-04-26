@@ -1,13 +1,12 @@
 #include "Outfit.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/ApparelComponent.h"
-// #include "LNR/Component/InventoryComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 
 void UOutfit::UseItem(AHero* hero, int amount)
 {
-	Print("Outfit UseItem Not Implemented!");	
-	// hero->Apparel->EquipOutfit(this);
-	// hero->Inventory->RemoveItem(this);
+	hero->Apparel->EquipOutfit(this);
+	hero->Inventory->Remove(this);
 }
 
 FString UOutfit::PrintItemData(bool withDescription)
@@ -16,7 +15,6 @@ FString UOutfit::PrintItemData(bool withDescription)
 	data += "Type: Outfit\r";
 	data += "Price: " + FString::SanitizeFloat(Price) + "\r";
 	data += "Weight: " + FString::SanitizeFloat(Weight) + "\r";
-	if(withDescription) data += "Description: " + Description + "\r";
+	if (withDescription) data += "Description: " + Description + "\r";
 	return data;
 }
-

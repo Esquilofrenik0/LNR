@@ -48,10 +48,6 @@ public:
 	USoundBase* Sound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UStaticMesh*> Attachments;
-	
 	virtual void UseItem(AHero* hero, int amount) override;
 	virtual FString PrintItemData(bool withDescription) override;
-	
-	UFUNCTION(BlueprintCallable)
-	virtual void Attack(class ABody* body, class USkeletalMeshComponent* weapon);
 };

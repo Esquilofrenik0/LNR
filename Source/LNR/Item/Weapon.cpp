@@ -1,7 +1,7 @@
 #include "Weapon.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/EquipmentComponent.h"
-// #include "LNR/Component/InventoryComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 
 UWeapon::UWeapon()
 {
@@ -11,9 +11,8 @@ UWeapon::UWeapon()
 
 void UWeapon::UseItem(AHero* hero, int amount)
 {
-	Print("Weapon UseItem Not Implemented!");	
-	// hero->Equipment->EquipWeapon(this);
-	// hero->Inventory->RemoveItem(this);
+	hero->Equipment->EquipWeapon(this);
+	hero->Inventory->Remove(this);
 }
 
 FString UWeapon::PrintItemData(bool withDescription)
@@ -26,9 +25,4 @@ FString UWeapon::PrintItemData(bool withDescription)
 	data += "Weight: " + FString::SanitizeFloat(Weight) + "\r";
 	if (withDescription) data += "Description: " + Description + "\r";
 	return data;
-}
-
-void UWeapon::Attack(ABody* body, USkeletalMeshComponent* weapon)
-{
-	Print("Attacking with weapon");
 }

@@ -2,7 +2,6 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "LNR/Body/Body.h"
-#include "LNR/Data/Slot.h"
 #include "LNR/Item/Weapon.h"
 #include "EquipmentComponent.generated.h"
 
@@ -17,17 +16,19 @@ public:
 	TArray<UWeapon*> Weapon;
 	UFUNCTION()
 	void OnRep_Weapon(TArray<UWeapon*> nWeapon);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_Holster, EditAnywhere, BlueprintReadWrite)
 	bool Holster;
 	UFUNCTION()
 	void OnRep_Holster(bool nHolster);
-	
+
 	UPROPERTY(BlueprintReadWrite)
-	class ABody* Body;
+	ABody* Body;
 	UPROPERTY(BlueprintReadWrite)
 	USkeletalMeshComponent* Mesh;
-	
+	UPROPERTY(BlueprintReadWrite)
+	AHero* Hero;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UWeaponComponent* RightHand;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
@@ -43,7 +44,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UWeapon* GetWeapon(int index);
-	
+
 	virtual void BeginPlay() override;
 	virtual void OnComponentCreated() override;
 	void Setup(ABody* nBody);
@@ -64,4 +65,18 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerSetHolster(bool val);
 	void ServerSetHolster_Implementation(bool val) { SetHolster(val); }
+
+	UFUNCTION(BlueprintCallable)
+	void EquipWeapon(UWeapon* nWeapon);
+	UFUNCTION(BlueprintCallable)
+	void UnequipWeapon(int slot);
+
+	UFUNCTION(BlueprintCallable)
+	void UnequipRightHand() { UnequipWeapon(0); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipLeftHand() { UnequipWeapon(1); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipRightOffHand() { UnequipWeapon(2); };
+	UFUNCTION(BlueprintCallable)
+	void UnequipLeftOffHand() { UnequipWeapon(3); };
 };

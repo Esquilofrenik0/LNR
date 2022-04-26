@@ -160,6 +160,7 @@ void UApparelComponent::SetArmor(int slot, UArmor* nArmor)
 
 void UApparelComponent::EquipArmor(UArmor* nArmor)
 {
+	if (Armor[nArmor->Type] != nullptr) UnequipArmor(nArmor->Type);
 	SetArmor(nArmor->Type, nArmor);
 }
 
@@ -167,7 +168,22 @@ void UApparelComponent::UnequipArmor(int slot)
 {
 	if (Hero)
 	{
-		if(Hero->Inventory->Add(Armor[slot])) SetArmor(slot, nullptr);
+		if (Hero->Inventory->Add(Armor[slot])) SetArmor(slot, nullptr);
 	}
 	else SetArmor(slot, nullptr);
+}
+
+void UApparelComponent::EquipOutfit(UOutfit* nOutfit)
+{
+	if (Outfit != nullptr) UnequipOutfit();
+	SetOutfit(nOutfit);
+}
+
+void UApparelComponent::UnequipOutfit()
+{
+	if (Hero)
+	{
+		if (Hero->Inventory->Add(Outfit)) SetOutfit(nullptr);
+	}
+	else SetOutfit(nullptr);
 }

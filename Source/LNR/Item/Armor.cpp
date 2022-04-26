@@ -1,7 +1,7 @@
 #include "Armor.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/ApparelComponent.h"
-// #include "LNR/Component/InventoryComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 
 UArmor::UArmor()
 {
@@ -11,9 +11,8 @@ UArmor::UArmor()
 
 void UArmor::UseItem(AHero* hero, int amount)
 {
-	Print("Armor UseItem Not Implemented!");	
-	// hero->Apparel->EquipArmor(this);
-	// hero->Inventory->RemoveItem(this);
+	hero->Apparel->EquipArmor(this);
+	hero->Inventory->Remove(this);
 }
 
 FString UArmor::PrintItemData(bool withDescription)

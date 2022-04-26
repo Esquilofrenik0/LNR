@@ -13,6 +13,4 @@ public:
 	int MaxAmmo;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* ReloadMontage;
-
-	virtual void Attack(class ABody* body, class USkeletalMeshComponent* weapon) override;
 };

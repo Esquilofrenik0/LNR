@@ -15,5 +15,5 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool Add(UItem* item, int amount = 1);
 	UFUNCTION(BlueprintCallable)
-	void Remove(int slot, int amount = 1);
+	bool Remove(UItem* item, int amount = 1);
 };

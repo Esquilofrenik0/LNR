@@ -14,7 +14,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float StaminaRestore;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float FocusRestore;
+	float EnergyRestore;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UStaticMesh* StaticMesh;
 	

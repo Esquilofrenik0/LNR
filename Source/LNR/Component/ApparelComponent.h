@@ -64,6 +64,10 @@ public:
 	void EquipArmor(UArmor* nArmor);
 	UFUNCTION(BlueprintCallable)
 	void UnequipArmor(int slot);
+	UFUNCTION(BlueprintCallable)
+	void EquipOutfit(UOutfit* nOutfit);
+	UFUNCTION(BlueprintCallable)
+	void UnequipOutfit();
 
 	UFUNCTION(BlueprintCallable)
 	void UnequipHead() { UnequipArmor(0); };
