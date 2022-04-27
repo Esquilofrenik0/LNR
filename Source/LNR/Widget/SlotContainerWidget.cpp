@@ -11,6 +11,7 @@ void USlotContainerWidget::Click()
 {
 	if (Hero->Container->Slots[SlotNumber].Item != nullptr)
 	{
-		Hero->Inventory->Store(Hero->Container, Hero->Container->Slots[SlotNumber].Item);
+		Hero->Inventory->Store(Hero->Container, Hero->Container->Slots[SlotNumber].Item,
+		                       Hero->Container->Slots[SlotNumber].Amount);
 	}
 }
