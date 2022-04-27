@@ -11,7 +11,7 @@ public class LNR : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] {"Core", "CoreUObject", "Engine", "InputCore", "UMG"});
 		PublicDependencyModuleNames.AddRange(new string[] {"GameplayAbilities", "GameplayTags", "GameplayTasks"});
 		PublicDependencyModuleNames.AddRange(new string[] {"AIModule", "NavigationSystem"});
-		PrivateDependencyModuleNames.AddRange(new string[] {"XFire", "XForce"});
+		PrivateDependencyModuleNames.AddRange(new string[] {"XFire", "XForce", "XProjectile", "XHoverCar"});
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

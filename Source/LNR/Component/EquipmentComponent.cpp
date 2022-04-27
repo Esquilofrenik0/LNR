@@ -245,6 +245,5 @@ void UEquipmentComponent::UnequipConsumable(int index)
 	{
 		Hero->Inventory->Add(Consumable[index].Consumable, Consumable[index].Amount);
 	}
-	Consumable[index].Amount = 0;
-	Consumable[index].Consumable = nullptr;
+	SetConsumable(nullptr, 0, index);
 }

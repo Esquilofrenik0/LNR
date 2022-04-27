@@ -59,6 +59,10 @@
 			"Name": "XProjectile",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/d14f2ab896874b29baac1e6e404828e7"
+		},
+		{
+			"Name": "ChaosVehiclesPlugin",
+			"Enabled": true
 		}
 	]
 }
