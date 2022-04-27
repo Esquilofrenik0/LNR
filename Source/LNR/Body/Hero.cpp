@@ -50,11 +50,6 @@ AHero::AHero()
 	FlashlightActive = false;
 }
 
-void AHero::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void AHero::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
@@ -64,7 +59,8 @@ void AHero::Restart()
 {
 	Super::Restart();
 	Player = Cast<APlayor>(GetController());
-	Player->Init(this);
+	Player->Hero = this;
+	if (AHUD* nHud = Player->GetHUD()) Player->Hud = Cast<AHudBitloner>(nHud);
 	if (IsLocallyControlled())
 	{
 		GetWorldTimerManager().ClearTimer(ClientTickTimer);
@@ -80,8 +76,11 @@ void AHero::Restart()
 void AHero::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	Player = Cast<APlayor>(NewController);
-	Player->Init(this);
+}
+
+void AHero::BeginPlay()
+{
+	Super::BeginPlay();
 }
 
 void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

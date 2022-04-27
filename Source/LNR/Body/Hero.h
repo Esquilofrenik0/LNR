@@ -49,10 +49,10 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	bool InputUi = false;
 
-	virtual void BeginPlay() override;
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Restart() override;
 	virtual void PossessedBy(AController* NewController) override;
+	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaSeconds) override;
 	void ServerTick() const;

@@ -35,25 +35,12 @@ void UAvatarComponent::Setup(UApparelComponent* nApparel)
 
 void UAvatarComponent::RefreshAvatar()
 {
-	if (Apparel)
+	if (GameMode)
 	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Apparel Exists!");
-		if (Apparel->Mesh)
-		{
-			GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Apparel Mesh Exists!");
-			if (GameMode)
-			{
-				GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Game Mode Exists!");
-				if (GameMode->AvatarGlobals.Simglove)
-				{
-					GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Simglove Exists!");
-					Apparel->Mesh->SetSkeletalMesh(GameMode->AvatarGlobals.Body[AvatarData.Body]);
-					Apparel->HairMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Hair[AvatarData.Hair]);
-					Apparel->BeardMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Beard[AvatarData.Beard]);
-					Apparel->SimgloveMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Simglove);
-				}
-			}
-		}
+		Apparel->Mesh->SetSkeletalMesh(GameMode->AvatarGlobals.Body[AvatarData.Body]);
+		Apparel->HairMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Hair[AvatarData.Hair]);
+		Apparel->BeardMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Beard[AvatarData.Beard]);
+		Apparel->SimgloveMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Simglove);
 	}
 }
 

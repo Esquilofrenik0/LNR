@@ -23,13 +23,15 @@ void AHudBitloner::BeginPlay()
 {
 	Super::BeginPlay();
 	Hero = Cast<AHero>(GetOwningPawn());
-	if (HudTemplate)
+	if (Hero->IsLocallyControlled())
 	{
-		HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudTemplate);
-		HudWidget->Init(this);
-		HudWidget->AddToViewport();
-		ShowInteractionIcon(false);
-		ShowInventory(false);
+		if (HudTemplate)
+		{
+			HudWidget = CreateWidget<UHudWidget>(GetWorld(), HudTemplate);
+			HudWidget->Init(this);
+			HudWidget->AddToViewport();
+			ShowInteractionIcon(false);
+		}
 	}
 }
 

@@ -4,6 +4,12 @@
 #include "EquipmentWidget.h"
 #include "LNR/Body/Hero.h"
 
+void UInventoryWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UInventoryWidget::Init(AHero* nHero) const
 {
 	BagWidget->Init(nHero);

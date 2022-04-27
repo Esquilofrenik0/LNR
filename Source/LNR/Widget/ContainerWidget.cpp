@@ -4,6 +4,12 @@
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/InventoryComponent.h"
 
+void UContainerWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UContainerWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
