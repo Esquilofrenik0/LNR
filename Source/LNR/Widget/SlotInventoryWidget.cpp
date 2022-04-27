@@ -9,5 +9,9 @@ void USlotInventoryWidget::Init(AHero* nHero)
 
 void USlotInventoryWidget::Click()
 {
-	if (Hero->Inventory->Slots[SlotNumber].Item != nullptr) Hero->Inventory->Slots[SlotNumber].Item->UseItem(Hero, 1);
+	if (Hero->Inventory->Slots[SlotNumber].Item != nullptr)
+	{
+		if (Hero->Container) Hero->Container->Store(Hero->Inventory, Hero->Inventory->Slots[SlotNumber].Item);
+		else Hero->Inventory->Slots[SlotNumber].Item->UseItem(Hero, 1);
+	}
 }

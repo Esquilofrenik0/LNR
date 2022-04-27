@@ -11,6 +11,7 @@
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Component/InventoryComponent.h"
+#include "LNR/DamageType/PickupDamage.h"
 #include "LNR/Game/HudBitloner.h"
 #include "LNR/Game/Playor.h"
 #include "LNR/Widget/ActionBarWidget.h"
@@ -238,11 +239,11 @@ void AHero::StartInteract()
 	{
 		if (AActor* hitActor = hit.GetActor())
 		{
-			// if (hitActor->Implements<IInteract>()) Execute_OnInteract(hitActor, this);
+			if (hitActor->Implements<UInteract>()) Execute_OnInteract(hitActor, this);
 			// else if (Cast<AInstancedFoliageActor>(hitActor))
 			// {
-			// UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit, GetController(),
-			// this, UPickupDamage::StaticClass());
+			// 	UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit, GetController(),
+			// 	                                   this, UPickupDamage::StaticClass());
 			// }
 		}
 	}

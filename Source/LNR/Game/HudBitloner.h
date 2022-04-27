@@ -9,7 +9,7 @@ class LNR_API AHudBitloner : public AHUD
 public:
 	AHudBitloner();
 	virtual void DrawHUD() override;
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() override; 
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
 	UPROPERTY(EditDefaultsOnly)

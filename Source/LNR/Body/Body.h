@@ -98,9 +98,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
 
-	UFUNCTION(BlueprintCallable)
 	virtual void OnInteract_Implementation(AHero* hero) override;
-	UFUNCTION(BlueprintCallable)
 	virtual void OnShowInfo_Implementation(AHero* hero, bool val) override;
 
 	UFUNCTION(BlueprintCallable)

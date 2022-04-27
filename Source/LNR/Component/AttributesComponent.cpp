@@ -50,9 +50,9 @@ void UAttributesComponent::RefreshStats()
 	MaxHealth = 100 + (Vitality * 10);
 	MaxStamina = 100 + (Agility * 10);
 	MaxEnergy = 100 + (Wisdom * 10);
-	HealthRegeneration = Vitality * 0.5;
-	StaminaRegeneration = Agility * 0.5;
-	EnergyRegeneration = Wisdom * 0.5;
+	HealthRegeneration = Vitality * 0.2;
+	StaminaRegeneration = Agility * 0.2;
+	EnergyRegeneration = Wisdom * 0.2;
 }
 
 void UAttributesComponent::Regenerate(float deltaTime)

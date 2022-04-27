@@ -1,7 +1,5 @@
 #pragma once
-#include "CoreMinimal.h"
 #include "Human.h"
-#include "LNR/Game/Playor.h"
 #include "Hero.generated.h"
 
 UCLASS()
@@ -22,7 +20,9 @@ public:
 	class USpotLightComponent* Flashlight;
 
 	UPROPERTY(BlueprintReadWrite)
-	APlayor* Player;
+	class APlayor* Player;
+	UPROPERTY(BlueprintReadWrite)
+	UInventoryComponent* Container;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
 	float TurnRateGamepad;

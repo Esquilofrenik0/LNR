@@ -1,6 +1,8 @@
 ﻿#include "HudBitloner.h"
 #include "Blueprint/UserWidget.h"
 #include "LNR/Body/Hero.h"
+#include "LNR/Widget/ContainerWidget.h"
+#include "LNR/Widget/CraftWidget.h"
 #include "LNR/Widget/HudWidget.h"
 #include "LNR/Widget/InventoryWidget.h"
 
@@ -36,6 +38,23 @@ void AHudBitloner::ShowInteractionIcon(bool val)
 
 void AHudBitloner::ShowInventory(bool val)
 {
-	if (val) HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
-	else HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	if (val)
+	{
+		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		if (Hero->Container)
+		{
+			HudWidget->InventoryWidget->CraftWidget->SetVisibility(ESlateVisibility::Hidden);
+			HudWidget->InventoryWidget->ContainerWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			HudWidget->InventoryWidget->ContainerWidget->SetVisibility(ESlateVisibility::Hidden);
+			HudWidget->InventoryWidget->CraftWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+	else
+	{
+		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		Hero->Container = nullptr;
+	}
 }

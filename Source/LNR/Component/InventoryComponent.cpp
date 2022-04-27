@@ -59,3 +59,25 @@ bool UInventoryComponent::Remove(UItem* item, int amount)
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Could not remove item!");
 	return false;
 }
+
+bool UInventoryComponent::Retrieve(UInventoryComponent* to, UItem* item, int amount)
+{
+	if (to->Add(item, amount))
+	{
+		Remove(item, amount);
+		return true;
+	}
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Could not retrieve item!");
+	return false;
+}
+
+bool UInventoryComponent::Store(UInventoryComponent* from, UItem* item, int amount)
+{
+	if (Add(item, amount))
+	{
+		from->Remove(item, amount);
+		return true;
+	}
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Could not store item!");
+	return false;
+}

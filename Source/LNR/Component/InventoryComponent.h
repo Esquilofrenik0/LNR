@@ -16,4 +16,8 @@ public:
 	bool Add(UItem* item, int amount = 1);
 	UFUNCTION(BlueprintCallable)
 	bool Remove(UItem* item, int amount = 1);
+	UFUNCTION(BlueprintCallable)
+	bool Retrieve(UInventoryComponent* to, UItem* item, int amount = 1);
+	UFUNCTION(BlueprintCallable)
+	bool Store(UInventoryComponent* from, UItem* item, int amount = 1);
 };
