@@ -48,9 +48,19 @@ void UAvatarComponent::RandomizeAvatar()
 {
 	if (GameMode)
 	{
-		SetBody(FMath::RandRange(0, GameMode->AvatarGlobals.Body.Num()-1));
-		SetHair(FMath::RandRange(0, GameMode->AvatarGlobals.Hair.Num())-1);
-		SetBeard(FMath::RandRange(0, GameMode->AvatarGlobals.Beard.Num()-1));
+		SetBody(FMath::RandRange(0, GameMode->AvatarGlobals.Body.Num() - 1));
+		SetHair(FMath::RandRange(0, GameMode->AvatarGlobals.Hair.Num() - 1));
+		SetBeard(FMath::RandRange(0, GameMode->AvatarGlobals.Beard.Num() - 1));
+	}
+}
+
+void UAvatarComponent::RandomizeOutfit()
+{
+	if (GameMode)
+	{
+		int r = FMath::RandRange(0, GameMode->AvatarGlobals.Outfit.Num() - 1);
+		UOutfit* outfit = GameMode->AvatarGlobals.Outfit[r].GetDefaultObject();
+		Apparel->SetOutfit(outfit);
 	}
 }
 

@@ -29,6 +29,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RandomizeAvatar();
 	UFUNCTION(BlueprintCallable)
+	void RandomizeOutfit();
+	UFUNCTION(BlueprintCallable)
 	void NextBody();
 	UFUNCTION(BlueprintCallable)
 	void PreviousBody();

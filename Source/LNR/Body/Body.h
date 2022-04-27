@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UEquipmentComponent* Equipment;
 
+	UPROPERTY(BlueprintReadWrite)
+	class ANpc* Npc;
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float Pitch;
 	UPROPERTY(Replicated, BlueprintReadWrite)

@@ -5,6 +5,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "LNR/AI/Npc.h"
 #include "LNR/Component/ActionComponent.h"
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
@@ -62,6 +63,7 @@ void ABody::OnConstruction(const FTransform& Transform)
 void ABody::BeginPlay()
 {
 	Super::BeginPlay();
+	Npc = Cast<ANpc>(GetController());
 	RefreshAttributes();
 	Info->Init(Attributes);
 }

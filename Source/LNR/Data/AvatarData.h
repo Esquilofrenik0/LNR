@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/DataTable.h"
+#include "LNR/Item/Outfit.h"
 #include "AvatarData.generated.h"
 
 USTRUCT(BlueprintType)
@@ -27,5 +28,5 @@ struct LNR_API FAvatarGlobals : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMesh* Simglove;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<class UOutfit*> Outfit;
+	TArray<TSubclassOf<UOutfit>> Outfit;
 };

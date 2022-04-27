@@ -15,5 +15,9 @@ AHuman::AHuman()
 void AHuman::BeginPlay()
 {
 	Super::BeginPlay();
-	if (ANpc* npc = Cast<ANpc>(GetController())) Avatar->RandomizeAvatar();
+	if (Npc)
+	{
+		Avatar->RandomizeAvatar();
+		Avatar->RandomizeOutfit();
+	}
 }
