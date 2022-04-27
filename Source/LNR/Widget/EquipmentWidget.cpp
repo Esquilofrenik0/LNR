@@ -3,6 +3,7 @@
 #include "LNR/Component/ApparelComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Item/Armor.h"
+#include "LNR/Item/Outfit.h"
 #include "LNR/Widget/SlotWidget.h"
 
 void UEquipmentWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -14,16 +15,21 @@ void UEquipmentWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 void UEquipmentWidget::Init(AHero* nHero)
 {
 	Hero = nHero;
+
 	WeaponSwapSlot->OnClick.AddDynamic(Hero, &AHero::TryWeaponSwap);
 	RightHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipRightHand);
 	LeftHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipLeftHand);
 	RightOffHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipRightOffHand);
 	LeftOffHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipLeftOffHand);
+
 	HeadSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipHead);
 	BackSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipBack);
 	ChestSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipChest);
 	LegsSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipLegs);
 	FeetSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipFeet);
+
+	OutfitSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipOutfit);
+	AmmoSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipAmmo);
 }
 
 void UEquipmentWidget::Refresh() const
@@ -44,6 +50,8 @@ void UEquipmentWidget::RefreshArmor(UApparelComponent* apparel) const
 	else LegsSlot->Setup(nullptr);
 	if (apparel->Armor[4] != nullptr) FeetSlot->Setup(apparel->Armor[4]->Icon);
 	else FeetSlot->Setup(nullptr);
+	if (apparel->Outfit != nullptr) OutfitSlot->Setup(apparel->Outfit->Icon);
+	else OutfitSlot->Setup(nullptr);
 }
 
 void UEquipmentWidget::RefreshWeapon(UEquipmentComponent* equipment) const
@@ -56,4 +64,6 @@ void UEquipmentWidget::RefreshWeapon(UEquipmentComponent* equipment) const
 	else RightOffHandSlot->Setup(nullptr);
 	if (equipment->Weapon[3] != nullptr) LeftOffHandSlot->Setup(equipment->Weapon[3]->Icon);
 	else LeftOffHandSlot->Setup(nullptr);
+	if (equipment->AmmoSlot.Ammo != nullptr) AmmoSlot->Setup(equipment->AmmoSlot.Ammo->Icon);
+	else AmmoSlot->Setup(nullptr);
 }

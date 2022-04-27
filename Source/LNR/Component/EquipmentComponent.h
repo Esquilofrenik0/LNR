@@ -17,7 +17,7 @@ public:
 	TArray<UWeapon*> Weapon;
 	UFUNCTION()
 	void OnRep_Weapon(TArray<UWeapon*> nWeapon);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_Holster, EditAnywhere, BlueprintReadWrite)
 	bool Holster;
 	UFUNCTION()
@@ -27,7 +27,7 @@ public:
 	FAmmoSlot AmmoSlot;
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
 	TArray<FConsumableSlot> Consumable;
-	
+
 	UPROPERTY(BlueprintReadWrite)
 	ABody* Body;
 	UPROPERTY(BlueprintReadWrite)
@@ -77,6 +77,19 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UnequipWeapon(int slot);
 
+	UFUNCTION(BlueprintCallable)
+	void SetAmmo(UAmmo* ammo, int amount);
+	UFUNCTION(Server, Reliable)
+	void ServerSetAmmo(UAmmo* ammo, int amount);
+	void ServerSetAmmo_Implementation(UAmmo* ammo, int amount) { SetAmmo(ammo, amount); }
+
+	UFUNCTION(BlueprintCallable)
+	void EquipAmmo(UAmmo* ammo, int amount);
+	UFUNCTION(BlueprintCallable)
+	void UnequipAmmo();
+	UFUNCTION(BlueprintCallable)
+	void ResetLoadedAmmo();
+	
 	UFUNCTION(BlueprintCallable)
 	void UnequipRightHand() { UnequipWeapon(0); };
 	UFUNCTION(BlueprintCallable)

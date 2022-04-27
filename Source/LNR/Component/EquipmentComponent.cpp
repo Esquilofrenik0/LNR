@@ -170,10 +170,42 @@ void UEquipmentComponent::WeaponSwap()
 		nWeapon[2] = Weapon[0];
 		nWeapon[3] = Weapon[1];
 		Weapon = nWeapon;
-		Dress();
-		// ResetLoadedAmmo();
+		ResetLoadedAmmo();
 		Body->Combat->Combo = 0;
 		Body->RefreshAttributes();
+		Dress();
 	}
 	else ServerWeaponSwap();
+}
+
+void UEquipmentComponent::SetAmmo(UAmmo* ammo, int amount)
+{
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		AmmoSlot.Ammo = ammo;
+		AmmoSlot.Amount = amount;
+		AmmoSlot.Loaded = 0;
+	}
+	else ServerSetAmmo(ammo, amount);
+}
+
+void UEquipmentComponent::EquipAmmo(UAmmo* ammo, int amount)
+{
+	UnequipAmmo();
+	SetAmmo(ammo, amount);
+}
+
+void UEquipmentComponent::UnequipAmmo()
+{
+	if (Hero)
+	{
+		if (Hero->Inventory->Add(AmmoSlot.Ammo, AmmoSlot.Amount + AmmoSlot.Loaded)) SetAmmo(nullptr, 0);
+	}
+	else SetAmmo(nullptr, 0);
+}
+
+void UEquipmentComponent::ResetLoadedAmmo()
+{
+	AmmoSlot.Amount += AmmoSlot.Loaded;
+	AmmoSlot.Loaded = 0;
 }

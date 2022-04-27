@@ -24,17 +24,17 @@ void UAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 			if (Humanoid->Equipment->Holster) Humanoid->Equipment->SetHolster(false);
 			if (Cast<UGun>(Humanoid->Equipment->Weapon[0]))
 			{
-				// if (Body->Equipment->AmmoSlot.Loaded < 1)
-				// {
-				// Body->Combat->State = Idle;
-				// Body->Reload();
-				// return;
-				// }
-				// else
-				// {
-				// Human->IsShooting = true;
-				// human->Equipment->AmmoSlot.Loaded -= 1;
-				// }
+				if (Humanoid->Equipment->AmmoSlot.Loaded < 1)
+				{
+					Body->Combat->State = Idle;
+					Body->Reload();
+					return;
+				}
+				else
+				{
+					// Humanoid->IsShooting = true;
+					Humanoid->Equipment->AmmoSlot.Loaded -= 1;
+				}
 			}
 		}
 		Body->Combat->MeleeHits.Empty();

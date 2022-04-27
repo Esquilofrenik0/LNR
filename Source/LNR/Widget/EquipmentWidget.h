@@ -10,16 +10,7 @@ class LNR_API UEquipmentWidget : public UUserWidget
 public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class USlotWidget* HeadSlot;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class USlotWidget* BackSlot;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class USlotWidget* ChestSlot;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class USlotWidget* LegsSlot;
-	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class USlotWidget* FeetSlot;
+
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* RightHandSlot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -30,6 +21,23 @@ public:
 	class USlotWidget* RightOffHandSlot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* LeftOffHandSlot;
+	
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* HeadSlot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* BackSlot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* ChestSlot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* LegsSlot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* FeetSlot;
+
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* OutfitSlot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* AmmoSlot;
+
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;
