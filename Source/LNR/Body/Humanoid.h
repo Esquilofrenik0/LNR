@@ -12,5 +12,6 @@ public:
 	AHumanoid();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UEquipmentComponent* Equipment;
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void RefreshAttributes() override;
 };

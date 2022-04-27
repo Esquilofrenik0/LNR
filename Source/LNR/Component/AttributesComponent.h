@@ -3,12 +3,6 @@
 #include "AttributeSet.h"
 #include "AttributesComponent.generated.h"
 
-#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
-
 UENUM(BlueprintType)
 enum EStats
 {
@@ -26,22 +20,43 @@ class LNR_API UAttributesComponent : public UAttributeSet
 public:
 	UAttributesComponent();
 
-	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int Level = 1;
-	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Xp = 0;
-
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Strength = 1;
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Charisma = 1;
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Vitality = 1;
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Agility = 1;
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Wisdom = 1;
 
+	UPROPERTY(BlueprintReadWrite)
+	float BaseDamage;
+	UPROPERTY(BlueprintReadWrite)
+	float BaseDefense;
+	UPROPERTY(BlueprintReadWrite)
+	float MaxHealth;
+	UPROPERTY(BlueprintReadWrite)
+	float MaxStamina;
+	UPROPERTY(BlueprintReadWrite)
+	float MaxEnergy;
+	UPROPERTY(BlueprintReadWrite)
+	float MaxWanted;
+	UPROPERTY(BlueprintReadWrite)
+	float HealthRegeneration;
+	UPROPERTY(BlueprintReadWrite)
+	float StaminaRegeneration;
+	UPROPERTY(BlueprintReadWrite)
+	float EnergyRegeneration;
+	UPROPERTY(BlueprintReadWrite)
+	float WantedRegeneration;
+	
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_Health)
 	float Health;
 	UFUNCTION()
@@ -67,27 +82,8 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Wanted(float oldWanted);
 
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float BaseDamage;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float BaseDefense;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float MaxHealth;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float MaxStamina;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float MaxEnergy;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float MaxWanted;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float HealthRegeneration;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float StaminaRegeneration;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float EnergyRegeneration;
-	UPROPERTY(Replicated, BlueprintReadWrite)
-	float WantedRegeneration;
-
+	UFUNCTION(BlueprintCallable)
+	void Init();
 	UFUNCTION(BlueprintCallable)
 	void RefreshStats();
 	UFUNCTION(BlueprintCallable)
@@ -101,7 +97,7 @@ public:
 	void ChangeEnergy(float value);
 	UFUNCTION(BlueprintCallable)
 	void ChangeWanted(float value);
-	
+
 	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent() { return Health / MaxHealth; };
 	UFUNCTION(BlueprintCallable)

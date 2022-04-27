@@ -1,16 +1,14 @@
 #pragma once
 #include "Engine/DataTable.h"
+#include "LNR/Component/FactionComponent.h"
 #include "FactionData.generated.h"
-
-UENUM()
-enum FFaction { Empire, Survivor, Biohacker, Inquisitor, Mutant, Rogue, Feral, Critter };
 
 USTRUCT(BlueprintType)
 struct LNR_API FFactionData : public FTableRowBase
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TEnumAsByte<FFaction> Faction;
+	TEnumAsByte<EFaction> Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* Icon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

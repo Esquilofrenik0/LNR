@@ -6,8 +6,10 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/AvatarComponent.h"
 #include "LNR/Component/CombatComponent.h"
+#include "LNR/Component/FactionComponent.h"
 #include "LNR/Widget/InfoWidget.h"
 
 ANpc::ANpc()
@@ -91,18 +93,18 @@ bool ANpc::TryTarget(ABody* nBody)
 {
 	if (nBody && nBody->Combat->State != Dead)
 	{
-		// bool Hostile = Body->Faction.IsHostileTowards(nBody->Faction);
-		// if (!Hostile && Body->IsCitizen && nBody->Attributes->Hate >= 20) Hostile = true;
-		// if (Hostile)
-		// {
-		Target = nBody;
-		BlackboardComponent->SetValueAsObject(TargetKey, Target);
-		GetWorldTimerManager().ClearTimer(LooseTargetHandle);
-		GetWorldTimerManager().SetTimer(LooseTargetHandle, this, &ANpc::CanSeeTarget, 4, true);
-		Body->GetCharacterMovement()->MaxWalkSpeed = Body->RunSpeed;
-		BehaviorTree->RestartTree();
-		return true;
-		// }
+		bool Hostile = Body->Faction->IsHostile(nBody->Faction->Faction);
+		if (!Hostile && Body->Faction->Faction == Empire && nBody->Attributes->Wanted >= 20) Hostile = true;
+		if (Hostile)
+		{
+			Target = nBody;
+			BlackboardComponent->SetValueAsObject(TargetKey, Target);
+			GetWorldTimerManager().ClearTimer(LooseTargetHandle);
+			GetWorldTimerManager().SetTimer(LooseTargetHandle, this, &ANpc::CanSeeTarget, 4, true);
+			Body->GetCharacterMovement()->MaxWalkSpeed = Body->RunSpeed;
+			BehaviorTree->RestartTree();
+			return true;
+		}
 	}
 	return false;
 }

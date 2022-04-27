@@ -6,8 +6,13 @@
 AHuman::AHuman()
 {
 	Apparel = CreateDefaultSubobject<UApparelComponent>("Apparel");
-	Apparel->Setup(GetMesh());
 	Avatar = CreateDefaultSubobject<UAvatarComponent>("Avatar");
+}
+
+void AHuman::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	Apparel->Setup(GetMesh());
 	Avatar->Setup(Apparel);
 }
 

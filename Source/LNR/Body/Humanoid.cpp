@@ -5,6 +5,11 @@
 AHumanoid::AHumanoid()
 {
 	Equipment = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
+}
+
+void AHumanoid::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
 	Equipment->Setup(this);
 }
 

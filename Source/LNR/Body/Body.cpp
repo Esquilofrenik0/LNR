@@ -10,6 +10,7 @@
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
+#include "LNR/Component/FactionComponent.h"
 #include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/Component/InfoComponent.h"
 #include "Net/UnrealNetwork.h"
@@ -22,7 +23,6 @@ ABody::ABody()
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
 	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
-	Combat->Setup(this);
 }
 
 void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -37,11 +37,13 @@ void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 void ABody::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	Combat->Setup(this);
 }
 
 void ABody::BeginPlay()
 {
 	Super::BeginPlay();
+	Attributes->Init();
 	RefreshAttributes();
 	Info->Init(Attributes);
 }
@@ -58,13 +60,13 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 {
 	if (Combat->State == Dead) return 0;
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	ABody* instigator = Cast<ABody>(DamageCauser);
+	ABody* attacker = Cast<ABody>(DamageCauser);
+	if (attacker && Faction->Faction == Empire && attacker->Faction->IsCitizen()) attacker->Attributes->ChangeWanted(5);
 	if (Npc)
 	{
-		if (Npc->Target == nullptr) Npc->TryTarget(instigator);
+		if (Npc->Target == nullptr) Npc->TryTarget(attacker);
 		Npc->StartUnderAttack();
 	}
-	// if (IsCitizen && instigator && !instigator->IsCitizen) instigator->Attributes->ChangeHate(2);
 	EDamageType dt = Ranged;
 	if (Combat->State == Blocking)
 	{
@@ -76,10 +78,10 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 		dt = Melee;
 		if (Combat->State == Blocking)
 		{
-			if (instigator)
+			if (attacker)
 			{
-				instigator->Combat->SetState(Reacting);
-				// instigator->PlayMontage(instigator->Combat->TakeDamageMontage);
+				attacker->Combat->SetState(Reacting);
+				attacker->PlayMontage(attacker->Combat->TakeDamageMontage);
 				Combat->ResetCombo();
 			}
 		}

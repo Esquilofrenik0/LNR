@@ -3,6 +3,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "LNR/AI/Npc.h"
+#include "LNR/Component/FactionComponent.h"
 #include "LNR/Component/InfoComponent.h"
 
 ASoul::ASoul()
@@ -23,8 +24,8 @@ ASoul::ASoul()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 	GetCharacterMovement()->GravityScale = 1.75f;
 	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>("Navigation Invoker");
+	Faction = CreateDefaultSubobject<UFactionComponent>("Faction");
 	Info = CreateDefaultSubobject<UInfoComponent>("Info");
-	Info->Setup(this);
 }
 
 void ASoul::Init()
@@ -35,6 +36,12 @@ void ASoul::Init()
 	Animator = BodyMesh->GetAnimInstance();
 	Controller = GetController();
 	Npc = Cast<ANpc>(Controller);
+}
+
+void ASoul::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+	Info->Setup(this);
 }
 
 void ASoul::BeginPlay()

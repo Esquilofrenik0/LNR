@@ -9,9 +9,11 @@ class LNR_API ASoul : public ACharacter, public IInteract
 	GENERATED_BODY()
 public:
 	ASoul();
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UNavigationInvokerComponent* NavigationInvoker;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UFactionComponent* Faction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UInfoComponent* Info;
 
@@ -27,6 +29,7 @@ public:
 	UAnimInstance* Animator;
 
 	void Init();
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void BeginPlay() override;
 	virtual void Restart() override;
 	virtual void OnInteract_Implementation(AHero* hero) override;
