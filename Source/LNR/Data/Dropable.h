@@ -7,15 +7,17 @@ USTRUCT(BlueprintType)
 struct LNR_API FDropable : public FTableRowBase
 {
 	GENERATED_BODY()
-
-	FDropable() : Item(nullptr), Amount(1), Chance(100)
-	{
-	}
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<UItem> Item;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Amount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Chance;
+
+	FDropable()
+	{
+		Item = nullptr;
+		Amount = 1;
+		Chance = 100;
+	}
 };

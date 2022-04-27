@@ -12,24 +12,32 @@ class LNR_API ABody : public ASoul, public IAbilitySystemInterface
 	GENERATED_BODY()
 public:
 	ABody();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
 	class UActionComponent* Action;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
 	class UAttributesComponent* Attributes;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
 	class UCombatComponent* Combat;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	class UDataTable* Dropables;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int WalkSpeed = 200;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int RunSpeed = 500;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int SprintSpeed = 700;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int RespawnTime = 30;
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float Pitch;
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	int MovementDirection;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int WalkSpeed = 200;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int RunSpeed = 500;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int SprintSpeed = 700;
+	UPROPERTY(Replicated, BlueprintReadWrite)
+	class ATombstone* Tombstone;
+	UPROPERTY(BlueprintReadWrite)
+	FTimerHandle RespawnHandle;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return Action; }
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -53,8 +61,11 @@ public:
 	void RefreshPitch();
 	UFUNCTION(BlueprintCallable)
 	virtual void RefreshAttributes();
+
 	UFUNCTION(BlueprintCallable)
 	virtual void Die();
+	UFUNCTION(BlueprintCallable)
+	virtual void DestroyCorpse();
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	bool AttackPressed;
@@ -95,4 +106,11 @@ public:
 	void MultiShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
+
+	UFUNCTION(BlueprintCallable)
+	void DropTombstone();
+	UFUNCTION(Server, Reliable)
+	void ServerDropTombstone();
+	void ServerDropTombstone_Implementation() { DropTombstone(); }
+	virtual void ExecuteDropTombstone();
 };

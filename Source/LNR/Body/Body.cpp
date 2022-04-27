@@ -9,10 +9,13 @@
 #include "LNR/Component/ActionComponent.h"
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
-#include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Component/FactionComponent.h"
 #include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/Component/InfoComponent.h"
+#include "LNR/Component/InventoryComponent.h"
+#include "LNR/Data/Dropable.h"
+#include "LNR/Game/Bitloner.h"
+#include "LNR/Interactor/Tombstone.h"
 #include "Net/UnrealNetwork.h"
 
 ABody::ABody()
@@ -30,6 +33,7 @@ void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ABody, Pitch);
 	DOREPLIFETIME(ABody, MovementDirection);
+	DOREPLIFETIME(ABody, Tombstone);
 	DOREPLIFETIME_CONDITION_NOTIFY(ABody, AttackPressed, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(ABody, BlockPressed, COND_None, REPNOTIFY_Always);
 }
@@ -43,14 +47,14 @@ void ABody::OnConstruction(const FTransform& Transform)
 void ABody::BeginPlay()
 {
 	Super::BeginPlay();
-	Attributes->Init();
-	RefreshAttributes();
 	Info->Init(Attributes);
 }
 
 void ABody::Restart()
 {
 	Super::Restart();
+	Attributes->Init();
+	RefreshAttributes();
 	Action->InitAbilityActorInfo(this, this);
 	if (HasAuthority()) Action->InitializeAbilities();
 }
@@ -212,6 +216,39 @@ void ABody::ShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLoca
 	else ServerShowWorldDamage(amount, nDamageType, hitLocation);
 }
 
+void ABody::DropTombstone()
+{
+	if (HasAuthority()) ExecuteDropTombstone();
+	else ServerDropTombstone();
+}
+
+void ABody::ExecuteDropTombstone()
+{
+	FVector Location = GetActorLocation();
+	Location.Z = Location.Z - Capsule->GetScaledCapsuleHalfHeight();
+	FRotator Rotation = GetActorRotation();
+	Tombstone = GetWorld()->SpawnActor<ATombstone>(Bitloner->Tombstone.GetDefaultObject()->GetClass(), Location,
+	                                               Rotation);
+	if (Dropables != nullptr)
+	{
+		for (auto row : Dropables->GetRowMap())
+		{
+			FString rowName = (row.Key).ToString();
+			FDropable* dropable = (FDropable*)row.Value;
+			int rand = FMath::RandRange(0, 100);
+			if (dropable->Chance >= rand)
+			{
+				if (UItem* item = dropable->Item.GetDefaultObject())
+				{
+					Tombstone->Inventory->Add(item, dropable->Amount);
+					GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Dropped " + item->GetName()
+					                                 + "x" + FString::FromInt(dropable->Amount));
+				}
+			}
+		}
+	}
+}
+
 void ABody::ServerShowWorldDamage_Implementation(int amount, EDamageType nDamageType, FVector hitLocation)
 {
 	MultiShowWorldDamage(amount, nDamageType, hitLocation);
@@ -233,9 +270,15 @@ void ABody::RefreshAttributes()
 void ABody::Die()
 {
 	Combat->SetState(Dead);
-	AttackPressed = false;
+	SetAttackPressed(false);
 	if (Npc) Npc->UnPossess();
 	SetRagdoll(true);
-	// GetWorldTimerManager().SetTimer(RespawnHandle, this, &ABody::DestroyCorpse, RespawnTime, false);
-	// DropBag();
+	GetWorldTimerManager().SetTimer(RespawnHandle, this, &ABody::DestroyCorpse, RespawnTime, false);
+	DropTombstone();
+}
+
+void ABody::DestroyCorpse()
+{
+	GetWorldTimerManager().ClearTimer(RespawnHandle);
+	Destroy();
 }

@@ -18,6 +18,8 @@ public:
 	class UInfoComponent* Info;
 
 	UPROPERTY(BlueprintReadWrite)
+	class UBitloner* Bitloner;
+	UPROPERTY(BlueprintReadWrite)
 	class ANpc* Npc;
 	UPROPERTY(BlueprintReadWrite)
 	UCapsuleComponent* Capsule;

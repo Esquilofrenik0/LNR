@@ -2,9 +2,11 @@
 #include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "LNR/AI/Npc.h"
 #include "LNR/Component/FactionComponent.h"
 #include "LNR/Component/InfoComponent.h"
+#include "LNR/Game/Bitloner.h"
 
 ASoul::ASoul()
 {
@@ -32,6 +34,7 @@ ASoul::ASoul()
 
 void ASoul::Init()
 {
+	Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
 	BodyMesh = GetMesh();
 	Capsule = GetCapsuleComponent();
 	Movement = GetCharacterMovement();
