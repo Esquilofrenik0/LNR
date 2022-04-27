@@ -16,10 +16,6 @@ public:
 	TSubclassOf<class UHudWidget> HudTemplate;
 	UPROPERTY(BlueprintReadWrite)
 	UHudWidget* HudWidget;
-	UPROPERTY(BlueprintReadWrite)
-	bool InputUi = false;
-	UFUNCTION(BlueprintCallable)
-	void SetInputUi(bool val);
 	UFUNCTION(BlueprintCallable)
 	void ShowInteractionIcon(bool val);
 	UFUNCTION(BlueprintCallable)

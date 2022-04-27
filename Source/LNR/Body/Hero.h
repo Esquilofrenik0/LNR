@@ -46,8 +46,11 @@ public:
 	FTimerHandle ClientTickTimer;
 	UPROPERTY(BlueprintReadWrite)
 	AActor* Inter = nullptr;
+	UPROPERTY(BlueprintReadWrite)
+	bool InputUi = false;
 
 	virtual void BeginPlay() override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void Restart() override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
@@ -59,6 +62,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void TryWeaponSwap();
+	UFUNCTION(BlueprintCallable)
+	void SetInputUi(bool val);
 
 private:
 	void MoveForward(float Value);

@@ -12,4 +12,5 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHudBitloner* Hud;
 	void Init(AHero* nHero);
+	virtual void OnPossess(APawn* InPawn) override;
 };

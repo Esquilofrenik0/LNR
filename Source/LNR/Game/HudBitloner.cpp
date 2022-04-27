@@ -33,21 +33,6 @@ void AHudBitloner::BeginPlay()
 	}
 }
 
-void AHudBitloner::SetInputUi(bool val)
-{
-	InputUi = val;
-	if(val)
-	{
-		Hero->Player->SetInputMode(FInputModeGameAndUI());
-		Hero->Player->SetShowMouseCursor(true);
-	}
-	else
-	{
-		Hero->Player->SetInputMode(FInputModeGameOnly());
-		Hero->Player->SetShowMouseCursor(false);
-	}
-}
-
 void AHudBitloner::ShowInteractionIcon(bool val)
 {
 	if (val) HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Visible);
@@ -58,7 +43,7 @@ void AHudBitloner::ShowInventory(bool val)
 {
 	if (val)
 	{
-		SetInputUi(true);
+		Hero->SetInputUi(true);
 		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 		if (Hero->Container)
 		{
@@ -73,7 +58,7 @@ void AHudBitloner::ShowInventory(bool val)
 	}
 	else
 	{
-		SetInputUi(false);
+		Hero->SetInputUi(false);
 		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		Hero->Container = nullptr;
 	}
