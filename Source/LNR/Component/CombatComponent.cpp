@@ -5,6 +5,7 @@
 #include "WeaponComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "LNR/Body/Body.h"
+#include "LNR/Body/Humanoid.h"
 #include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/DamageType/RangedDamage.h"
 #include "LNR/Item/Weapon.h"
@@ -33,6 +34,7 @@ void UCombatComponent::OnRep_State(EState nState)
 void UCombatComponent::Setup(ABody* nBody)
 {
 	Body = nBody;
+	Humanoid = Cast<AHumanoid>(Body);
 }
 
 void UCombatComponent::RefreshState()
@@ -42,8 +44,9 @@ void UCombatComponent::RefreshState()
 
 UAnimMontage* UCombatComponent::GetCombatMontage()
 {
-	if (UWeapon* w = Body->Equipment->GetWeapon(0))
+	if (Humanoid && Humanoid->Equipment->GetWeapon(0) != nullptr)
 	{
+		UWeapon* w = Humanoid->Equipment->GetWeapon(0);
 		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
 		                                 "Weapon[0] is not null. Name is: " + w->GetName());
 		return w->CombatMontage[Combo];
@@ -58,9 +61,9 @@ UAnimMontage* UCombatComponent::GetCombatMontage()
 
 int UCombatComponent::GetMaxCombo()
 {
-	if (Body->Equipment->GetWeapon(0) != nullptr)
+	if (Humanoid && Humanoid->Equipment->GetWeapon(0) != nullptr)
 	{
-		return Body->Equipment->GetWeapon(0)->CombatMontage.Num();
+		return Humanoid->Equipment->GetWeapon(0)->CombatMontage.Num();
 	}
 	else return UnarmedMontage.Num();
 }

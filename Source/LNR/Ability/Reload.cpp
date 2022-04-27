@@ -17,15 +17,15 @@ void UReload::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
                               const FGameplayEventData* TriggerEventData)
 {
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Reload Activated!");
-	if (ABody* body = Cast<ABody>(ActorInfo->AvatarActor))
+	if (AHumanoid* humanoid = Cast<AHumanoid>(ActorInfo->AvatarActor))
 	{
-		Body = body;
+		Humanoid = humanoid;
 		// if (AHero* hero = Cast<AHero>(body))
 		// {
 		// 	Hero = hero;
 		// 	if (Hero->Equipment->AmmoSlot.Amount < 1) return;
 		// }
-		if (UGun* gun = Cast<UGun>(body->Equipment->GetWeapon(0)))
+		if (UGun* gun = Cast<UGun>(Humanoid->Equipment->GetWeapon(0)))
 		{
 			Gun = gun;
 			// if (Human->Equipment->AmmoSlot.Loaded >= Gun->MaxAmmo) return;
@@ -49,16 +49,16 @@ void UReload::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamepla
                          const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
                          bool bWasCancelled)
 {
-	if (Body)
+	if (Humanoid)
 	{
 		if (Move)
 		{
-			Move->MaxWalkSpeed = Body->RunSpeed;
-			ClientSetSpeed(Body->RunSpeed, Move);
+			Move->MaxWalkSpeed = Humanoid->RunSpeed;
+			ClientSetSpeed(Humanoid->RunSpeed, Move);
 		}
-		Body->Combat->State = Idle;
-		if (Body->BlockPressed) Body->Block();
-		else if (Body->AttackPressed) Body->Attack();
+		Humanoid->Combat->State = Idle;
+		if (Humanoid->BlockPressed) Humanoid->Block();
+		else if (Humanoid->AttackPressed) Humanoid->Attack();
 	}
 }
 
@@ -71,21 +71,21 @@ void UReload::OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted)
 {
 	// if (!bInterrupted)
 	// {
-		// if (Hero)
-		// {
-			// int missingAmount = Gun->MaxAmmo - Hero->Equipment->AmmoSlot.Loaded;
-			// if (Hero->Equipment->AmmoSlot.Amount >= missingAmount)
-			// {
-			// 	Hero->Equipment->AmmoSlot.Loaded += missingAmount;
-			// 	Hero->Equipment->AmmoSlot.Amount -= missingAmount;
-			// }
-			// else
-			// {
-			// 	Hero->Equipment->AmmoSlot.Loaded += Hero->Equipment->AmmoSlot.Amount;
-			// 	Hero->Equipment->AmmoSlot.Amount = 0;
-			// }
-		// }
-		// else Human->Equipment->AmmoSlot.Loaded = Gun->MaxAmmo;
+	// if (Hero)
+	// {
+	// int missingAmount = Gun->MaxAmmo - Hero->Equipment->AmmoSlot.Loaded;
+	// if (Hero->Equipment->AmmoSlot.Amount >= missingAmount)
+	// {
+	// 	Hero->Equipment->AmmoSlot.Loaded += missingAmount;
+	// 	Hero->Equipment->AmmoSlot.Amount -= missingAmount;
+	// }
+	// else
+	// {
+	// 	Hero->Equipment->AmmoSlot.Loaded += Hero->Equipment->AmmoSlot.Amount;
+	// 	Hero->Equipment->AmmoSlot.Amount = 0;
+	// }
+	// }
+	// else Human->Equipment->AmmoSlot.Loaded = Gun->MaxAmmo;
 	// }
 	K2_EndAbility();
 }

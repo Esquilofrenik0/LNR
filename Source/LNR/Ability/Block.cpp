@@ -1,5 +1,6 @@
 ﻿#include "Block.h"
 #include "Abilities/Tasks/AbilityTask.h"
+#include "Camera/CameraComponent.h"
 #include "LNR/Body/Body.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/CombatComponent.h"
@@ -20,17 +21,21 @@ void UBlock::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 	if (ABody* body = Cast<ABody>(ActorInfo->AvatarActor))
 	{
 		Body = body;
-		if (Body->Equipment->Holster) Body->Equipment->SetHolster(false);
+		Humanoid = Cast<AHumanoid>(Body);
+		if (Humanoid)
+		{
+			if (Humanoid->Equipment->Holster) Humanoid->Equipment->SetHolster(false);
+			if (Humanoid->Equipment->LeftHand) Humanoid->Equipment->LeftHand->SetRelativeScale3D(FVector(3, 3, 3));
+		}
+		// Hero = Cast<AHero>(Body);
+		// if (Hero && Cast<UGun>(Hero->Equipment->Weapon[0]) && !Cast<UShield>(Hero->Equipment->Weapon[1]))
+		// {
+		// Hero->EnterAim();
+		// }
 		Move = Body->GetCharacterMovement();
 		Move->MaxWalkSpeed = Body->WalkSpeed;
 		ClientSetSpeed(Body->WalkSpeed, Move);
 		Body->Combat->SetState(Blocking);
-		if (Body->Equipment->LeftHand) Body->Equipment->LeftHand->SetRelativeScale3D(FVector(3, 3, 3));
-		// Hero = Cast<AHero>(Body);
-		// if (Hero && Cast<UGun>(Hero->Equipment->Weapon[0]) && !Cast<UShield>(Hero->Equipment->Weapon[1]))
-		// {
-			// Hero->EnterAim();
-		// }
 		Body->GetWorldTimerManager().ClearTimer(BlockTimer);
 		Body->GetWorldTimerManager().SetTimer(BlockTimer, this, &UBlock::TickBlock, 0.1, true);
 	}
@@ -44,7 +49,7 @@ void UBlock::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplay
 	Move->MaxWalkSpeed = Body->RunSpeed;
 	ClientSetSpeed(Body->RunSpeed, Move);
 	Body->Combat->SetState(Idle);
-	if (Body->Equipment->LeftHand) Body->Equipment->LeftHand->SetRelativeScale3D(FVector(1, 1, 1));
+	if (Humanoid && Humanoid->Equipment->LeftHand) Humanoid->Equipment->LeftHand->SetRelativeScale3D(FVector(1, 1, 1));
 	// if (Hero) Hero->ExitAim();
 }
 
@@ -60,6 +65,6 @@ void UBlock::ClientSetSpeed_Implementation(float Speed, UCharacterMovementCompon
 
 void UBlock::ClientSetCamera_Implementation(AHero* nHero, bool reset)
 {
-	// if (reset) nHero->TPCamera->FieldOfView = 90;
-	// else nHero->TPCamera->FieldOfView = 30;
+	if (reset) nHero->TpCamera->FieldOfView = 90;
+	else nHero->TpCamera->FieldOfView = 30;
 }

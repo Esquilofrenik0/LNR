@@ -1,30 +1,24 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "Soul.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Character.h"
 #include "LNR/LNR.h"
 #include "LNR/Component/ActionComponent.h"
 #include "LNR/Interface/Interact.h"
 #include "Body.generated.h"
 
 UCLASS()
-class LNR_API ABody : public ACharacter, public IAbilitySystemInterface, public IInteract
+class LNR_API ABody : public ASoul, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 public:
 	ABody();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
-	class UNavigationInvokerComponent* NavigationInvoker;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
-	class UInfoComponent* Info;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UActionComponent* Action;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UAttributesComponent* Attributes;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UCombatComponent* Combat;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
-	class UEquipmentComponent* Equipment;
 
 	UPROPERTY(BlueprintReadWrite)
 	class ANpc* Npc;
@@ -99,10 +93,7 @@ public:
 	void MultiShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
-
-	virtual void OnInteract_Implementation(AHero* hero) override;
-	virtual void OnShowInfo_Implementation(AHero* hero, bool val) override;
-
+	
 	UFUNCTION(BlueprintCallable)
-	void RefreshAttributes();
+	virtual void RefreshAttributes();
 };

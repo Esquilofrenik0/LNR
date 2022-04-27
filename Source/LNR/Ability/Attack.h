@@ -13,7 +13,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class ABody* Body;
 	UPROPERTY(BlueprintReadWrite)
-	class AHero* Hero;
+	class AHumanoid* Humanoid;
 	
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 	                             const FGameplayAbilityActivationInfo ActivationInfo,

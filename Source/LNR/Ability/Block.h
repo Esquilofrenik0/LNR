@@ -14,6 +14,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class ABody* Body;
 	UPROPERTY(BlueprintReadWrite)
+	class AHumanoid* Humanoid;
+	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite)
 	UCharacterMovementComponent* Move;

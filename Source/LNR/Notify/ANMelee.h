@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "Animation/AnimNotifies/AnimNotifyState.h"
-#include "LNR/Body/Body.h"
 #include "ANMelee.generated.h"
 
 UCLASS()
@@ -10,7 +9,9 @@ class LNR_API UANMelee : public UAnimNotifyState
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	ABody* Body;
+	class ABody* Body;
+	UPROPERTY(BlueprintReadWrite)
+	class AHumanoid* Humanoid;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<FName> MeleeSockets;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

@@ -1,5 +1,6 @@
 ﻿#include "ANMelee.h"
 #include "LNR/Body/Body.h"
+#include "LNR/Body/Humanoid.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 
@@ -8,7 +9,11 @@ void UANMelee::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	AActor* owner = MeshComp->GetOwner();
-	if (owner->HasAuthority()) Body = Cast<ABody>(owner);
+	if (owner->HasAuthority())
+	{
+		Body = Cast<ABody>(owner);
+		Humanoid = Cast<AHumanoid>(Body);
+	}
 }
 
 void UANMelee::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float FrameDeltaTime,
@@ -17,9 +22,9 @@ void UANMelee::NotifyTick(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* A
 	Super::NotifyTick(MeshComp, Animation, FrameDeltaTime, EventReference);
 	if (Body)
 	{
-		if (Body->Equipment->RightHand != nullptr)
+		if (Humanoid && Humanoid->Equipment->RightHand != nullptr)
 		{
-			Body->Combat->TraceWeapon(Body->Equipment->RightHand);
+			Humanoid->Combat->TraceWeapon(Humanoid->Equipment->RightHand);
 		}
 		else
 		{

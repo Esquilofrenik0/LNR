@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
-#include "LNR/Body/Body.h"
 #include "CombatComponent.generated.h"
 
 UENUM(BlueprintType)
@@ -28,7 +27,9 @@ public:
 	void OnRep_State(EState nState);
 
 	UPROPERTY(BlueprintReadWrite)
-	ABody* Body;
+	class ABody* Body;
+	UPROPERTY(BlueprintReadWrite)
+	class AHumanoid* Humanoid;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UAnimMontage*> UnarmedMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

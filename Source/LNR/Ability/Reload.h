@@ -11,7 +11,7 @@ class LNR_API UReload : public UAbility
 public:
 	UReload();
 	UPROPERTY(BlueprintReadWrite)
-	class ABody* Body;
+	class AHumanoid* Humanoid;
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite)

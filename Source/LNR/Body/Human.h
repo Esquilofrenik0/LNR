@@ -1,11 +1,10 @@
 #pragma once
-
 #include "CoreMinimal.h"
-#include "Body.h"
+#include "Humanoid.h"
 #include "Human.generated.h"
 
 UCLASS()
-class LNR_API AHuman : public ABody
+class LNR_API AHuman : public AHumanoid
 {
 	GENERATED_BODY()
 public:

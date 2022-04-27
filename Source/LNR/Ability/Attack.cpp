@@ -19,24 +19,24 @@ void UAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 	if (ABody* body = Cast<ABody>(ActorInfo->AvatarActor))
 	{
 		PreAttack(body);
-		// if (AHuman* human = Cast<AHuman>(Body))
-		// {
-		// Human = human;
-		// if (Cast<UGun>(Human->Equipment->Weapon[0]))
-		// {
-		// if (human->Equipment->AmmoSlot.Loaded < 1)
-		// {
-		// Body->State = Idle;
-		// human->Reload();
-		// return;
-		// }
-		// else
-		// {
-		// Human->IsShooting = true;
-		// human->Equipment->AmmoSlot.Loaded -= 1;
-		// }
-		// }
-		// }
+		if (Humanoid)
+		{
+			if (Humanoid->Equipment->Holster) Humanoid->Equipment->SetHolster(false);
+			if (Cast<UGun>(Humanoid->Equipment->Weapon[0]))
+			{
+				// if (Body->Equipment->AmmoSlot.Loaded < 1)
+				// {
+				// Body->Combat->State = Idle;
+				// Body->Reload();
+				// return;
+				// }
+				// else
+				// {
+				// Human->IsShooting = true;
+				// human->Equipment->AmmoSlot.Loaded -= 1;
+				// }
+			}
+		}
 		Body->Combat->MeleeHits.Empty();
 		GetWorld()->GetTimerManager().ClearTimer(Body->Combat->ResetComboHandle);
 		Body->Combat->Combo %= Body->Combat->GetMaxCombo();
@@ -70,7 +70,7 @@ void UAttack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamepla
 void UAttack::PreAttack(ABody* nBody)
 {
 	Body = nBody;
-	if (Body->Equipment->Holster) Body->Equipment->SetHolster(false);
+	Humanoid = Cast<AHuman>(Body);
 }
 
 void UAttack::MultiPlayMontage_Implementation(USkeletalMeshComponent* Mesh, UAnimMontage* montage)

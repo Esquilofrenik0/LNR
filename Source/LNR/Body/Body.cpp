@@ -16,34 +16,12 @@
 
 ABody::ABody()
 {
-	bReplicates = true;
-	PrimaryActorTick.bCanEverTick = false;
-
-	GetCapsuleComponent()->InitCapsuleSize(35.f, 85.0f);
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->bUseControllerDesiredRotation = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 500.0f, 0.0f);
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
-	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
-	GetCharacterMovement()->GravityScale = 1.75f;
-
-	NavigationInvoker = CreateDefaultSubobject<UNavigationInvokerComponent>("Navigation Invoker");
-	Info = CreateDefaultSubobject<UInfoComponent>("Info");
-	Info->Setup(this);
 	Action = CreateDefaultSubobject<UActionComponent>("Action");
 	Action->SetIsReplicated(true);
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
 	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
 	Combat->Setup(this);
-	Equipment = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
-	Equipment->Setup(this);
 }
 
 void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -249,28 +227,9 @@ void ABody::MultiShowWorldDamage_Implementation(int amount, EDamageType nDamageT
 	OnShowWorldDamage(amount, nDamageType, hitLocation);
 }
 
-void ABody::OnInteract_Implementation(AHero* hero)
-{
-}
-
-void ABody::OnShowInfo_Implementation(AHero* hero, bool val)
-{
-	Info->Show(val);
-}
-
 void ABody::RefreshAttributes()
 {
 	Attributes->RefreshStats();
 	Attributes->Damage = Attributes->BaseDamage;
 	Attributes->Defense = Attributes->BaseDefense;
-	if (UWeapon* mw = Equipment->GetWeapon(0))
-	{
-		Attributes->Damage += mw->Damage;
-		Attributes->Defense += mw->Defense;
-	}
-	if (UWeapon* ow = Equipment->GetWeapon(1))
-	{
-		Attributes->Damage += ow->Damage;
-		Attributes->Defense += ow->Defense;
-	}
 }

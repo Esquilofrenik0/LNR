@@ -5,7 +5,6 @@
 
 AHuman::AHuman()
 {
-	PrimaryActorTick.bCanEverTick = false;
 	Apparel = CreateDefaultSubobject<UApparelComponent>("Apparel");
 	Apparel->Setup(GetMesh());
 	Avatar = CreateDefaultSubobject<UAvatarComponent>("Avatar");
