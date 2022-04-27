@@ -1,7 +1,7 @@
 #include "Body.h"
 #include "NavigationInvokerComponent.h"
-#include "LNR/LNR.h"
 #include "Components/CapsuleComponent.h"
+#include "LNR/LNR.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -16,6 +16,7 @@
 
 ABody::ABody()
 {
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	Action = CreateDefaultSubobject<UActionComponent>("Action");
 	Action->SetIsReplicated(true);
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
@@ -41,7 +42,6 @@ void ABody::OnConstruction(const FTransform& Transform)
 void ABody::BeginPlay()
 {
 	Super::BeginPlay();
-	Npc = Cast<ANpc>(GetController());
 	RefreshAttributes();
 	Info->Init(Attributes);
 }
@@ -59,11 +59,11 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	if (Combat->State == Dead) return 0;
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	ABody* instigator = Cast<ABody>(DamageCauser);
-	// if (Npc)
-	// {
-	// 	if(Npc->Target == nullptr) Npc->TryTarget(instigator);
-	// 	Npc->StartUnderAttack();
-	// }
+	if (Npc)
+	{
+		if (Npc->Target == nullptr) Npc->TryTarget(instigator);
+		Npc->StartUnderAttack();
+	}
 	// if (IsCitizen && instigator && !instigator->IsCitizen) instigator->Attributes->ChangeHate(2);
 	EDamageType dt = Ranged;
 	if (Combat->State == Blocking)
@@ -79,20 +79,20 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 			if (instigator)
 			{
 				instigator->Combat->SetState(Reacting);
-				instigator->PlayMontage(instigator->GetMesh(), instigator->Combat->TakeDamageMontage);
+				// instigator->PlayMontage(instigator->Combat->TakeDamageMontage);
 				Combat->ResetCombo();
 			}
 		}
 		else
 		{
 			Combat->SetState(Reacting);
-			PlayMontage(GetMesh(), Combat->TakeDamageMontage);
+			PlayMontage(Combat->TakeDamageMontage);
 			Combat->ResetCombo();
 		}
 	}
 	Attributes->ChangeHealth(-DamageAmount);
 	ShowWorldDamage(DamageAmount, dt, GetActorLocation());
-	// if (Attributes->Health <= 0) Die();
+	if (Attributes->Health <= 0) Die();
 	return DamageAmount;
 }
 
@@ -181,28 +181,22 @@ void ABody::SetSprintPressed(bool val)
 	else ServerSetSprintPressed(val);
 }
 
-void ABody::PlayMontage(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage)
+void ABody::PlayMontage(UAnimMontage* nMontage)
 {
 	if (HasAuthority())
 	{
-		MultiPlayMontage(nMesh, nMontage);
-		UAnimInstance* AnimInstance = nMesh->GetAnimInstance();
-		AnimInstance->Montage_Play(nMontage);
+		MultiPlayMontage(nMontage);
+		Animator->Montage_Play(nMontage);
 		FOnMontageEnded BlendOutDelegate;
 		BlendOutDelegate.BindUObject(this, &ABody::OnAnimationBlendOut);
-		AnimInstance->Montage_SetBlendingOutDelegate(BlendOutDelegate, nMontage);
+		Animator->Montage_SetBlendingOutDelegate(BlendOutDelegate, nMontage);
 	}
-	else ServerPlayMontage(nMesh, nMontage);
+	else ServerPlayMontage(nMontage);
 }
 
-void ABody::ServerPlayMontage_Implementation(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage)
+void ABody::MultiPlayMontage_Implementation(UAnimMontage* nMontage)
 {
-	PlayMontage(nMesh, nMontage);
-}
-
-void ABody::MultiPlayMontage_Implementation(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage)
-{
-	nMesh->GetAnimInstance()->Montage_Play(nMontage);
+	Animator->Montage_Play(nMontage);
 }
 
 void ABody::OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted)
@@ -232,4 +226,14 @@ void ABody::RefreshAttributes()
 	Attributes->RefreshStats();
 	Attributes->Damage = Attributes->BaseDamage;
 	Attributes->Defense = Attributes->BaseDefense;
+}
+
+void ABody::Die()
+{
+	Combat->SetState(Dead);
+	AttackPressed = false;
+	if (Npc) Npc->UnPossess();
+	SetRagdoll(true);
+	// GetWorldTimerManager().SetTimer(RespawnHandle, this, &ABody::DestroyCorpse, RespawnTime, false);
+	// DropBag();
 }

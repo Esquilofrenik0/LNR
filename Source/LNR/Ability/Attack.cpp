@@ -58,10 +58,10 @@ void UAttack::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamepla
                          const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
                          bool bWasCancelled)
 {
-	Body->Combat->SetState(Idle);
 	// if (Human) Human->IsShooting = false;
 	if (!bWasCancelled)
 	{
+		Body->Combat->SetState(Idle);
 		if (Body->AttackPressed) Body->Attack();
 		else if (Body->BlockPressed) Body->Block();
 	}

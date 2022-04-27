@@ -4,7 +4,6 @@
 #include "AbilitySystemInterface.h"
 #include "LNR/LNR.h"
 #include "LNR/Component/ActionComponent.h"
-#include "LNR/Interface/Interact.h"
 #include "Body.generated.h"
 
 UCLASS()
@@ -20,8 +19,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UCombatComponent* Combat;
 
-	UPROPERTY(BlueprintReadWrite)
-	class ANpc* Npc;
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float Pitch;
 	UPROPERTY(Replicated, BlueprintReadWrite)
@@ -32,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int RunSpeed = 500;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int SprintSpeed = 800;
+	int SprintSpeed = 700;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return Action; }
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -54,6 +51,10 @@ public:
 	int UpdateMovementDirection();
 	UFUNCTION(BlueprintCallable)
 	void RefreshPitch();
+	UFUNCTION(BlueprintCallable)
+	virtual void RefreshAttributes();
+	UFUNCTION(BlueprintCallable)
+	virtual void Die();
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	bool AttackPressed;
@@ -78,11 +79,12 @@ public:
 	void ServerSetSprintPressed_Implementation(bool val) { SetSprintPressed(val); }
 
 	UFUNCTION(BlueprintCallable)
-	void PlayMontage(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage);
+	void PlayMontage(UAnimMontage* nMontage);
 	UFUNCTION(Server, Reliable)
-	void ServerPlayMontage(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage);
+	void ServerPlayMontage(UAnimMontage* nMontage);
+	void ServerPlayMontage_Implementation(UAnimMontage* nMontage) { PlayMontage(nMontage); }
 	UFUNCTION(NetMulticast, Reliable)
-	void MultiPlayMontage(USkeletalMeshComponent* nMesh, UAnimMontage* nMontage);
+	void MultiPlayMontage(UAnimMontage* nMontage);
 	void OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted);
 
 	UFUNCTION(BlueprintCallable)
@@ -93,7 +95,4 @@ public:
 	void MultiShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnShowWorldDamage(int amount, EDamageType nDamageType, FVector hitLocation);
-	
-	UFUNCTION(BlueprintCallable)
-	virtual void RefreshAttributes();
 };

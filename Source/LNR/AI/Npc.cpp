@@ -6,7 +6,6 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "LNR/Body/Human.h"
 #include "LNR/Component/AvatarComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Widget/InfoWidget.h"
@@ -84,7 +83,6 @@ void ANpc::StartUnderAttack()
 void ANpc::StopUnderAttack()
 {
 	UnderAttack = false;
-	// if(Body && Body->Plate) Body->Plate->SetVisibility(false);
 	GetWorldTimerManager().ClearTimer(UnderAttackHandle);
 	BehaviorTree->RestartTree();
 }

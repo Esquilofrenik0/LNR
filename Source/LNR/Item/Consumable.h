@@ -27,7 +27,7 @@ public:
 	void ServerUseConsumable_Implementation(ABody* nBody) { UseConsumable(nBody); }
 
 	UFUNCTION(BlueprintCallable)
-	void PlayMontage(ABody* nBody, USkeletalMeshComponent* nMesh, UAnimMontage* nMontage);
+	void PlayMontage(ABody* nBody, UAnimMontage* nMontage);
 	void OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted);
 	UFUNCTION()
 	void OnNotifyBegin(FName nName, const FBranchingPointNotifyPayload& payload);

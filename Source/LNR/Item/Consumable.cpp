@@ -35,16 +35,15 @@ void UConsumable::UseConsumable(ABody* nBody)
 	if (Body->HasAuthority())
 	{
 		Body->Combat->State = Reacting;
-		USkeletalMeshComponent* nMesh = Body->GetMesh();
-		nBody->MultiPlayMontage(nMesh, Montage);
-		PlayMontage(Body, nMesh, Montage);
+		nBody->MultiPlayMontage(Montage);
+		PlayMontage(Body, Montage);
 	}
 	else ServerUseConsumable(Body);
 }
 
-void UConsumable::PlayMontage(ABody* nBody, USkeletalMeshComponent* nMesh, UAnimMontage* nMontage)
+void UConsumable::PlayMontage(ABody* nBody, UAnimMontage* nMontage)
 {
-	UAnimInstance* AnimInstance = nMesh->GetAnimInstance();
+	UAnimInstance* AnimInstance = nBody->GetMesh()->GetAnimInstance();
 	AnimInstance->Montage_Play(nMontage);
 	AnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &UConsumable::OnNotifyBegin);
 	FOnMontageEnded BlendOutDelegate;

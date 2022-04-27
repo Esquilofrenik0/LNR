@@ -28,7 +28,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sense)
 	float SightAge = 50.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sense)
-	float LooseSightRadius = SightRadius + 50.0f;
+	float LooseSightRadius = 2000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sense)
 	float FieldOfView = 120.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = NPC)

@@ -39,6 +39,7 @@ void UCombatComponent::Setup(ABody* nBody)
 
 void UCombatComponent::RefreshState()
 {
+	// if(State == Dead) Body->Die();
 	// Print(State);
 }
 

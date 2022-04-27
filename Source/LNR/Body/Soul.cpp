@@ -2,6 +2,7 @@
 #include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "LNR/AI/Npc.h"
 #include "LNR/Component/InfoComponent.h"
 
 ASoul::ASoul()
@@ -26,6 +27,28 @@ ASoul::ASoul()
 	Info->Setup(this);
 }
 
+void ASoul::Init()
+{
+	BodyMesh = GetMesh();
+	Capsule = GetCapsuleComponent();
+	Movement = GetCharacterMovement();
+	Animator = BodyMesh->GetAnimInstance();
+	Controller = GetController();
+	Npc = Cast<ANpc>(Controller);
+}
+
+void ASoul::BeginPlay()
+{
+	Super::BeginPlay();
+	Init();
+}
+
+void ASoul::Restart()
+{
+	Super::Restart();
+	Init();
+}
+
 void ASoul::OnInteract_Implementation(AHero* hero)
 {
 }
@@ -33,4 +56,18 @@ void ASoul::OnInteract_Implementation(AHero* hero)
 void ASoul::OnShowInfo_Implementation(AHero* hero, bool val)
 {
 	Info->Show(val);
+}
+
+void ASoul::SetRagdoll(bool value)
+{
+	if (HasAuthority()) MultiSetRagdoll(value);
+	else ServerSetRagdoll(value);
+}
+
+void ASoul::MultiSetRagdoll_Implementation(bool value)
+{
+	Info->SetHiddenInGame(value);
+	BodyMesh->SetSimulatePhysics(value);
+	if (value) Capsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	else Capsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
