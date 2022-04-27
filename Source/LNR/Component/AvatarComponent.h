@@ -17,7 +17,7 @@ public:
 	void OnRep_AvatarData(FAvatarData nAvatarData);
 
 	UPROPERTY(BlueprintReadWrite)
-	class ABitlonerGameMode* GameMode;
+	class UBitloner* Bitloner;
 	UPROPERTY(BlueprintReadWrite)
 	class UApparelComponent* Apparel;
 
@@ -30,22 +30,34 @@ public:
 	void RandomizeAvatar();
 	UFUNCTION(BlueprintCallable)
 	void RandomizeOutfit();
+
 	UFUNCTION(BlueprintCallable)
 	void NextBody();
 	UFUNCTION(BlueprintCallable)
 	void PreviousBody();
 	UFUNCTION(BlueprintCallable)
 	void SetBody(int val);
+	UFUNCTION(Server, Reliable)
+	void ServerSetBody(int val);
+	void ServerSetBody_Implementation(int val) { SetBody(val); }
+
 	UFUNCTION(BlueprintCallable)
 	void NextHair();
 	UFUNCTION(BlueprintCallable)
 	void PreviousHair();
 	UFUNCTION(BlueprintCallable)
 	void SetHair(int val);
+	UFUNCTION(Server, Reliable)
+	void ServerSetHair(int val);
+	void ServerSetHair_Implementation(int val) { SetHair(val); }
+
 	UFUNCTION(BlueprintCallable)
 	void NextBeard();
 	UFUNCTION(BlueprintCallable)
 	void PreviousBeard();
 	UFUNCTION(BlueprintCallable)
 	void SetBeard(int val);
+	UFUNCTION(Server, Reliable)
+	void ServerSetBeard(int val);
+	void ServerSetBeard_Implementation(int val) { SetBeard(val); }
 };

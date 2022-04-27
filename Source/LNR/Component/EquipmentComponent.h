@@ -2,6 +2,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "LNR/Body/Body.h"
+#include "LNR/Data/Slot.h"
 #include "LNR/Item/Weapon.h"
 #include "EquipmentComponent.generated.h"
 
@@ -16,12 +17,17 @@ public:
 	TArray<UWeapon*> Weapon;
 	UFUNCTION()
 	void OnRep_Weapon(TArray<UWeapon*> nWeapon);
-
+	
 	UPROPERTY(ReplicatedUsing = OnRep_Holster, EditAnywhere, BlueprintReadWrite)
 	bool Holster;
 	UFUNCTION()
 	void OnRep_Holster(bool nHolster);
 
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	FAmmoSlot AmmoSlot;
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite)
+	TArray<FConsumableSlot> Consumable;
+	
 	UPROPERTY(BlueprintReadWrite)
 	ABody* Body;
 	UPROPERTY(BlueprintReadWrite)

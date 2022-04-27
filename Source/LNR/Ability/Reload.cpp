@@ -16,31 +16,30 @@ void UReload::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
                               const FGameplayAbilityActivationInfo ActivationInfo,
                               const FGameplayEventData* TriggerEventData)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Reload Activated!");
 	if (AHumanoid* humanoid = Cast<AHumanoid>(ActorInfo->AvatarActor))
 	{
 		Humanoid = humanoid;
-		// if (AHero* hero = Cast<AHero>(body))
-		// {
-		// 	Hero = hero;
-		// 	if (Hero->Equipment->AmmoSlot.Amount < 1) return;
-		// }
+		if (AHero* hero = Cast<AHero>(Humanoid))
+		{
+			Hero = hero;
+			if (Hero->Equipment->AmmoSlot.Amount < 1) return;
+		}
 		if (UGun* gun = Cast<UGun>(Humanoid->Equipment->GetWeapon(0)))
 		{
 			Gun = gun;
-			// if (Human->Equipment->AmmoSlot.Loaded >= Gun->MaxAmmo) return;
-			// UAnimMontage* MontageToPlay = Gun->ReloadMontage;
-			// Human->State = Reacting;
-			// Move = Human->GetCharacterMovement();
-			// Move->MaxWalkSpeed = Human->WalkSpeed;
-			// ClientSetSpeed(Human->WalkSpeed, Move);
-			// USkeletalMeshComponent* Mesh = Human->GetMesh();
-			// MultiPlayMontage(Mesh, MontageToPlay);
-			// UAnimInstance* AnimInstance = Mesh->GetAnimInstance();
-			// AnimInstance->Montage_Play(MontageToPlay);
-			// FOnMontageEnded BlendOutDelegate;
-			// BlendOutDelegate.BindUObject(this, &UReload::OnAnimationBlendOut);
-			// AnimInstance->Montage_SetBlendingOutDelegate(BlendOutDelegate, MontageToPlay);
+			if (Humanoid->Equipment->AmmoSlot.Loaded >= Gun->MaxAmmo) return;
+			UAnimMontage* MontageToPlay = Gun->ReloadMontage;
+			Humanoid->Combat->State = Reacting;
+			Move = Humanoid->GetCharacterMovement();
+			Move->MaxWalkSpeed = Humanoid->WalkSpeed;
+			ClientSetSpeed(Humanoid->WalkSpeed, Move);
+			USkeletalMeshComponent* Mesh = Humanoid->GetMesh();
+			MultiPlayMontage(Mesh, MontageToPlay);
+			UAnimInstance* AnimInstance = Mesh->GetAnimInstance();
+			AnimInstance->Montage_Play(MontageToPlay);
+			FOnMontageEnded BlendOutDelegate;
+			BlendOutDelegate.BindUObject(this, &UReload::OnAnimationBlendOut);
+			AnimInstance->Montage_SetBlendingOutDelegate(BlendOutDelegate, MontageToPlay);
 		}
 	}
 }
@@ -69,24 +68,24 @@ void UReload::MultiPlayMontage_Implementation(USkeletalMeshComponent* Mesh, UAni
 
 void UReload::OnAnimationBlendOut(UAnimMontage* animMontage, bool bInterrupted)
 {
-	// if (!bInterrupted)
-	// {
-	// if (Hero)
-	// {
-	// int missingAmount = Gun->MaxAmmo - Hero->Equipment->AmmoSlot.Loaded;
-	// if (Hero->Equipment->AmmoSlot.Amount >= missingAmount)
-	// {
-	// 	Hero->Equipment->AmmoSlot.Loaded += missingAmount;
-	// 	Hero->Equipment->AmmoSlot.Amount -= missingAmount;
-	// }
-	// else
-	// {
-	// 	Hero->Equipment->AmmoSlot.Loaded += Hero->Equipment->AmmoSlot.Amount;
-	// 	Hero->Equipment->AmmoSlot.Amount = 0;
-	// }
-	// }
-	// else Human->Equipment->AmmoSlot.Loaded = Gun->MaxAmmo;
-	// }
+	if (!bInterrupted)
+	{
+		if (Hero)
+		{
+			const int missing = Gun->MaxAmmo - Hero->Equipment->AmmoSlot.Loaded;
+			if (Hero->Equipment->AmmoSlot.Amount >= missing)
+			{
+				Hero->Equipment->AmmoSlot.Loaded += missing;
+				Hero->Equipment->AmmoSlot.Amount -= missing;
+			}
+			else
+			{
+				Hero->Equipment->AmmoSlot.Loaded += Hero->Equipment->AmmoSlot.Amount;
+				Hero->Equipment->AmmoSlot.Amount = 0;
+			}
+		}
+		else Humanoid->Equipment->AmmoSlot.Loaded = Gun->MaxAmmo;
+	}
 	K2_EndAbility();
 }
 

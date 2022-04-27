@@ -1,6 +1,7 @@
 ﻿#include "AvatarComponent.h"
 #include "ApparelComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "LNR/Game/Bitloner.h"
 #include "LNR/Game/BitlonerGameMode.h"
 #include "Net/UnrealNetwork.h"
 
@@ -24,7 +25,7 @@ void UAvatarComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 void UAvatarComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	GameMode = Cast<ABitlonerGameMode>(UGameplayStatics::GetGameMode(GetOwner()));
+	Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
 	RefreshAvatar();
 }
 
@@ -35,91 +36,95 @@ void UAvatarComponent::Setup(UApparelComponent* nApparel)
 
 void UAvatarComponent::RefreshAvatar()
 {
-	if (GameMode)
-	{
-		Apparel->Mesh->SetSkeletalMesh(GameMode->AvatarGlobals.Body[AvatarData.Body]);
-		Apparel->HairMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Hair[AvatarData.Hair]);
-		Apparel->BeardMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Beard[AvatarData.Beard]);
-		Apparel->SimgloveMesh->SetSkeletalMesh(GameMode->AvatarGlobals.Simglove);
-	}
+	if (Bitloner == nullptr) Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
+	Apparel->Mesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Body[AvatarData.Body]);
+	Apparel->HairMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Hair[AvatarData.Hair]);
+	Apparel->BeardMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Beard[AvatarData.Beard]);
+	Apparel->SimgloveMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Simglove);
 }
 
 void UAvatarComponent::RandomizeAvatar()
 {
-	if (GameMode)
-	{
-		SetBody(FMath::RandRange(0, GameMode->AvatarGlobals.Body.Num() - 1));
-		SetHair(FMath::RandRange(0, GameMode->AvatarGlobals.Hair.Num() - 1));
-		SetBeard(FMath::RandRange(0, GameMode->AvatarGlobals.Beard.Num() - 1));
-	}
+	SetBody(FMath::RandRange(0, Bitloner->AvatarGlobals.Body.Num() - 1));
+	SetHair(FMath::RandRange(0, Bitloner->AvatarGlobals.Hair.Num() - 1));
+	SetBeard(FMath::RandRange(0, Bitloner->AvatarGlobals.Beard.Num() - 1));
 }
 
 void UAvatarComponent::RandomizeOutfit()
 {
-	if (GameMode)
-	{
-		int r = FMath::RandRange(0, GameMode->AvatarGlobals.Outfit.Num() - 1);
-		UOutfit* outfit = GameMode->AvatarGlobals.Outfit[r].GetDefaultObject();
-		Apparel->SetOutfit(outfit);
-	}
+	int r = FMath::RandRange(0, Bitloner->AvatarGlobals.Outfit.Num() - 1);
+	UOutfit* outfit = Bitloner->AvatarGlobals.Outfit[r].GetDefaultObject();
+	Apparel->SetOutfit(outfit);
 }
 
 void UAvatarComponent::NextBody()
 {
 	AvatarData.Body += 1;
-	AvatarData.Body %= GameMode->AvatarGlobals.Body.Num();
+	AvatarData.Body %= Bitloner->AvatarGlobals.Body.Num();
 	SetBody(AvatarData.Body);
 }
 
 void UAvatarComponent::PreviousBody()
 {
 	AvatarData.Body -= 1;
-	if (AvatarData.Body < 0) AvatarData.Body = GameMode->AvatarGlobals.Body.Num() - 1;
+	if (AvatarData.Body < 0) AvatarData.Body = Bitloner->AvatarGlobals.Body.Num() - 1;
 	SetBody(AvatarData.Body);
 }
 
 void UAvatarComponent::SetBody(int val)
 {
-	AvatarData.Body = val;
-	RefreshAvatar();
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		AvatarData.Body = val;
+		RefreshAvatar();
+	}
+	else ServerSetBody(val);
 }
 
 void UAvatarComponent::NextHair()
 {
 	AvatarData.Hair += 1;
-	AvatarData.Hair %= GameMode->AvatarGlobals.Hair.Num();
+	AvatarData.Hair %= Bitloner->AvatarGlobals.Hair.Num();
 	SetHair(AvatarData.Hair);
 }
 
 void UAvatarComponent::PreviousHair()
 {
 	AvatarData.Hair -= 1;
-	if (AvatarData.Hair < 0) AvatarData.Hair = GameMode->AvatarGlobals.Hair.Num() - 1;
+	if (AvatarData.Hair < 0) AvatarData.Hair = Bitloner->AvatarGlobals.Hair.Num() - 1;
 	SetHair(AvatarData.Hair);
 }
 
 void UAvatarComponent::SetHair(int val)
 {
-	AvatarData.Hair = val;
-	RefreshAvatar();
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		AvatarData.Hair = val;
+		RefreshAvatar();
+	}
+	else ServerSetHair(val);
 }
 
 void UAvatarComponent::NextBeard()
 {
 	AvatarData.Beard += 1;
-	AvatarData.Beard %= GameMode->AvatarGlobals.Beard.Num();
+	AvatarData.Beard %= Bitloner->AvatarGlobals.Beard.Num();
 	SetBeard(AvatarData.Beard);
 }
 
 void UAvatarComponent::PreviousBeard()
 {
 	AvatarData.Beard -= 1;
-	if (AvatarData.Beard < 0) AvatarData.Beard = GameMode->AvatarGlobals.Beard.Num() - 1;
+	if (AvatarData.Beard < 0) AvatarData.Beard = Bitloner->AvatarGlobals.Beard.Num() - 1;
 	SetBeard(AvatarData.Beard);
 }
 
 void UAvatarComponent::SetBeard(int val)
 {
-	AvatarData.Beard = val;
-	RefreshAvatar();
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		AvatarData.Beard = val;
+		RefreshAvatar();
+	}
+	else ServerSetBeard(val);
 }

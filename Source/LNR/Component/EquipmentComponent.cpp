@@ -25,6 +25,8 @@ UEquipmentComponent::UEquipmentComponent()
 void UEquipmentComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UEquipmentComponent, AmmoSlot);
+	DOREPLIFETIME(UEquipmentComponent, Consumable);
 	DOREPLIFETIME_CONDITION_NOTIFY(UEquipmentComponent, Weapon, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UEquipmentComponent, Holster, COND_None, REPNOTIFY_Always);
 }
