@@ -1,10 +1,17 @@
 ﻿#include "InventoryComponent.h"
+#include "Net/UnrealNetwork.h"
 
 UInventoryComponent::UInventoryComponent()
 {
 	SetIsReplicatedByDefault(true);
 	PrimaryComponentTick.bCanEverTick = false;
 	Slots.Init(FSlot(), 64);
+}
+
+void UInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UInventoryComponent, Slots);
 }
 
 bool UInventoryComponent::Add(UItem* item, int amount)

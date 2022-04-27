@@ -10,7 +10,7 @@ class LNR_API UInventoryComponent : public UActorComponent
 	GENERATED_BODY()
 public:
 	UInventoryComponent();
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(Replicated, BlueprintReadWrite, EditAnywhere)
 	TArray<FSlot> Slots;
 	UFUNCTION(BlueprintCallable)
 	bool Add(UItem* item, int amount = 1);
