@@ -6,6 +6,8 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "LNR/Body/Human.h"
+#include "LNR/Component/AvatarComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Widget/InfoWidget.h"
 
@@ -43,12 +45,13 @@ void ANpc::OnConstruction(const FTransform& transform)
 void ANpc::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	Body = Cast<ABody>(InPawn);
 	SpawnPoint = InPawn->GetActorLocation();
 }
 
 void ANpc::OnPawnDetected(const TArray<AActor*>& DetectedPawns)
 {
-	if (!Body) Body = Cast<ABody>(GetOwner());
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Pawn Detected!");
 	if (Body)
 	{
 		for (int i = 0; i < DetectedPawns.Num(); i++)

@@ -26,4 +26,6 @@ struct LNR_API FAvatarGlobals : public FTableRowBase
 	TArray<USkeletalMesh*> Beard;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMesh* Simglove;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class UOutfit*> Outfit;
 };

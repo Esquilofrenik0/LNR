@@ -44,6 +44,16 @@ void UAvatarComponent::RefreshAvatar()
 	}
 }
 
+void UAvatarComponent::RandomizeAvatar()
+{
+	if (GameMode)
+	{
+		SetBody(FMath::RandRange(0, GameMode->AvatarGlobals.Body.Num()-1));
+		SetHair(FMath::RandRange(0, GameMode->AvatarGlobals.Hair.Num())-1);
+		SetBeard(FMath::RandRange(0, GameMode->AvatarGlobals.Beard.Num()-1));
+	}
+}
+
 void UAvatarComponent::NextBody()
 {
 	AvatarData.Body += 1;

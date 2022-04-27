@@ -1,4 +1,5 @@
 #include "Human.h"
+#include "LNR/AI/Npc.h"
 #include "LNR/Component/ApparelComponent.h"
 #include "LNR/Component/AvatarComponent.h"
 
@@ -14,4 +15,5 @@ AHuman::AHuman()
 void AHuman::BeginPlay()
 {
 	Super::BeginPlay();
+	if (ANpc* npc = Cast<ANpc>(GetController())) Avatar->RandomizeAvatar();
 }

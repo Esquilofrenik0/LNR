@@ -21,7 +21,7 @@ public:
 	FName DestinationKey;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float PatrolDistance = 50;
+	float PatrolDistance = 1000000;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Sense)
 	float SightRadius = 1000.0f;
