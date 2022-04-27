@@ -48,16 +48,9 @@ UAnimMontage* UCombatComponent::GetCombatMontage()
 	if (Humanoid && Humanoid->Equipment->GetWeapon(0) != nullptr)
 	{
 		UWeapon* w = Humanoid->Equipment->GetWeapon(0);
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
-		                                 "Weapon[0] is not null. Name is: " + w->GetName());
 		return w->CombatMontage[Combo];
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
-		                                 "Weapon[0] is null! Returning Unarmed Montage...");
-		return UnarmedMontage[Combo];
-	}
+	else return UnarmedMontage[Combo];
 }
 
 int UCombatComponent::GetMaxCombo()
