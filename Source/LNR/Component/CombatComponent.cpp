@@ -44,13 +44,13 @@ UAnimMontage* UCombatComponent::GetCombatMontage()
 {
 	if (UWeapon* w = Body->Equipment->GetWeapon(0))
 	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red,
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
 		                                 "Weapon[0] is not null. Name is: " + w->GetName());
 		return w->CombatMontage[Combo];
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red,
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
 		                                 "Weapon[0] is null! Returning Unarmed Montage...");
 		return UnarmedMontage[Combo];
 	}

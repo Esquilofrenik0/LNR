@@ -64,13 +64,13 @@ void ABody::BeginPlay()
 	Super::BeginPlay();
 	RefreshAttributes();
 	Info->Init(Attributes);
-	Action->InitAbilityActorInfo(this, this);
-	if (HasAuthority()) Action->InitializeAbilities();
 }
 
 void ABody::Restart()
 {
 	Super::Restart();
+	Action->InitAbilityActorInfo(this, this);
+	if (HasAuthority()) Action->InitializeAbilities();
 }
 
 float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,

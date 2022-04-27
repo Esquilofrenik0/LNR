@@ -1,5 +1,8 @@
 ﻿#include "HudBitloner.h"
+
+#include "Playor.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Widget/ContainerWidget.h"
 #include "LNR/Widget/CraftWidget.h"
@@ -30,6 +33,21 @@ void AHudBitloner::BeginPlay()
 	}
 }
 
+void AHudBitloner::SetInputUi(bool val)
+{
+	InputUi = val;
+	if(val)
+	{
+		Hero->Player->SetInputMode(FInputModeGameAndUI());
+		Hero->Player->SetShowMouseCursor(true);
+	}
+	else
+	{
+		Hero->Player->SetInputMode(FInputModeGameOnly());
+		Hero->Player->SetShowMouseCursor(false);
+	}
+}
+
 void AHudBitloner::ShowInteractionIcon(bool val)
 {
 	if (val) HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Visible);
@@ -40,6 +58,7 @@ void AHudBitloner::ShowInventory(bool val)
 {
 	if (val)
 	{
+		SetInputUi(true);
 		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Visible);
 		if (Hero->Container)
 		{
@@ -54,6 +73,7 @@ void AHudBitloner::ShowInventory(bool val)
 	}
 	else
 	{
+		SetInputUi(false);
 		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		Hero->Container = nullptr;
 	}

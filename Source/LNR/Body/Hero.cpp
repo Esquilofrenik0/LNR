@@ -188,6 +188,7 @@ void AHero::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 
 void AHero::StartAttack()
 {
+	if(Player->Hud->InputUi) return;
 	SetAttackPressed(true);
 	Attack();
 }
@@ -199,6 +200,7 @@ void AHero::StopAttack()
 
 void AHero::StartBlock()
 {
+	if(Player->Hud->InputUi) return;
 	SetBlockPressed(true);
 	Block();
 }
@@ -356,22 +358,26 @@ void AHero::TryWeaponSwap()
 
 void AHero::StartCycleCamera()
 {
+	if(Player->Hud->InputUi) return;
 	FirstPerson = !FirstPerson;
 	ResetCamera();
 }
 
 void AHero::TurnAtRate(float Rate)
 {
+	if(Player->Hud->InputUi) return;
 	AddControllerYawInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
 void AHero::LookUpAtRate(float Rate)
 {
+	if(Player->Hud->InputUi) return;
 	AddControllerPitchInput(Rate * TurnRateGamepad * GetWorld()->GetDeltaSeconds());
 }
 
 void AHero::MoveForward(float Value)
 {
+	if(Player->Hud->InputUi) return;
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -383,6 +389,7 @@ void AHero::MoveForward(float Value)
 
 void AHero::MoveRight(float Value)
 {
+	if(Player->Hud->InputUi) return;
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
 		const FRotator Rotation = Controller->GetControlRotation();

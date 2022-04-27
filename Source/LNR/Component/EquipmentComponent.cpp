@@ -132,7 +132,11 @@ void UEquipmentComponent::EquipWeapon(UWeapon* nWeapon)
 		break;
 	case EWeaponSlot::LeftHand:
 		slot = 1;
-		if (Weapon[1] != nullptr) UnequipWeapon(1);
+		if (Weapon[1] != nullptr)
+		{
+			if (Weapon[0] != nullptr && Weapon[0]->Type == TwoHand) UnequipWeapon(0);
+			UnequipWeapon(1);
+		}
 		break;
 	case EWeaponSlot::TwoHand:
 		slot = 0;
@@ -157,20 +161,17 @@ void UEquipmentComponent::WeaponSwap()
 {
 	if (GetOwnerRole() == ROLE_Authority)
 	{
-		TArray<UWeapon*> oldWeapon;
-		oldWeapon.Init(nullptr, 4);
-		for (int i = 0; i < 4; i++) oldWeapon[i] = Weapon[i];
-		Weapon[0] = oldWeapon[2];
-		Weapon[1] = oldWeapon[3];
-		Weapon[2] = oldWeapon[0];
-		Weapon[3] = oldWeapon[1];
+		TArray<UWeapon*> nWeapon;
+		nWeapon.Init(nullptr, 4);
+		nWeapon[0] = Weapon[2];
+		nWeapon[1] = Weapon[3];
+		nWeapon[2] = Weapon[0];
+		nWeapon[3] = Weapon[1];
+		Weapon = nWeapon;
 		Dress();
 		// ResetLoadedAmmo();
-		if (Body)
-		{
-			Body->Combat->Combo = 0;
-			Body->RefreshAttributes();
-		}
+		Body->Combat->Combo = 0;
+		Body->RefreshAttributes();
 	}
 	else ServerWeaponSwap();
 }
