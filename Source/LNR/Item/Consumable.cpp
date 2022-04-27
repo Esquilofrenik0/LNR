@@ -2,16 +2,12 @@
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
-// #include "LNR/Component/InventoryComponent.h"
+#include "LNR/Component/InventoryComponent.h"
 
 void UConsumable::UseItem(AHero* nHero, int amount)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, "Consumable Use Item not Implemented!");
-	// if (nHero != nullptr)
-	// {
-	// 	nHero->Equipment->EquipConsumable(this, amount);
-	// 	nHero->Inventory->RemoveItem(this, amount);
-	// }
+	nHero->Equipment->EquipConsumable(this, amount);
+	nHero->Inventory->Remove(this, amount);
 }
 
 FString UConsumable::PrintItemData(bool withDescription)

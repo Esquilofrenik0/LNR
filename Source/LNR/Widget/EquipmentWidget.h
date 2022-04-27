@@ -38,6 +38,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* AmmoSlot;
 
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* Consumable1Slot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* Consumable2Slot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* Consumable3Slot;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class USlotWidget* Consumable4Slot;
+
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;

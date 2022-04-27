@@ -70,6 +70,11 @@ void ASoul::OnShowInfo_Implementation(AHero* hero, bool val)
 	Info->Show(val);
 }
 
+AActor* ASoul::SpawnActor(const TSubclassOf<AActor> toSpawn, const FVector location, const FRotator rotation) const
+{
+	return GetWorld()->SpawnActor<AActor>(toSpawn, location, rotation);
+}
+
 void ASoul::SetRagdoll(bool value)
 {
 	if (HasAuthority()) MultiSetRagdoll(value);

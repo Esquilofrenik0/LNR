@@ -13,6 +13,7 @@
 #include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/Component/InfoComponent.h"
 #include "LNR/Component/InventoryComponent.h"
+#include "LNR/DamageType/RangedDamage.h"
 #include "LNR/Data/Dropable.h"
 #include "LNR/Game/Bitloner.h"
 #include "LNR/Interactor/Tombstone.h"
@@ -34,8 +35,9 @@ void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 	DOREPLIFETIME(ABody, Pitch);
 	DOREPLIFETIME(ABody, MovementDirection);
 	DOREPLIFETIME(ABody, Tombstone);
-	DOREPLIFETIME_CONDITION_NOTIFY(ABody, AttackPressed, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(ABody, BlockPressed, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME(ABody, AttackPressed);
+	DOREPLIFETIME(ABody, BlockPressed);
+	DOREPLIFETIME(ABody, SprintPressed);
 }
 
 void ABody::OnConstruction(const FTransform& Transform)
@@ -281,4 +283,40 @@ void ABody::DestroyCorpse()
 {
 	GetWorldTimerManager().ClearTimer(RespawnHandle);
 	Destroy();
+}
+
+void ABody::FireDamage_Implementation(UXFireInstance* fireInstance, FXFireSettings fireSettings, float maxDamage,
+                                      float damage)
+{
+	IXFireInterface::FireDamage_Implementation(fireInstance, fireSettings, maxDamage, damage);
+	TakeDamage(damage, FDamageEvent(URangedDamage::StaticClass()), nullptr, nullptr);
+}
+
+bool ABody::OnForceGravityEnabled_Implementation()
+{
+	GetCharacterMovement()->GravityScale = 1.0;
+	return true;
+}
+
+bool ABody::OnForceGravityDisabled_Implementation()
+{
+	GetCharacterMovement()->GravityScale = 0.0;
+	return true;
+}
+
+bool ABody::IsForceEnabled_Implementation()
+{
+	return true;
+}
+
+UPrimitiveComponent* ABody::GetForceComponent_Implementation()
+{
+	return GetCapsuleComponent();
+}
+
+bool ABody::AddCustomForce_Implementation(UXForceComponent* forceComponent, FVector force)
+{
+	UCharacterMovementComponent* charMov = GetCharacterMovement();
+	charMov->AddForce(charMov->Mass * force);
+	return true;
 }

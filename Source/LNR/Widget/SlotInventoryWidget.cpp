@@ -13,6 +13,6 @@ void USlotInventoryWidget::Click()
 	{
 		if (Hero->Container) Hero->Container->Store(Hero->Inventory, Hero->Inventory->Slots[SlotNumber].Item,
 		                                            Hero->Inventory->Slots[SlotNumber].Amount);
-		else Hero->Inventory->Slots[SlotNumber].Item->UseItem(Hero, 1);
+		else Hero->Inventory->Slots[SlotNumber].Item->UseItem(Hero, Hero->Inventory->Slots[SlotNumber].Amount);
 	}
 }

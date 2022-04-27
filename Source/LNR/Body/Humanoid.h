@@ -14,4 +14,10 @@ public:
 	class UEquipmentComponent* Equipment;
 	virtual void OnConstruction(const FTransform& Transform) override;
 	virtual void RefreshAttributes() override;
+
+	UFUNCTION(BlueprintCallable)
+	void ActivateConsumable(int index);
+	UFUNCTION(Server, Reliable)
+	void ServerActivateConsumable(int index);
+	void ServerActivateConsumable_Implementation(int index) { ActivateConsumable(index); }
 };

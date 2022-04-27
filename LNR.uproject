@@ -34,6 +34,31 @@
 		{
 			"Name": "GameplayAbilities",
 			"Enabled": true
+		},
+		{
+			"Name": "XFire",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/49fb7d69d7df41bf94f862ef8d743e02"
+		},
+		{
+			"Name": "XHoverCar",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/39eb60457a624c4d9456e20b09452673"
+		},
+		{
+			"Name": "XShip",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/3cd8726b52c541bca615b86724b48108"
+		},
+		{
+			"Name": "XForce",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f9a431bd85074536afe1dbb982252807"
+		},
+		{
+			"Name": "XProjectile",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/d14f2ab896874b29baac1e6e404828e7"
 		}
 	]
 }

@@ -30,6 +30,11 @@ void UEquipmentWidget::Init(AHero* nHero)
 
 	OutfitSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipOutfit);
 	AmmoSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipAmmo);
+
+	Consumable1Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable1);
+	Consumable2Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable2);
+	Consumable3Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable3);
+	Consumable4Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable4);
 }
 
 void UEquipmentWidget::Refresh() const
@@ -64,6 +69,14 @@ void UEquipmentWidget::RefreshWeapon(UEquipmentComponent* equipment) const
 	else RightOffHandSlot->Setup(nullptr);
 	if (equipment->Weapon[3] != nullptr) LeftOffHandSlot->Setup(equipment->Weapon[3]->Icon);
 	else LeftOffHandSlot->Setup(nullptr);
-	if (equipment->AmmoSlot.Ammo != nullptr) AmmoSlot->Setup(equipment->AmmoSlot.Ammo->Icon);
+	if (equipment->AmmoSlot.Ammo != nullptr && equipment->AmmoSlot.Amount > 0) AmmoSlot->Setup(equipment->AmmoSlot.Ammo->Icon);
 	else AmmoSlot->Setup(nullptr);
+	if (equipment->Consumable[0].Consumable != nullptr && equipment->Consumable[0].Amount > 0) Consumable1Slot->Setup(equipment->Consumable[0].Consumable->Icon);
+	else Consumable1Slot->Setup(nullptr);
+	if (equipment->Consumable[1].Consumable != nullptr && equipment->Consumable[1].Amount > 0) Consumable2Slot->Setup(equipment->Consumable[1].Consumable->Icon);
+	else Consumable2Slot->Setup(nullptr);
+	if (equipment->Consumable[2].Consumable != nullptr && equipment->Consumable[2].Amount > 0) Consumable3Slot->Setup(equipment->Consumable[2].Consumable->Icon);
+	else Consumable3Slot->Setup(nullptr);
+	if (equipment->Consumable[3].Consumable != nullptr && equipment->Consumable[3].Amount > 0) Consumable4Slot->Setup(equipment->Consumable[3].Consumable->Icon);
+	else Consumable4Slot->Setup(nullptr);
 }

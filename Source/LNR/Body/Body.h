@@ -3,11 +3,13 @@
 #include "Soul.h"
 #include "AbilitySystemInterface.h"
 #include "LNR/LNR.h"
+#include "XFireInterface.h"
+#include "XForceInterface.h"
 #include "LNR/Component/ActionComponent.h"
 #include "Body.generated.h"
 
 UCLASS()
-class LNR_API ABody : public ASoul, public IAbilitySystemInterface
+class LNR_API ABody : public ASoul, public IAbilitySystemInterface, public IXFireInterface, public IXForceInterface
 {
 	GENERATED_BODY()
 public:
@@ -113,4 +115,13 @@ public:
 	void ServerDropTombstone();
 	void ServerDropTombstone_Implementation() { DropTombstone(); }
 	virtual void ExecuteDropTombstone();
+	
+	virtual void FireDamage_Implementation(UXFireInstance* XFireInstance, FXFireSettings XFireSettings, float MaxDamage, float Damage) override;
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnSpawnProjectile(FVector location, FVector direction, float speed, float gravity, float lifeTime);
+	virtual bool OnForceGravityEnabled_Implementation() override;
+	virtual bool OnForceGravityDisabled_Implementation() override;
+	virtual bool IsForceEnabled_Implementation() override;
+	virtual UPrimitiveComponent* GetForceComponent_Implementation() override;
+	virtual bool AddCustomForce_Implementation(UXForceComponent* XForceComponent, FVector Force) override;
 };

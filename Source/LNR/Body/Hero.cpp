@@ -316,7 +316,8 @@ void AHero::StartInventory()
 void AHero::StartAction1()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action1Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
-	Action1();
+	if (BlockPressed) ActivateConsumable(0);
+	else Action1();
 }
 
 void AHero::StopAction1()
@@ -327,7 +328,8 @@ void AHero::StopAction1()
 void AHero::StartAction2()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action2Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
-	Action2();
+	if (BlockPressed) ActivateConsumable(1);
+	else Action2();
 }
 
 void AHero::StopAction2()
@@ -338,7 +340,8 @@ void AHero::StopAction2()
 void AHero::StartAction3()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action3Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
-	Action3();
+	if (BlockPressed) ActivateConsumable(2);
+	else Action3();
 }
 
 void AHero::StopAction3()
@@ -349,7 +352,8 @@ void AHero::StopAction3()
 void AHero::StartAction4()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action4Slot->SetColorAndOpacity(FLinearColor(0, 1, 0, 1));
-	Action4();
+	if (BlockPressed) ActivateConsumable(3);
+	else Action4();
 }
 
 void AHero::StopAction4()

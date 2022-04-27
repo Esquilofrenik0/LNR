@@ -1,5 +1,6 @@
 #include "Humanoid.h"
 #include "LNR/Component/AttributesComponent.h"
+#include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 
 AHumanoid::AHumanoid()
@@ -26,4 +27,21 @@ void AHumanoid::RefreshAttributes()
 		Attributes->Damage += ow->Damage;
 		Attributes->Defense += ow->Defense;
 	}
+}
+
+void AHumanoid::ActivateConsumable(int index)
+{
+	if (HasAuthority())
+	{
+		if (Equipment->Consumable[index].Consumable && Equipment->Consumable[index].Amount > 0)
+		{
+			if (Combat->State == Idle || Combat->State == Blocking)
+			{
+				Equipment->Consumable[index].Consumable->UseConsumable(this);
+				Equipment->Consumable[index].Amount -= 1;
+				if (Equipment->Consumable[index].Amount <= 0) Equipment->Consumable[index].Consumable = nullptr;
+			}
+		}
+	}
+	else ServerActivateConsumable(index);
 }

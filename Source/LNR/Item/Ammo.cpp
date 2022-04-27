@@ -10,9 +10,8 @@ UAmmo::UAmmo()
 
 void UAmmo::UseItem(AHero* hero, int amount)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Ammo Use Item Not Implemented!");
-	// hero->Equipment->EquipAmmo(this, amount);
-	// hero->Inventory->RemoveItem(this, amount);
+	hero->Equipment->EquipAmmo(this, amount);
+	hero->Inventory->Remove(this, amount);
 }
 
 FString UAmmo::PrintItemData(bool withDescription)

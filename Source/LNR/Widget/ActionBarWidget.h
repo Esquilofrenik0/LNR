@@ -18,6 +18,7 @@ public:
 	class USlotWidget* Action3Slot;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* Action4Slot;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;
 };

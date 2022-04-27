@@ -78,24 +78,35 @@ public:
 	void UnequipWeapon(int slot);
 
 	UFUNCTION(BlueprintCallable)
-	void SetAmmo(UAmmo* ammo, int amount);
+	void SetAmmo(UAmmo* nAmmo, int amount);
 	UFUNCTION(Server, Reliable)
-	void ServerSetAmmo(UAmmo* ammo, int amount);
-	void ServerSetAmmo_Implementation(UAmmo* ammo, int amount) { SetAmmo(ammo, amount); }
+	void ServerSetAmmo(UAmmo* nAmmo, int amount);
+	void ServerSetAmmo_Implementation(UAmmo* nAmmo, int amount) { SetAmmo(nAmmo, amount); }
 
 	UFUNCTION(BlueprintCallable)
-	void EquipAmmo(UAmmo* ammo, int amount);
+	void EquipAmmo(UAmmo* nAmmo, int amount);
 	UFUNCTION(BlueprintCallable)
 	void UnequipAmmo();
 	UFUNCTION(BlueprintCallable)
 	void ResetLoadedAmmo();
-	
+
 	UFUNCTION(BlueprintCallable)
+	void SetConsumable(UConsumable* nConsumable, int amount, int index);
+	UFUNCTION(Server, Reliable)
+	void ServerSetConsumable(UConsumable* nConsumable, int amount, int index);
+	void ServerSetConsumable_Implementation(UConsumable* nConsumable, int amount, int index) { SetConsumable(nConsumable, amount, index); }
+
+	UFUNCTION(BlueprintCallable)
+	void EquipConsumable(UConsumable* nConsumable, int amount, int index = -1);
+	UFUNCTION(BlueprintCallable)
+	void UnequipConsumable(int index);
+
 	void UnequipRightHand() { UnequipWeapon(0); };
-	UFUNCTION(BlueprintCallable)
 	void UnequipLeftHand() { UnequipWeapon(1); };
-	UFUNCTION(BlueprintCallable)
 	void UnequipRightOffHand() { UnequipWeapon(2); };
-	UFUNCTION(BlueprintCallable)
 	void UnequipLeftOffHand() { UnequipWeapon(3); };
+	void UnequipConsumable1() { UnequipConsumable(0); };
+	void UnequipConsumable2() { UnequipConsumable(1); };
+	void UnequipConsumable3() { UnequipConsumable(2); };
+	void UnequipConsumable4() { UnequipConsumable(3); };
 };

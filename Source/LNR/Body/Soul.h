@@ -9,7 +9,7 @@ class LNR_API ASoul : public ACharacter, public IInteract
 	GENERATED_BODY()
 public:
 	ASoul();
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UNavigationInvokerComponent* NavigationInvoker;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -37,6 +37,8 @@ public:
 	virtual void OnInteract_Implementation(AHero* hero) override;
 	virtual void OnShowInfo_Implementation(AHero* hero, bool val) override;
 
+	UFUNCTION(BlueprintCallable)
+	AActor* SpawnActor(const TSubclassOf<AActor> toSpawn, const FVector location, const FRotator rotation) const;
 	UFUNCTION(BlueprintCallable)
 	void SetRagdoll(bool value);
 	UFUNCTION(Server, Reliable)

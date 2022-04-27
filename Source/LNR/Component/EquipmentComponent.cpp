@@ -20,6 +20,7 @@ UEquipmentComponent::UEquipmentComponent()
 	RightHolster = CreateDefaultSubobject<UWeaponComponent>("RightHolster");
 	LeftHolster = CreateDefaultSubobject<UWeaponComponent>("LeftHolster");
 	Weapon.Init(nullptr, 4);
+	Consumable.Init(FConsumableSlot(), 4);
 }
 
 void UEquipmentComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -178,21 +179,21 @@ void UEquipmentComponent::WeaponSwap()
 	else ServerWeaponSwap();
 }
 
-void UEquipmentComponent::SetAmmo(UAmmo* ammo, int amount)
+void UEquipmentComponent::SetAmmo(UAmmo* nAmmo, int amount)
 {
 	if (GetOwnerRole() == ROLE_Authority)
 	{
-		AmmoSlot.Ammo = ammo;
+		AmmoSlot.Ammo = nAmmo;
 		AmmoSlot.Amount = amount;
 		AmmoSlot.Loaded = 0;
 	}
-	else ServerSetAmmo(ammo, amount);
+	else ServerSetAmmo(nAmmo, amount);
 }
 
-void UEquipmentComponent::EquipAmmo(UAmmo* ammo, int amount)
+void UEquipmentComponent::EquipAmmo(UAmmo* nAmmo, int amount)
 {
 	UnequipAmmo();
-	SetAmmo(ammo, amount);
+	SetAmmo(nAmmo, amount);
 }
 
 void UEquipmentComponent::UnequipAmmo()
@@ -208,4 +209,42 @@ void UEquipmentComponent::ResetLoadedAmmo()
 {
 	AmmoSlot.Amount += AmmoSlot.Loaded;
 	AmmoSlot.Loaded = 0;
+}
+
+void UEquipmentComponent::SetConsumable(UConsumable* nConsumable, int amount, int index)
+{
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		Consumable[index].Consumable = nConsumable;
+		Consumable[index].Amount = amount;
+	}
+	else ServerSetConsumable(nConsumable, amount, index);
+}
+
+void UEquipmentComponent::EquipConsumable(UConsumable* nConsumable, int amount, int index)
+{
+	if (index == -1)
+	{
+		index = 0;
+		for (int i = 0; i < Consumable.Num(); i++)
+		{
+			if (Consumable[i].Consumable == nullptr)
+			{
+				index = i;
+				break;
+			}
+		}
+	}
+	UnequipConsumable(index);
+	SetConsumable(nConsumable, amount, index);
+}
+
+void UEquipmentComponent::UnequipConsumable(int index)
+{
+	if (Hero && Consumable[index].Amount > 0 && Consumable[index].Consumable != nullptr)
+	{
+		Hero->Inventory->Add(Consumable[index].Consumable, Consumable[index].Amount);
+	}
+	Consumable[index].Amount = 0;
+	Consumable[index].Consumable = nullptr;
 }
