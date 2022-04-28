@@ -50,8 +50,8 @@ public:
 	virtual void OnComponentCreated() override;
 	void Setup(USkeletalMeshComponent* nMesh);
 	void Dress();
-	void CreateDynamicMaterial();
-	TArray<UMaterialInstanceDynamic*> GetCharacterMaterials();
+	void CreateDynamicMaterial() const;
+	TArray<UMaterialInstanceDynamic*> GetCharacterMaterials() const;
 	void SetMask(UTexture2D* mask);
 	void SetOutfit(UOutfit* nOutfit);
 	UFUNCTION(Server, Reliable)

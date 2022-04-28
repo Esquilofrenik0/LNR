@@ -148,13 +148,13 @@ void UApparelComponent::Dress()
 	}
 }
 
-void UApparelComponent::CreateDynamicMaterial()
+void UApparelComponent::CreateDynamicMaterial() const
 {
 	TArray<UMaterialInterface*> meshMats = Mesh->GetMaterials();
 	for (int i = 0; i < meshMats.Num(); i++) Mesh->CreateDynamicMaterialInstance(i, meshMats[i]);
 }
 
-TArray<UMaterialInstanceDynamic*> UApparelComponent::GetCharacterMaterials()
+TArray<UMaterialInstanceDynamic*> UApparelComponent::GetCharacterMaterials() const
 {
 	TArray<UMaterialInstanceDynamic*> toReturn;
 	toReturn.Empty();
