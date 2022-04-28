@@ -43,6 +43,8 @@ public:
 	USkeletalMeshComponent* BeardMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	USkeletalMeshComponent* SimgloveMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	USkeletalMeshComponent* UnderwearMesh;
 
 	virtual void BeginPlay() override;
 	virtual void OnComponentCreated() override;

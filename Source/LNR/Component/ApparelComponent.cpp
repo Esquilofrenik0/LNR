@@ -22,6 +22,7 @@ UApparelComponent::UApparelComponent()
 	HairMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Hair");
 	BeardMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Beard");
 	SimgloveMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Simglove");
+	UnderwearMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Underwear");
 	Armor = TArray<UArmor*>();
 	Armor.Reset();
 	for (int i = 0; i < 5; i++) Armor.Add(nullptr);
@@ -69,6 +70,8 @@ void UApparelComponent::Setup(USkeletalMeshComponent* nMesh)
 	BeardMesh->SetMasterPoseComponent(Mesh);
 	SimgloveMesh->AttachToComponent(Mesh, FAttachmentTransformRules::KeepRelativeTransform);
 	SimgloveMesh->SetMasterPoseComponent(Mesh);
+	UnderwearMesh->AttachToComponent(Mesh, FAttachmentTransformRules::KeepRelativeTransform);
+	UnderwearMesh->SetMasterPoseComponent(Mesh);
 	CreateDynamicMaterial();
 }
 
@@ -86,28 +89,62 @@ void UApparelComponent::Dress()
 {
 	if (Outfit)
 	{
-		HeadMesh->SetSkeletalMesh(nullptr);
+		if (Outfit->HideHelmet)
+		{
+			HairMesh->SetVisibility(false);
+			HeadMesh->SetSkeletalMesh(nullptr);
+		}
+		else
+		{
+			if (Armor[0])
+			{
+				if (Armor[0]->HideHair) HairMesh->SetVisibility(false);
+				HeadMesh->SetSkeletalMesh(Armor[0]->SkeletalMesh);
+			}
+			else
+			{
+				HairMesh->SetVisibility(true);
+				HeadMesh->SetSkeletalMesh(nullptr);
+			}
+		}
 		BackMesh->SetSkeletalMesh(nullptr);
 		ChestMesh->SetSkeletalMesh(nullptr);
 		LegsMesh->SetSkeletalMesh(nullptr);
 		FeetMesh->SetSkeletalMesh(nullptr);
+		UnderwearMesh->SetVisibility(false);
 		OutfitMesh->SetSkeletalMesh(Outfit->SkeletalMesh);
 		SetMask(Outfit->Mask);
 	}
 	else
 	{
-		if (Armor[0]) HeadMesh->SetSkeletalMesh(Armor[0]->SkeletalMesh);
-		else HeadMesh->SetSkeletalMesh(nullptr);
+		OutfitMesh->SetSkeletalMesh(nullptr);
+		SetMask(nullptr);
+		if (Armor[0])
+		{
+			if (Armor[0]->HideHair) HairMesh->SetVisibility(false);
+			HeadMesh->SetSkeletalMesh(Armor[0]->SkeletalMesh);
+		}
+		else
+		{
+			HairMesh->SetVisibility(true);
+			HeadMesh->SetSkeletalMesh(nullptr);
+		}
 		if (Armor[1]) BackMesh->SetSkeletalMesh(Armor[1]->SkeletalMesh);
 		else BackMesh->SetSkeletalMesh(nullptr);
 		if (Armor[2]) ChestMesh->SetSkeletalMesh(Armor[2]->SkeletalMesh);
 		else ChestMesh->SetSkeletalMesh(nullptr);
-		if (Armor[3]) LegsMesh->SetSkeletalMesh(Armor[3]->SkeletalMesh);
-		else LegsMesh->SetSkeletalMesh(nullptr);
+		if (Armor[3])
+		{
+			UnderwearMesh->SetVisibility(false);
+			LegsMesh->SetSkeletalMesh(Armor[3]->SkeletalMesh);
+		}
+		else
+		{
+			UnderwearMesh->SetVisibility(true);
+			LegsMesh->SetSkeletalMesh(nullptr);
+		}
 		if (Armor[4]) FeetMesh->SetSkeletalMesh(Armor[4]->SkeletalMesh);
 		else FeetMesh->SetSkeletalMesh(nullptr);
-		OutfitMesh->SetSkeletalMesh(nullptr);
-		SetMask(nullptr);
 	}
 }
 
