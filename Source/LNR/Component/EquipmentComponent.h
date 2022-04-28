@@ -101,12 +101,20 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UnequipConsumable(int index);
 
+	UFUNCTION(BlueprintCallable)
 	void UnequipRightHand() { UnequipWeapon(0); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipLeftHand() { UnequipWeapon(1); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipRightOffHand() { UnequipWeapon(2); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipLeftOffHand() { UnequipWeapon(3); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipConsumable1() { UnequipConsumable(0); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipConsumable2() { UnequipConsumable(1); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipConsumable3() { UnequipConsumable(2); };
+	UFUNCTION(BlueprintCallable)
 	void UnequipConsumable4() { UnequipConsumable(3); };
 };
