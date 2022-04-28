@@ -9,13 +9,13 @@ struct LNR_API FSpawnTemplate : public FTableRowBase
 	GENERATED_BODY()
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSubclassOf<ABody> Body;
+	TSubclassOf<ASoul> Soul;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int Weight;
 
 	FSpawnTemplate()
 	{
-		Body = nullptr;
+		Soul = nullptr;
 		Weight = 1;
 	}
 };

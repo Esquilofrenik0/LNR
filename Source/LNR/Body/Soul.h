@@ -29,6 +29,8 @@ public:
 	UCharacterMovementComponent* Movement;
 	UPROPERTY(BlueprintReadWrite)
 	UAnimInstance* Animator;
+	UPROPERTY(BlueprintReadWrite)
+	FVector SpawnPoint;
 
 	void Init();
 	virtual void OnConstruction(const FTransform& Transform) override;

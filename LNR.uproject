@@ -63,6 +63,11 @@
 		{
 			"Name": "ChaosVehiclesPlugin",
 			"Enabled": true
+		},
+		{
+			"Name": "AIOptimizer",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e91ece0a286e463e8a933a6c0edb83ed"
 		}
 	]
 }

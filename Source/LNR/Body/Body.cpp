@@ -27,6 +27,7 @@ ABody::ABody()
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
 	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
+	Respawns = true;
 }
 
 void ABody::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -282,6 +283,7 @@ void ABody::Die()
 void ABody::DestroyCorpse()
 {
 	GetWorldTimerManager().ClearTimer(RespawnHandle);
+	if (Respawns) SpawnActor(GetClass(), SpawnPoint, FRotator());
 	Destroy();
 }
 

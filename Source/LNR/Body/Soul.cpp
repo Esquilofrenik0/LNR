@@ -12,6 +12,7 @@ ASoul::ASoul()
 {
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = false;
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	GetCapsuleComponent()->InitCapsuleSize(35.f, 85.0f);
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -46,6 +47,7 @@ void ASoul::Init()
 void ASoul::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
+	SpawnPoint = Transform.GetLocation();
 	Info->Setup(this);
 }
 

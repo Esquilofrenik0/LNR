@@ -21,6 +21,7 @@
 
 AHero::AHero()
 {
+	AutoPossessAI = EAutoPossessAI::Disabled;
 	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	bReplicates = true;
 	PrimaryActorTick.bCanEverTick = true;
@@ -48,6 +49,7 @@ AHero::AHero()
 	Flashlight->SetVisibility(false);
 	Flashlight->SetRelativeLocation(FVector(5, 0, 0));
 	FlashlightActive = false;
+	Respawns = false;
 }
 
 void AHero::OnConstruction(const FTransform& Transform)

@@ -29,8 +29,11 @@ public:
 	int RunSpeed = 500;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int SprintSpeed = 700;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int RespawnTime = 30;
+	bool Respawns = true;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int RespawnTime = 60;
 
 	UPROPERTY(Replicated, BlueprintReadWrite)
 	float Pitch;
@@ -115,7 +118,7 @@ public:
 	void ServerDropTombstone();
 	void ServerDropTombstone_Implementation() { DropTombstone(); }
 	virtual void ExecuteDropTombstone();
-	
+
 	virtual void FireDamage_Implementation(UXFireInstance* XFireInstance, FXFireSettings XFireSettings, float MaxDamage, float Damage) override;
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnSpawnProjectile(FVector location, FVector direction, float speed, float gravity, float lifeTime);
