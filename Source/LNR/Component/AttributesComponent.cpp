@@ -77,9 +77,6 @@ void UAttributesComponent::ChangeWanted(float value)
 	Wanted += value;
 	if (Wanted > MaxWanted) Wanted = MaxWanted;
 	else if (Wanted < 0) Wanted = 0;
-	if (value > 1)
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green,
-		                                 "Wanted: " + FString::SanitizeFloat(Wanted));
 }
 
 FString UAttributesComponent::GetStatsText()

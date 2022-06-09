@@ -39,7 +39,6 @@ void ANpc::OnConstruction(const FTransform& transform)
 	Body = Cast<ABody>(GetOwner());
 	GetPerceptionComponent()->SetDominantSense(*SightConfig->GetSenseImplementation());
 	GetPerceptionComponent()->ConfigureSense(*SightConfig);
-	GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ANpc::OnPawnDetected);
 	BlackboardComponent->InitializeBlackboard(*BlackboardComponent->GetBlackboardAsset());
 }
 
@@ -48,6 +47,7 @@ void ANpc::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	Body = Cast<ABody>(InPawn);
 	SpawnPoint = InPawn->GetActorLocation();
+	GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &ANpc::OnPawnDetected);
 }
 
 void ANpc::OnPawnDetected(const TArray<AActor*>& DetectedPawns)

@@ -36,6 +36,10 @@
 			"Enabled": true
 		},
 		{
+			"Name": "ChaosVehiclesPlugin",
+			"Enabled": true
+		},
+		{
 			"Name": "XFire",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/49fb7d69d7df41bf94f862ef8d743e02"
@@ -61,13 +65,14 @@
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/d14f2ab896874b29baac1e6e404828e7"
 		},
 		{
-			"Name": "ChaosVehiclesPlugin",
-			"Enabled": true
-		},
-		{
 			"Name": "AIOptimizer",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/e91ece0a286e463e8a933a6c0edb83ed"
+		},
+		{
+			"Name": "MoveIt",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/1b8d6e55c50b4b189f283cbbe3d266d9"
 		}
 	]
 }

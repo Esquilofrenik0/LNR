@@ -88,12 +88,12 @@ void AHero::BeginPlay()
 void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &AHero::MoveForward);
-	PlayerInputComponent->BindAxis("Move Right / Left", this, &AHero::MoveRight);
-	PlayerInputComponent->BindAxis("Turn Right / Left Mouse", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &AHero::TurnAtRate);
-	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &AHero::LookUpAtRate);
+	PlayerInputComponent->BindAxis("MoveForward", this, &AHero::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AHero::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("TurnRate", this, &AHero::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &AHero::LookUpAtRate);
 
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AHero::TouchStarted);
 	PlayerInputComponent->BindTouch(IE_Released, this, &AHero::TouchStopped);
