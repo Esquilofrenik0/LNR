@@ -28,7 +28,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int RunSpeed = 500;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int SprintSpeed = 700;
+	int SprintSpeed = 800;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Respawns = true;

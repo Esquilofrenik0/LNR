@@ -143,28 +143,31 @@ void AHero::ClientTick()
 
 void AHero::CheckView()
 {
-	FVector start;
-	FRotator rot;
-	Controller->GetPlayerViewPoint(start, rot);
-	FVector end = start + (rot.Vector() * 1000.0f);
-	TArray<AActor*> toIgnore;
-	toIgnore.Add(this);
-	if (Inter != nullptr)
+	if (Controller)
 	{
-		Execute_OnShowInfo(Inter, this, false);
-		Inter = nullptr;
-		Player->Hud->ShowInteractionIcon(false);
-	}
-	if (FHitResult hit; UKismetSystemLibrary::LineTraceSingle(GetWorld(), start, end, TraceTypeQuery1, true,
-	                                                          toIgnore, EDrawDebugTrace::None, hit, true))
-	{
-		if (AActor* hitActor = hit.GetActor())
+		FVector start;
+		FRotator rot;
+		Controller->GetPlayerViewPoint(start, rot);
+		FVector end = start + (rot.Vector() * 1000.0f);
+		TArray<AActor*> toIgnore;
+		toIgnore.Add(this);
+		if (Inter != nullptr)
 		{
-			if (hitActor->Implements<UInteract>())
+			Execute_OnShowInfo(Inter, this, false);
+			Inter = nullptr;
+			Player->Hud->ShowInteractionIcon(false);
+		}
+		if (FHitResult hit; UKismetSystemLibrary::LineTraceSingle(GetWorld(), start, end, TraceTypeQuery1, true,
+		                                                          toIgnore, EDrawDebugTrace::None, hit, true))
+		{
+			if (AActor* hitActor = hit.GetActor())
 			{
-				Inter = hitActor;
-				Execute_OnShowInfo(Inter, this, true);
-				Player->Hud->ShowInteractionIcon(true);
+				if (hitActor->Implements<UInteract>())
+				{
+					Inter = hitActor;
+					Execute_OnShowInfo(Inter, this, true);
+					Player->Hud->ShowInteractionIcon(true);
+				}
 			}
 		}
 	}

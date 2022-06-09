@@ -33,6 +33,7 @@ void UAttack::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGa
 				{
 					// Humanoid->IsShooting = true;
 					Humanoid->Equipment->AmmoSlot.Loaded -= 1;
+					Humanoid->Combat->Shoot();
 				}
 			}
 		}

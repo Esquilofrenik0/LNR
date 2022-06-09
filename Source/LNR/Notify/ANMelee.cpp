@@ -9,7 +9,7 @@ void UANMelee::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 {
 	Super::NotifyBegin(MeshComp, Animation, TotalDuration, EventReference);
 	AActor* owner = MeshComp->GetOwner();
-	if (owner->HasAuthority())
+	if (owner && owner->HasAuthority())
 	{
 		Body = Cast<ABody>(owner);
 		Humanoid = Cast<AHumanoid>(Body);

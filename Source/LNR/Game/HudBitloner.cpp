@@ -23,7 +23,7 @@ void AHudBitloner::BeginPlay()
 {
 	Super::BeginPlay();
 	Hero = Cast<AHero>(GetOwningPawn());
-	if (Hero->IsLocallyControlled())
+	if (Hero && Hero->IsLocallyControlled())
 	{
 		if (HudTemplate)
 		{
