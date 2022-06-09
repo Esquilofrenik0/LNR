@@ -52,7 +52,7 @@ void ANpc::OnPossess(APawn* InPawn)
 
 void ANpc::OnPawnDetected(const TArray<AActor*>& DetectedPawns)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Pawn Detected!");
+	// GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Pawn Detected!");
 	if (Body)
 	{
 		for (int i = 0; i < DetectedPawns.Num(); i++)

@@ -42,6 +42,15 @@ void ASoul::Init()
 	Animator = BodyMesh->GetAnimInstance();
 	Controller = GetController();
 	Npc = Cast<ANpc>(Controller);
+	FString n = GetClass()->GetName();
+	if (n.StartsWith("BP_")) n.RemoveFromStart("BP_");
+	if (n.EndsWith("_C")) n.RemoveFromEnd("_C");
+	Info->Name = n;
+	if (Bitloner)
+	{
+		Info->Icon = Bitloner->FactionGlobals.Faction[Faction->Faction].Icon;
+		Info->Color = Bitloner->FactionGlobals.Faction[Faction->Faction].Color;
+	}
 }
 
 void ASoul::OnConstruction(const FTransform& Transform)

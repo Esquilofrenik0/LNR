@@ -37,12 +37,12 @@ AHero::AHero()
 	TpCamera->SetupAttachment(TpArm, USpringArmComponent::SocketName);
 	TpCamera->bUsePawnControlRotation = false;
 	TpCamera->SetActive(true);
-	TpCamera->SetFieldOfView(90);
+	TpCamera->SetFieldOfView(75);
 	FpCamera = CreateDefaultSubobject<UCameraComponent>("FpCamera");
 	FpCamera->SetupAttachment(GetMesh(), "Camera");
 	FpCamera->bUsePawnControlRotation = true;
 	FpCamera->SetActive(false);
-	FpCamera->SetFieldOfView(120);
+	FpCamera->SetFieldOfView(90);
 	FirstPerson = false;
 	Flashlight = CreateDefaultSubobject<USpotLightComponent>("Flashlight");
 	Flashlight->SetupAttachment(FpCamera);
