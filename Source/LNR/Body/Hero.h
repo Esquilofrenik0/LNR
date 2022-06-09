@@ -1,9 +1,11 @@
 #pragma once
 #include "Human.h"
+#include "FoliagePluginInterface.h"
 #include "Hero.generated.h"
 
+
 UCLASS()
-class LNR_API AHero : public AHuman
+class LNR_API AHero : public AHuman, public IFoliagePluginInterface
 {
 	GENERATED_BODY()
 public:
@@ -99,4 +101,6 @@ private:
 	void StopAction3();
 	void StartAction4();
 	void StopAction4();
+	
+	virtual void OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards) override;
 };

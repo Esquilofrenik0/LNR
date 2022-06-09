@@ -1,4 +1,7 @@
 #include "Hero.h"
+#include "Hero.h"
+
+#include "InstancedFoliageActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/SpotLightComponent.h"
@@ -167,6 +170,11 @@ void AHero::CheckView()
 					Inter = hitActor;
 					Execute_OnShowInfo(Inter, this, true);
 					Player->Hud->ShowInteractionIcon(true);
+				}
+				else if (Cast<AInstancedFoliageActor>(hitActor))
+				{
+					UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit,
+					                                   GetController(), this, UPickupDamage::StaticClass());
 				}
 			}
 		}
@@ -364,6 +372,15 @@ void AHero::StartAction4()
 void AHero::StopAction4()
 {
 	Player->Hud->HudWidget->ActionBarWidget->Action4Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
+}
+
+void AHero::OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards)
+{
+	IFoliagePluginInterface::OnFoliageHarvested_Implementation(FoliageActor, Rewards);
+	for (int i = 0; i < Rewards.Num(); i++)
+	{
+		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, Rewards[i].RewardOnHarvest.ToString());
+	}
 }
 
 void AHero::TryWeaponSwap()

@@ -27,10 +27,10 @@ void UBlock::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 			if (Humanoid->Equipment->Holster) Humanoid->Equipment->SetHolster(false);
 			if (Humanoid->Equipment->LeftHand) Humanoid->Equipment->LeftHand->SetRelativeScale3D(FVector(3, 3, 3));
 		}
-		// Hero = Cast<AHero>(Body);
+		Hero = Cast<AHero>(Body);
 		// if (Hero && Cast<UGun>(Hero->Equipment->Weapon[0]) && !Cast<UShield>(Hero->Equipment->Weapon[1]))
 		// {
-		// Hero->EnterAim();
+			// Hero->EnterAim();
 		// }
 		Move = Body->GetCharacterMovement();
 		Move->MaxWalkSpeed = Body->WalkSpeed;

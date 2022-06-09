@@ -1,4 +1,6 @@
 #include "Body.h"
+
+#include "Hero.h"
 #include "NavigationInvokerComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "LNR/LNR.h"
@@ -68,7 +70,7 @@ float ABody::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	if (Combat->State == Dead) return 0;
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	ABody* attacker = Cast<ABody>(DamageCauser);
-	if (attacker && Faction->Faction == Empire && attacker->Faction->IsCitizen()) attacker->Attributes->ChangeWanted(5);
+	if (attacker && Faction->Faction == Empire && Cast<AHero>(attacker)) attacker->Attributes->ChangeWanted(5);
 	if (Npc)
 	{
 		if (Npc->Target == nullptr) Npc->TryTarget(attacker);
