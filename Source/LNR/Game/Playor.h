@@ -11,4 +11,7 @@ public:
 	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite)
 	class AHudBitloner* Hud;
+
+	UFUNCTION(BlueprintCallable)
+	void Print(FString txt);
 };

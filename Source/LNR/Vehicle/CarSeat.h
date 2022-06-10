@@ -35,9 +35,11 @@ public:
 	void ServerGetOut_Implementation() { GetOut(); }
 
 	UFUNCTION(BlueprintCallable)
-	void SetupDriver(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance);
+	void SetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance);
 	UFUNCTION(Server, Reliable)
-	void ServerSetupDriver(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance);
+	void ServerSetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance);
 	UFUNCTION(NetMulticast, Reliable)
-	void MultiSetupDriver(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance);
+	void MultiSetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance);
+	UFUNCTION(BlueprintCallable)
+	void ExecuteSetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance);
 };

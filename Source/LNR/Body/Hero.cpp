@@ -480,7 +480,7 @@ void AHero::OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray
 	{
 		if (Cast<APickupNode>(fol))
 		{
-			if (UAnimMontage* mont = Bitloner->HarvestingData.HarvestingMontage["Pickup"]) PlayMontage(mont);
+			// if (UAnimMontage* mont = Bitloner->HarvestingData.HarvestingMontage["Pickup"]) PlayMontage(mont);
 		}
 		else if (Cast<ARockNode>(fol))
 		{
@@ -497,8 +497,7 @@ void AHero::OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray
 			{
 				Inventory->Add(r.GetDefaultObject(), amt);
 			}
-			const FString p = "Harvested " + Rewards[i].RewardOnHarvest.ToString() + " x" + FString::FromInt(amt);
-			GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, p);
+			Player->Print("Harvested " + Rewards[i].RewardOnHarvest.ToString() + " x" + FString::FromInt(amt));
 		}
 	}
 }

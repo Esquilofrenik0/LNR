@@ -33,8 +33,7 @@ void UCarSeat::GetIn(AHero* nHero)
 		Player = Cast<APlayerController>(Driver->GetController());
 		USkeletalMeshComponent* mesh = Driver->GetMesh();
 		DriverAnimBp = mesh->GetAnimInstance()->GetClass();
-		SetupDriver(Driver, false, CarAnimBp);
-		Driver->AttachToActor(Owner, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
+		SetupDriver(Driver, true, CarAnimBp);
 		Player->Possess(Owner);
 	}
 	else ServerGetIn(nHero);
@@ -44,30 +43,48 @@ void UCarSeat::GetOut()
 {
 	if (GetOwnerRole() == ROLE_Authority)
 	{
-		Driver->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepRelative, false));
-		SetupDriver(Driver, true, DriverAnimBp);
-		FVector location = Owner->GetActorLocation();
+		SetupDriver(Driver, false, DriverAnimBp);
+		const FVector location = Owner->GetActorLocation();
 		Driver->SetActorLocation(FVector(location.X, location.Y + ExitDistance, location.Z));
 		Player->Possess(Driver);
+		Driver = nullptr;
 	}
 	else ServerGetOut();
 }
 
-void UCarSeat::SetupDriver(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance)
+void UCarSeat::SetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance)
 {
-	if(GetOwnerRole() == ROLE_Authority) MultiSetupDriver(nHero, collision, animInstance);
-	else ServerSetupDriver(nHero, collision, animInstance);
+	if (GetOwnerRole() == ROLE_Authority)
+	{
+		ExecuteSetupDriver(nHero, gettingIn, animInstance);
+		MultiSetupDriver(nHero, gettingIn, animInstance);
+	}
+	else ServerSetupDriver(nHero, gettingIn, animInstance);
 }
 
-void UCarSeat::ServerSetupDriver_Implementation(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance)
+void UCarSeat::ServerSetupDriver_Implementation(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance)
 {
-	MultiSetupDriver(nHero, collision, animInstance);
+	SetupDriver(nHero, gettingIn, animInstance);
 }
 
-void UCarSeat::MultiSetupDriver_Implementation(AHero* nHero, bool collision, TSubclassOf<UAnimInstance> animInstance)
+void UCarSeat::MultiSetupDriver_Implementation(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance)
 {
-	nHero->SetActorEnableCollision(collision);
-	if(collision) nHero->GetCharacterMovement()->SetMovementMode(MOVE_Walking);
-	else nHero->GetCharacterMovement()->SetMovementMode(MOVE_None);
+	ExecuteSetupDriver(nHero, gettingIn, animInstance);
+}
+
+void UCarSeat::ExecuteSetupDriver(AHero* nHero, bool gettingIn, TSubclassOf<UAnimInstance> animInstance)
+{
+	if (gettingIn)
+	{
+		nHero->SetActorEnableCollision(false);
+		nHero->AttachToActor(Owner, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
+		nHero->SetActorHiddenInGame(true);
+	}
+	else
+	{
+		nHero->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepRelative, false));
+		nHero->SetActorEnableCollision(true);
+		nHero->SetActorHiddenInGame(false);
+	}
 	nHero->GetMesh()->SetAnimInstanceClass(animInstance);
 }

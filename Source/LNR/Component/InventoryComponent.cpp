@@ -88,3 +88,12 @@ bool UInventoryComponent::Store(UInventoryComponent* from, UItem* item, int amou
 	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, "Could not store item!");
 	return false;
 }
+
+bool UInventoryComponent::Contains(UItem* item, int amount)
+{
+	for (int i = 0; i < Slots.Num(); i++)
+	{
+		if(Slots[i].Item == item && Slots[i].Amount >= amount) return true;
+	}
+	return false;
+}

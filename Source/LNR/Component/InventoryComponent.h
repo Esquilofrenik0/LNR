@@ -20,4 +20,7 @@ public:
 	bool Retrieve(UInventoryComponent* to, UItem* item, int amount = 1);
 	UFUNCTION(BlueprintCallable)
 	bool Store(UInventoryComponent* from, UItem* item, int amount = 1);
+	
+	UFUNCTION(BlueprintCallable)
+	bool Contains(UItem* item, int amount = 1);
 };

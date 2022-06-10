@@ -1,6 +1,7 @@
 #include "Gadget.h"
 #include "LNR/Body/Body.h"
 #include "LNR/Gadget/GadgetBase.h"
+#include "XProjectileSBOT.h"
 
 void UGadget::Consume_Implementation(ABody* body)
 {
