@@ -1,11 +1,11 @@
-#include "Resource.h"
+#include "Recipe.h"
 
-UResource::UResource()
+URecipe::URecipe()
 {
-	Stack = 100;
+	Stack = 1;
 }
 
-FString UResource::PrintItemData(bool withDescription)
+FString URecipe::PrintItemData(bool withDescription)
 {
 	FString data = "Name: " + UMacro::GetRealName(this) + "\r";
 	data += "Type: Resource\r";

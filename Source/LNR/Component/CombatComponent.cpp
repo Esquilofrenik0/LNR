@@ -23,6 +23,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UCombatComponent, Combo);
 	DOREPLIFETIME(UCombatComponent, MeleeHits);
+	DOREPLIFETIME(UCombatComponent, Aiming);
 	DOREPLIFETIME_CONDITION_NOTIFY(UCombatComponent, State, COND_None, REPNOTIFY_Always);
 }
 
@@ -177,4 +178,10 @@ void UCombatComponent::SetState(EState nState)
 		RefreshState();
 	}
 	else ServerSetState(nState);
+}
+
+void UCombatComponent::SetAiming(bool val)
+{
+	if (GetOwnerRole() == ROLE_Authority) Aiming = val;
+	else ServerSetAiming(val);
 }

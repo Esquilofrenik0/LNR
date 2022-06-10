@@ -43,10 +43,12 @@ public:
 	int Combo = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int MeleeRange = 50;
+	UPROPERTY(BlueprintReadWrite, Replicated)
+	bool Aiming = false;
 
 	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle ResetComboHandle;
-	
+
 	void Setup(ABody* nBody);
 	void RefreshState();
 	void TraceMelee();
@@ -56,9 +58,16 @@ public:
 	UAnimMontage* GetCombatMontage();
 	int GetMaxCombo();
 	void ResetCombo();
+
 	UFUNCTION(BlueprintCallable)
 	void SetState(EState nState);
 	UFUNCTION(Server, Reliable)
 	void ServerSetState(EState nState);
 	void ServerSetState_Implementation(EState nState) { SetState(nState); }
+	
+	UFUNCTION(BlueprintCallable)
+	void SetAiming(bool val);
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool val);
+	void ServerSetAiming_Implementation(bool val) { SetAiming(val); }
 };

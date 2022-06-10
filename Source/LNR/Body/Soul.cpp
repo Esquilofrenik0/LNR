@@ -7,6 +7,7 @@
 #include "LNR/Component/FactionComponent.h"
 #include "LNR/Component/InfoComponent.h"
 #include "LNR/Game/Bitloner.h"
+#include "LNR/Library/Macro.h"
 
 ASoul::ASoul()
 {
@@ -42,10 +43,7 @@ void ASoul::Init()
 	Animator = BodyMesh->GetAnimInstance();
 	Controller = GetController();
 	Npc = Cast<ANpc>(Controller);
-	FString n = GetClass()->GetName();
-	if (n.StartsWith("BP_")) n.RemoveFromStart("BP_");
-	if (n.EndsWith("_C")) n.RemoveFromEnd("_C");
-	Info->Name = n;
+	Info->Name = UMacro::GetRealName(this);
 	if (Bitloner)
 	{
 		Info->Icon = Bitloner->FactionGlobals.Faction[Faction->Faction].Icon;

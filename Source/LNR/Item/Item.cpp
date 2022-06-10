@@ -3,7 +3,6 @@
 
 UItem::UItem()
 {
-	Name = FName(GetName());
 	Price = 1;
 	Weight = 1;
 	Stack = 1;
@@ -12,19 +11,19 @@ UItem::UItem()
 
 void UItem::UseItem(AHero* hero, int amount)
 {
-	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, Name.ToString() + " used");
+	GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Red, UMacro::GetRealName(this) + " used");
 }
 
 bool UItem::Compare(UItem* item)
 {
 	if (item == nullptr) return false;
-	else if (item->Name == Name) return true;
+	else if (UMacro::GetRealName(item) == UMacro::GetRealName(this)) return true;
 	else return false;
 }
 
 FString UItem::PrintItemData(bool withDescription)
 {
-	FString data = "Name: " + Name.ToString() + "\r";
+	FString data = "Name: " + UMacro::GetRealName(this) + "\r";
 	data += "Price: " + FString::SanitizeFloat(Price) + "\r";
 	data += "Weight: " + FString::SanitizeFloat(Weight) + "\r";
 	if (withDescription) data += "Description: " + Description + "\r";

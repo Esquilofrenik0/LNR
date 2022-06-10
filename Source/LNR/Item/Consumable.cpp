@@ -12,7 +12,7 @@ void UConsumable::UseItem(AHero* nHero, int amount)
 
 FString UConsumable::PrintItemData(bool withDescription)
 {
-	FString data = "Name: " + Name.ToString() + "\r";
+	FString data = "Name: " + UMacro::GetRealName(this) + "\r";
 	data += "Type: Consumable\r";
 	data += "Price: " + FString::SanitizeFloat(Price) + "\r";
 	data += "Weight: " + FString::SanitizeFloat(Weight) + "\r";

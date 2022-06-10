@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "LNR/Library/Macro.h"
 #include "Item.generated.h"
 
 UCLASS(Abstract, Blueprintable, BlueprintType, CollapseCategories, DefaultToInstanced, EditInlineNew)
@@ -9,8 +10,6 @@ class LNR_API UItem : public UDataAsset
 	GENERATED_BODY()
 public:
 	UItem();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTexture2D* Icon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

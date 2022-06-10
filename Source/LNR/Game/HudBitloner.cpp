@@ -1,5 +1,6 @@
 ﻿#include "HudBitloner.h"
 
+#include "Bitloner.h"
 #include "Playor.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -35,10 +36,26 @@ void AHudBitloner::BeginPlay()
 	}
 }
 
-void AHudBitloner::ShowInteractionIcon(bool val)
+void AHudBitloner::ShowInteractionIcon(bool val, TEnumAsByte<EInteractionType> interactionType)
 {
-	if (val) HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Visible);
-	else HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Hidden);
+	if (val)
+	{
+		HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Visible);
+		if (interactionType == None)
+		{
+			HudWidget->InteractionType->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			HudWidget->InteractionType->SetBrushFromTexture(Hero->Bitloner->InteractionType[interactionType - 1]);
+			HudWidget->InteractionType->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+	else
+	{
+		HudWidget->InteractionType->SetVisibility(ESlateVisibility::Hidden);
+		HudWidget->InteractionImage->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void AHudBitloner::ShowInventory(bool val)

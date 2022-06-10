@@ -17,7 +17,7 @@ void UWeapon::UseItem(AHero* hero, int amount)
 
 FString UWeapon::PrintItemData(bool withDescription)
 {
-	FString data = "Name: " + Name.ToString() + "\r";
+	FString data = "Name: " + UMacro::GetRealName(this) + "\r";
 	data += "Type: Weapon\r";
 	data += "Damage: " + FString::SanitizeFloat(Damage) + "\r";
 	data += "Defense: " + FString::SanitizeFloat(Defense) + "\r";

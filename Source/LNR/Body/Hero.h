@@ -3,7 +3,6 @@
 #include "FoliagePluginInterface.h"
 #include "Hero.generated.h"
 
-
 UCLASS()
 class LNR_API AHero : public AHuman, public IFoliagePluginInterface
 {
@@ -12,6 +11,8 @@ public:
 	AHero();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UInventoryComponent* Inventory;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	class UCraftingComponent* Crafting;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class USpringArmComponent* TpArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -21,6 +22,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class USpotLightComponent* Flashlight;
 
+	UPROPERTY(BlueprintReadWrite)
+	class UAniHero* AniHero;
 	UPROPERTY(BlueprintReadWrite)
 	class APlayor* Player;
 	UPROPERTY(BlueprintReadWrite)
@@ -32,6 +35,10 @@ public:
 	bool FirstPerson = false;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool FlashlightActive = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int ThirdPersonFov = 75;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int FirstPersonFov = 90;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool ReloadHeld;
@@ -67,6 +74,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetInputUi(bool val);
 
+	UFUNCTION(BlueprintCallable)
+	void Aim(bool val);
+	UFUNCTION(BlueprintCallable)
+	void SetFov(bool aiming);
+	UFUNCTION(Client, Reliable)
+	void ClientSetFov(bool aiming);
+	UFUNCTION(BlueprintCallable)
+	void ExecuteSetFov(bool aiming);
+
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -101,6 +117,7 @@ private:
 	void StopAction3();
 	void StartAction4();
 	void StopAction4();
-	
-	virtual void OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards) override;
+
+	virtual void
+	OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards) override;
 };

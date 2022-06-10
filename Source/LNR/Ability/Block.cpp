@@ -28,14 +28,17 @@ void UBlock::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGam
 			if (Humanoid->Equipment->LeftHand) Humanoid->Equipment->LeftHand->SetRelativeScale3D(FVector(3, 3, 3));
 		}
 		Hero = Cast<AHero>(Body);
-		// if (Hero && Cast<UGun>(Hero->Equipment->Weapon[0]) && !Cast<UShield>(Hero->Equipment->Weapon[1]))
-		// {
-			// Hero->EnterAim();
-		// }
 		Move = Body->GetCharacterMovement();
 		Move->MaxWalkSpeed = Body->WalkSpeed;
 		ClientSetSpeed(Body->WalkSpeed, Move);
-		Body->Combat->SetState(Blocking);
+		if (Hero && Cast<UGun>(Hero->Equipment->Weapon[0]) && !Cast<UShield>(Hero->Equipment->Weapon[1]))
+		{
+			Hero->Aim(true);
+		}
+		else
+		{
+			Body->Combat->SetState(Blocking);
+		}
 		Body->GetWorldTimerManager().ClearTimer(BlockTimer);
 		Body->GetWorldTimerManager().SetTimer(BlockTimer, this, &UBlock::TickBlock, 0.1, true);
 	}
@@ -50,7 +53,7 @@ void UBlock::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplay
 	ClientSetSpeed(Body->RunSpeed, Move);
 	Body->Combat->SetState(Idle);
 	if (Humanoid && Humanoid->Equipment->LeftHand) Humanoid->Equipment->LeftHand->SetRelativeScale3D(FVector(1, 1, 1));
-	// if (Hero) Hero->ExitAim();
+	if (Hero) Hero->Aim(false);
 }
 
 void UBlock::TickBlock()
@@ -61,10 +64,4 @@ void UBlock::TickBlock()
 void UBlock::ClientSetSpeed_Implementation(float Speed, UCharacterMovementComponent* CharacterMovement)
 {
 	CharacterMovement->MaxWalkSpeed = Speed;
-}
-
-void UBlock::ClientSetCamera_Implementation(AHero* nHero, bool reset)
-{
-	if (reset) nHero->TpCamera->FieldOfView = 90;
-	else nHero->TpCamera->FieldOfView = 30;
 }

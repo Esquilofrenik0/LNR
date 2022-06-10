@@ -1,6 +1,4 @@
 #include "Hero.h"
-#include "Hero.h"
-
 #include "InstancedFoliageActor.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
@@ -21,6 +19,14 @@
 #include "LNR/Widget/HudWidget.h"
 #include "LNR/Widget/InventoryWidget.h"
 #include "LNR/Widget/SlotWidget.h"
+#include "FoliagePluginActor.h"
+#include "LNR/Animator/AniHero.h"
+#include "LNR/Component/CraftingComponent.h"
+#include "LNR/Foliage/FoliageNode.h"
+#include "LNR/Foliage/RockNode.h"
+#include "LNR/Foliage/PickupNode.h"
+#include "LNR/Foliage/TreeNode.h"
+#include "LNR/Game/Bitloner.h"
 
 AHero::AHero()
 {
@@ -31,6 +37,7 @@ AHero::AHero()
 	TurnRateGamepad = 50.f;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	Inventory = CreateDefaultSubobject<UInventoryComponent>("Inventory");
+	Crafting = CreateDefaultSubobject<UCraftingComponent>("Crafting");
 	TpArm = CreateDefaultSubobject<USpringArmComponent>("TpArm");
 	TpArm->SetupAttachment(RootComponent);
 	TpArm->TargetArmLength = 300.0f;
@@ -40,12 +47,12 @@ AHero::AHero()
 	TpCamera->SetupAttachment(TpArm, USpringArmComponent::SocketName);
 	TpCamera->bUsePawnControlRotation = false;
 	TpCamera->SetActive(true);
-	TpCamera->SetFieldOfView(75);
+	TpCamera->SetFieldOfView(ThirdPersonFov);
 	FpCamera = CreateDefaultSubobject<UCameraComponent>("FpCamera");
 	FpCamera->SetupAttachment(GetMesh(), "Camera");
 	FpCamera->bUsePawnControlRotation = true;
 	FpCamera->SetActive(false);
-	FpCamera->SetFieldOfView(90);
+	FpCamera->SetFieldOfView(FirstPersonFov);
 	FirstPerson = false;
 	Flashlight = CreateDefaultSubobject<USpotLightComponent>("Flashlight");
 	Flashlight->SetupAttachment(FpCamera);
@@ -63,6 +70,7 @@ void AHero::OnConstruction(const FTransform& Transform)
 void AHero::Restart()
 {
 	Super::Restart();
+	AniHero = Cast<UAniHero>(Animator);
 	Player = Cast<APlayor>(GetController());
 	Player->Hero = this;
 	if (AHUD* nHud = Player->GetHUD()) Player->Hud = Cast<AHudBitloner>(nHud);
@@ -158,8 +166,8 @@ void AHero::CheckView()
 		{
 			Execute_OnShowInfo(Inter, this, false);
 			Inter = nullptr;
-			Player->Hud->ShowInteractionIcon(false);
 		}
+		Player->Hud->ShowInteractionIcon(false);
 		if (FHitResult hit; UKismetSystemLibrary::LineTraceSingle(GetWorld(), start, end, TraceTypeQuery1, true,
 		                                                          toIgnore, EDrawDebugTrace::None, hit, true))
 		{
@@ -171,10 +179,9 @@ void AHero::CheckView()
 					Execute_OnShowInfo(Inter, this, true);
 					Player->Hud->ShowInteractionIcon(true);
 				}
-				else if (Cast<AInstancedFoliageActor>(hitActor))
+				else if (Cast<AInstancedFoliageActor>(hitActor) || Cast<AFoliageNode>(hitActor))
 				{
-					UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit,
-					                                   GetController(), this, UPickupDamage::StaticClass());
+					Player->Hud->ShowInteractionIcon(true, EInteractionType::Foliage);
 				}
 			}
 		}
@@ -261,11 +268,11 @@ void AHero::StartInteract()
 		if (AActor* hitActor = hit.GetActor())
 		{
 			if (hitActor->Implements<UInteract>()) Execute_OnInteract(hitActor, this);
-			// else if (Cast<AInstancedFoliageActor>(hitActor))
-			// {
-			// 	UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit, GetController(),
-			// 	                                   this, UPickupDamage::StaticClass());
-			// }
+			else if (Cast<AInstancedFoliageActor>(hitActor) || Cast<AFoliageNode>(hitActor))
+			{
+				UGameplayStatics::ApplyPointDamage(hitActor, 1, GetActorLocation(), hit, GetController(),
+				                                   this, UPickupDamage::StaticClass());
+			}
 		}
 	}
 }
@@ -374,15 +381,6 @@ void AHero::StopAction4()
 	Player->Hud->HudWidget->ActionBarWidget->Action4Slot->SetColorAndOpacity(FLinearColor(1, 1, 1, 1));
 }
 
-void AHero::OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards)
-{
-	IFoliagePluginInterface::OnFoliageHarvested_Implementation(FoliageActor, Rewards);
-	for (int i = 0; i < Rewards.Num(); i++)
-	{
-		GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, Rewards[i].RewardOnHarvest.ToString());
-	}
-}
-
 void AHero::TryWeaponSwap()
 {
 	if (Combat->State == Idle) Equipment->WeaponSwap();
@@ -400,6 +398,38 @@ void AHero::SetInputUi(bool val)
 	{
 		Player->SetInputMode(FInputModeGameOnly());
 		Player->SetShowMouseCursor(false);
+	}
+}
+
+void AHero::Aim(bool val)
+{
+	Combat->Aiming = val;
+	Combat->SetAiming(val);
+	SetFov(val);
+}
+
+void AHero::SetFov(bool aiming)
+{
+	if (HasAuthority()) ClientSetFov(aiming);
+	else ExecuteSetFov(aiming);
+}
+
+void AHero::ClientSetFov_Implementation(bool aiming)
+{
+	ExecuteSetFov(aiming);
+}
+
+void AHero::ExecuteSetFov(bool aiming)
+{
+	if (aiming)
+	{
+		FpCamera->SetFieldOfView(FirstPersonFov - 15);
+		TpCamera->SetFieldOfView(ThirdPersonFov - 15);
+	}
+	else
+	{
+		FpCamera->SetFieldOfView(FirstPersonFov);
+		TpCamera->SetFieldOfView(ThirdPersonFov);
 	}
 }
 
@@ -440,5 +470,35 @@ void AHero::MoveRight(float Value)
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
+	}
+}
+
+void AHero::OnFoliageHarvested_Implementation(AActor* FoliageActor, const TArray<FFoliageRewardData>& Rewards)
+{
+	IFoliagePluginInterface::OnFoliageHarvested_Implementation(FoliageActor, Rewards);
+	if (AFoliageNode* fol = Cast<AFoliageNode>(FoliageActor))
+	{
+		if (Cast<APickupNode>(fol))
+		{
+			if (UAnimMontage* mont = Bitloner->HarvestingData.HarvestingMontage["Pickup"]) PlayMontage(mont);
+		}
+		else if (Cast<ARockNode>(fol))
+		{
+			if (UAnimMontage* mont = Bitloner->HarvestingData.HarvestingMontage["Rock"]) PlayMontage(mont);
+		}
+		else if (Cast<ATreeNode>(fol))
+		{
+			if (UAnimMontage* mont = Bitloner->HarvestingData.HarvestingMontage["Tree"]) PlayMontage(mont);
+		}
+		for (int i = 0; i < Rewards.Num(); i++)
+		{
+			const int amt = FMath::RandRange(Rewards[i].NumRewards.Min, Rewards[i].NumRewards.Max);
+			if (TSubclassOf<UResource> r = Bitloner->HarvestingData.HarvestingReward[Rewards[i].RewardOnHarvest])
+			{
+				Inventory->Add(r.GetDefaultObject(), amt);
+			}
+			const FString p = "Harvested " + Rewards[i].RewardOnHarvest.ToString() + " x" + FString::FromInt(amt);
+			GEngine->AddOnScreenDebugMessage(INDEX_NONE, 2.00f, FColor::Green, p);
+		}
 	}
 }

@@ -31,7 +31,10 @@ void UBagWidget::Refresh() const
 		if (i < Hero->Inventory->Slots.Num())
 		{
 			Slots[i]->SetIsEnabled(true);
-			if (Hero->Inventory->Slots[i].Item != nullptr) Slots[i]->Setup(Hero->Inventory->Slots[i].Item->Icon);
+			if (Hero->Inventory->Slots[i].Item != nullptr)
+			{
+				Slots[i]->Setup(Hero->Inventory->Slots[i].Item->Icon, Hero->Inventory->Slots[i].Amount);
+			}
 			else Slots[i]->Setup(nullptr);
 		}
 		else

@@ -12,6 +12,8 @@ public:
 	class UImage* Image;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UButton* Button;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UTextBlock* Amount;
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSlotClicked);
 
@@ -19,7 +21,7 @@ public:
 	FSlotClicked OnClick;
 
 	virtual void NativeConstruct() override;
-	void Setup(UTexture2D* icon) const;
+	void Setup(UTexture2D* icon, int amount = 1) const;
 	UFUNCTION(BlueprintCallable)
 	virtual void Click();
 };

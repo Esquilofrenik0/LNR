@@ -33,6 +33,4 @@ public:
 	void TickBlock();
 	UFUNCTION(Client, Reliable)
 	void ClientSetSpeed(float Speed, class UCharacterMovementComponent* CharacterMovement);
-	UFUNCTION(Client, Reliable)
-	void ClientSetCamera(class AHero* nHero, bool reset);
 };

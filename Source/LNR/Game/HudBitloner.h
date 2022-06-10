@@ -2,6 +2,14 @@
 #include "GameFramework/HUD.h"
 #include "HudBitloner.generated.h"
 
+UENUM(BlueprintType)
+enum EInteractionType
+{
+	None = 0,
+	Inspect = 1,
+	Foliage = 2,
+};
+
 UCLASS()
 class LNR_API AHudBitloner : public AHUD
 {
@@ -17,7 +25,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	UHudWidget* HudWidget;
 	UFUNCTION(BlueprintCallable)
-	void ShowInteractionIcon(bool val);
+	void ShowInteractionIcon(bool val, TEnumAsByte<EInteractionType> interactionType = None);
 	UFUNCTION(BlueprintCallable)
 	void ShowInventory(bool val);
 };

@@ -37,7 +37,10 @@ void UContainerWidget::Refresh() const
 		if (i < Hero->Container->Slots.Num())
 		{
 			Slots[i]->SetIsEnabled(true);
-			if (Hero->Container->Slots[i].Item != nullptr) Slots[i]->Setup(Hero->Container->Slots[i].Item->Icon);
+			if (Hero->Container->Slots[i].Item != nullptr)
+			{
+				Slots[i]->Setup(Hero->Container->Slots[i].Item->Icon, Hero->Container->Slots[i].Amount);
+			}
 			else Slots[i]->Setup(nullptr);
 		}
 		else

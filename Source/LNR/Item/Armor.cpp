@@ -17,7 +17,7 @@ void UArmor::UseItem(AHero* hero, int amount)
 
 FString UArmor::PrintItemData(bool withDescription)
 {
-	FString data = "Name: " + Name.ToString() + "\r";
+	FString data = "Name: " + UMacro::GetRealName(this) + "\r";
 	data += "Type: Armor\r";
 	data += "Defense: " + FString::SanitizeFloat(Defense) + "\r";
 	data += "Price: " + FString::SanitizeFloat(Price) + "\r";
