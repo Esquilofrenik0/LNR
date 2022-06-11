@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine/DataTable.h"
 #include "LNR/Component/FactionComponent.h"
+#include "LNR/Data/SpawnData.h"
 #include "FactionData.generated.h"
 
 USTRUCT(BlueprintType)
@@ -13,6 +14,8 @@ struct LNR_API FFactionData : public FTableRowBase
 	UTexture2D* Icon;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FLinearColor Color;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<USpawnData> SpawnData;
 };
 
 USTRUCT(BlueprintType)

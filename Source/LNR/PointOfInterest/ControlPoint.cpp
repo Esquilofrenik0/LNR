@@ -13,7 +13,7 @@ void UControlPoint::AddBody(ABody* body)
 {
 	Bodies.Add(body);
 	ContestingFaction = GetWinningFaction();
-	if (ControlFaction == ContestingFaction)
+	if (Faction->Faction == ContestingFaction)
 	{
 		if (Influence < 1) StartIncreaseInfluence();
 	}
@@ -24,7 +24,7 @@ void UControlPoint::RemoveBody(ABody* body)
 {
 	Bodies.Remove(body);
 	ContestingFaction = GetWinningFaction();
-	if (ControlFaction == ContestingFaction)
+	if (Faction->Faction == ContestingFaction)
 	{
 		if (Influence < 1) StartIncreaseInfluence();
 	}
@@ -43,7 +43,7 @@ void UControlPoint::IncreaseInfluence()
 	if (Influence >= 1)
 	{
 		Influence = 1;
-		ContestingFaction = ControlFaction;
+		ContestingFaction = Faction->Faction;
 		GetWorld()->GetTimerManager().ClearTimer(InfluenceTimer);
 	}
 }
@@ -60,7 +60,7 @@ void UControlPoint::DecreaseInfluence()
 	if (Influence <= 0)
 	{
 		Influence = 0;
-		ControlFaction = ContestingFaction;
+		Faction->Faction = ContestingFaction;
 		SetControl.Broadcast();
 		GetWorld()->GetTimerManager().ClearTimer(InfluenceTimer);
 		GetWorld()->GetTimerManager().SetTimer(InfluenceTimer, this, &UControlPoint::IncreaseInfluence, 0.1f, true);
@@ -70,24 +70,24 @@ void UControlPoint::DecreaseInfluence()
 EFaction UControlPoint::GetWinningFaction()
 {
 	TArray<int> FactionPoints;
-	FactionPoints.Init(0, Bitloner->FactionGlobals.Faction.Num());
+	FactionPoints.Init(0, Faction->Bitloner->FactionGlobals.Faction.Num());
 	int i = 0;
 	for (ABody* body : Bodies)
 	{
 		if (body->Combat->State != Dead) FactionPoints[body->Faction->Faction] += 1;
 		i++;
 	}
-	if (i == 0 || (i == 1 && Bodies[0]->Faction->Faction == ControlFaction)) return ControlFaction;
+	if (i == 0 || (i == 1 && Bodies[0]->Faction->Faction == Faction->Faction)) return Faction->Faction;
 
-	int winningScore = FactionPoints[ControlFaction];
-	EFaction winningFaction = ControlFaction;
+	int winningScore = FactionPoints[Faction->Faction];
+	EFaction winningFaction = Faction->Faction;
 	int j;
 	for (j = 0; j < FactionPoints.Num(); j++)
 	{
 		if (FactionPoints[j] > winningScore)
 		{
 			winningScore = FactionPoints[j];
-			winningFaction = Bitloner->FactionGlobals.Faction[j].Faction;
+			winningFaction = Faction->Bitloner->FactionGlobals.Faction[j].Faction;
 		}
 	}
 	return winningFaction;

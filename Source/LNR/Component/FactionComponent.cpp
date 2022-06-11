@@ -1,9 +1,17 @@
 #include "FactionComponent.h"
+#include "LNR/Game/Bitloner.h"
+#include "Kismet/GameplayStatics.h"
 
 UFactionComponent::UFactionComponent()
 {
 	SetIsReplicatedByDefault(true);
 	PrimaryComponentTick.bCanEverTick = false;
+}
+
+void UFactionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
 }
 
 bool UFactionComponent::CheckCitizenship(EFaction nFaction)
@@ -45,4 +53,19 @@ bool UFactionComponent::IsHostile(EFaction enemy)
 	case Critter: return false;
 	default: return false;
 	}
+}
+
+UTexture2D* UFactionComponent::GetFactionIcon() const
+{
+	return Bitloner->FactionGlobals.Faction[Faction].Icon;
+}
+
+FLinearColor UFactionComponent::GetFactionColor() const
+{
+	return Bitloner->FactionGlobals.Faction[Faction].Color;
+}
+
+TSubclassOf<USpawnData> UFactionComponent::GetFactionSpawnData() const
+{
+	return Bitloner->FactionGlobals.Faction[Faction].SpawnData;
 }

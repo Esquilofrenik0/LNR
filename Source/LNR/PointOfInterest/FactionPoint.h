@@ -10,9 +10,7 @@ class LNR_API UFactionPoint : public UPointOfInterest
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	UBitloner* Bitloner;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TEnumAsByte<EFaction> ControlFaction;
-	virtual void BeginPlay() override;
+	UFactionPoint();
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
+	UFactionComponent* Faction;
 };
