@@ -1,5 +1,6 @@
 ﻿#include "CraftWidget.h"
 #include "SlotCraftWidget.h"
+#include "Blueprint/WidgetTree.h"
 #include "Components/WrapBox.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/CraftingComponent.h"
@@ -20,22 +21,21 @@ void UCraftWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 void UCraftWidget::Init(AHero* nHero)
 {
 	Hero = nHero;
-	Slots.Empty();
-	SlotBox->ClearChildren();
-	for (int i = 0; i < Hero->Crafting->Book.Num(); i++)
-	{
-		USlotCraftWidget* slot = NewObject<USlotCraftWidget>();
-		slot->SlotNumber = i;
-		slot->Init(Hero);
-		Slots.Add(slot);
-	}
 }
 
-void UCraftWidget::Refresh() const
+void UCraftWidget::Refresh()
 {
-	for (int i = 0; i < Slots.Num(); i++)
-	{
-		Slots[i]->SetIsEnabled(true);
-		Slots[i]->Setup(Hero->Crafting->Book[i].GetDefaultObject()->Icon, 1);
-	}
+	// for (int i = 0; i < Hero->Crafting->Book.Num(); i++)
+	// {
+		// if (i >= Slots.Num())
+		// {
+			// USlotCraftWidget* slot = CreateWidget<USlotCraftWidget>(this, USlotCraftWidget::StaticClass(), "cs");
+			// slot->SlotNumber = i;
+			// slot->Init(Hero);
+			// Slots.Add(slot);
+			// SlotBox->AddChild(slot);
+		// }
+		// Slots[i]->SetIsEnabled(true);
+		// Slots[i]->Setup(Hero->Crafting->Book[i].GetDefaultObject()->Icon, 1);
+	// }
 }

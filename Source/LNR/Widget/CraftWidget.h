@@ -21,5 +21,5 @@ public:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
-	void Refresh() const;
+	void Refresh();
 };
