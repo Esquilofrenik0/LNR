@@ -11,6 +11,9 @@ class LNR_API UApparelComponent : public UActorComponent
 public:
 	UApparelComponent();
 
+	UPROPERTY(BlueprintReadWrite)
+	class UBitloner* Bitloner;
+	
 	UPROPERTY(ReplicatedUsing = OnRep_Armor, Instanced, EditAnywhere, BlueprintReadWrite)
 	TArray<class UArmor*> Armor;
 	UFUNCTION()
@@ -25,6 +28,7 @@ public:
 	USkeletalMeshComponent* Mesh;
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	USkeletalMeshComponent* HeadMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
@@ -61,7 +65,7 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerSetArmor(int slot, UArmor* nArmor);
 	void ServerSetArmor_Implementation(int slot, UArmor* nArmor) { SetArmor(slot, nArmor); }
-
+	
 	UFUNCTION(BlueprintCallable)
 	void EquipArmor(UArmor* nArmor);
 	UFUNCTION(BlueprintCallable)

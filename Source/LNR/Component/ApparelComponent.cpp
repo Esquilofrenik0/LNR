@@ -4,6 +4,7 @@
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "LNR/Body/Hero.h"
+#include "LNR/Game/Bitloner.h"
 #include "LNR/Game/BitlonerGameMode.h"
 #include "LNR/Item/Armor.h"
 #include "LNR/Item/Outfit.h"
@@ -38,6 +39,7 @@ void UApparelComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 void UApparelComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
 	Hero = Cast<AHero>(GetOwner());
 	Dress();
 }
@@ -118,7 +120,6 @@ void UApparelComponent::Dress()
 	else
 	{
 		OutfitMesh->SetSkeletalMesh(nullptr);
-		SetMask(nullptr);
 		if (Armor[0])
 		{
 			if (Armor[0]->HideHair) HairMesh->SetVisibility(false);
@@ -145,6 +146,7 @@ void UApparelComponent::Dress()
 		}
 		if (Armor[4]) FeetMesh->SetSkeletalMesh(Armor[4]->SkeletalMesh);
 		else FeetMesh->SetSkeletalMesh(nullptr);
+		if (Bitloner) SetMask(Bitloner->DefaultMask);
 	}
 }
 

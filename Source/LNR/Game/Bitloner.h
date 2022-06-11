@@ -21,4 +21,6 @@ public:
 	TSubclassOf<ATombstone> Tombstone;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UTexture2D*> InteractionType;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* DefaultMask;
 };
