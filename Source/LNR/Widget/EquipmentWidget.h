@@ -47,9 +47,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class USlotWidget* Consumable4Slot;
 
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UTextBlock* AttributesText;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UTextBlock* StatsText;
+
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);
 	void Refresh() const;
 	void RefreshArmor(class UApparelComponent* apparel) const;
 	void RefreshWeapon(class UEquipmentComponent* equipment) const;
+	void RefreshAttributes(class UAttributesComponent* attributes) const;
 };

@@ -1,6 +1,9 @@
 ﻿#include "EquipmentWidget.h"
+
+#include "Components/TextBlock.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/ApparelComponent.h"
+#include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/EquipmentComponent.h"
 #include "LNR/Item/Armor.h"
 #include "LNR/Item/Outfit.h"
@@ -41,6 +44,7 @@ void UEquipmentWidget::Refresh() const
 {
 	RefreshArmor(Hero->Apparel);
 	RefreshWeapon(Hero->Equipment);
+	RefreshAttributes(Hero->Attributes);
 }
 
 void UEquipmentWidget::RefreshArmor(UApparelComponent* apparel) const
@@ -69,14 +73,49 @@ void UEquipmentWidget::RefreshWeapon(UEquipmentComponent* equipment) const
 	else RightOffHandSlot->Setup(nullptr);
 	if (equipment->Weapon[3] != nullptr) LeftOffHandSlot->Setup(equipment->Weapon[3]->Icon);
 	else LeftOffHandSlot->Setup(nullptr);
-	if (equipment->AmmoSlot.Ammo != nullptr && equipment->AmmoSlot.Amount > 0) AmmoSlot->Setup(equipment->AmmoSlot.Ammo->Icon);
+	if (equipment->AmmoSlot.Ammo != nullptr && equipment->AmmoSlot.Amount > 0)
+		AmmoSlot->Setup(
+			equipment->AmmoSlot.Ammo->Icon);
 	else AmmoSlot->Setup(nullptr);
-	if (equipment->Consumable[0].Consumable != nullptr && equipment->Consumable[0].Amount > 0) Consumable1Slot->Setup(equipment->Consumable[0].Consumable->Icon);
+	if (equipment->Consumable[0].Consumable != nullptr && equipment->Consumable[0].Amount > 0)
+		Consumable1Slot->Setup(
+			equipment->Consumable[0].Consumable->Icon);
 	else Consumable1Slot->Setup(nullptr);
-	if (equipment->Consumable[1].Consumable != nullptr && equipment->Consumable[1].Amount > 0) Consumable2Slot->Setup(equipment->Consumable[1].Consumable->Icon);
+	if (equipment->Consumable[1].Consumable != nullptr && equipment->Consumable[1].Amount > 0)
+		Consumable2Slot->Setup(
+			equipment->Consumable[1].Consumable->Icon);
 	else Consumable2Slot->Setup(nullptr);
-	if (equipment->Consumable[2].Consumable != nullptr && equipment->Consumable[2].Amount > 0) Consumable3Slot->Setup(equipment->Consumable[2].Consumable->Icon);
+	if (equipment->Consumable[2].Consumable != nullptr && equipment->Consumable[2].Amount > 0)
+		Consumable3Slot->Setup(
+			equipment->Consumable[2].Consumable->Icon);
 	else Consumable3Slot->Setup(nullptr);
-	if (equipment->Consumable[3].Consumable != nullptr && equipment->Consumable[3].Amount > 0) Consumable4Slot->Setup(equipment->Consumable[3].Consumable->Icon);
+	if (equipment->Consumable[3].Consumable != nullptr && equipment->Consumable[3].Amount > 0)
+		Consumable4Slot->Setup(
+			equipment->Consumable[3].Consumable->Icon);
 	else Consumable4Slot->Setup(nullptr);
+}
+
+void UEquipmentWidget::RefreshAttributes(UAttributesComponent* attributes) const
+{
+	FString attributesText = "";
+	attributesText += "Strength: " + FString::FromInt(attributes->Strength) + "\r";
+	attributesText += "Charisma: " + FString::FromInt(attributes->Charisma) + "\r";
+	attributesText += "Vitality: " + FString::FromInt(attributes->Vitality) + "\r";
+	attributesText += "Agility: " + FString::FromInt(attributes->Agility) + "\r";
+	attributesText += "Wisdom: " + FString::FromInt(attributes->Wisdom);
+	AttributesText->SetText(FText::FromString(attributesText));
+	FString statsText = "";
+	statsText += "Damage: " + FString::FromInt(attributes->Damage) + "\r";
+	statsText += "Defense: " + FString::FromInt(attributes->Defense) + "\r";
+	statsText += "Health: " + FString::FromInt(attributes->Health) + "/"
+		+ FString::FromInt(attributes->MaxHealth) + " (+"
+		+ FString::FromInt(attributes->HealthRegeneration) + "/s)" + "\r";
+	statsText += "Stamina: " + FString::FromInt(attributes->Stamina) + "/"
+		+ FString::FromInt(attributes->MaxStamina) + " (+"
+		+ FString::FromInt(attributes->StaminaRegeneration) + "/s)" + "\r";
+	statsText += "Energy: " + FString::FromInt(attributes->Energy) + "/"
+		+ FString::FromInt(attributes->MaxEnergy) + " (+"
+		+ FString::FromInt(attributes->EnergyRegeneration) + "/s)" + "\r";
+	statsText += "Wanted: " + FString::FromInt(attributes->Wanted) + "/100";
+	StatsText->SetText(FText::FromString(statsText));
 }
