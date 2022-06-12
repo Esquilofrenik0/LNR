@@ -108,6 +108,7 @@ private:
 	void StartHolster();
 	void StartFlashlight();
 	void StartInventory();
+	void StartMenu();
 
 	void StartAction1();
 	void StopAction1();

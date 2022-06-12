@@ -28,6 +28,7 @@
 #include "LNR/Foliage/PickupNode.h"
 #include "LNR/Foliage/TreeNode.h"
 #include "LNR/Game/Bitloner.h"
+#include "LNR/Widget/WorldMapWidget.h"
 
 AHero::AHero()
 {
@@ -126,6 +127,7 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AHero::StartInteract);
 	PlayerInputComponent->BindAction("CycleCamera", IE_Pressed, this, &AHero::StartCycleCamera);
 	PlayerInputComponent->BindAction("Inventory", IE_Pressed, this, &AHero::StartInventory);
+	PlayerInputComponent->BindAction("Menu", IE_Pressed, this, &AHero::StartMenu);
 
 	PlayerInputComponent->BindAction("Action1", IE_Pressed, this, &AHero::StartAction1);
 	PlayerInputComponent->BindAction("Action1", IE_Released, this, &AHero::StopAction1);
@@ -332,6 +334,12 @@ void AHero::StartInventory()
 {
 	if (Player->Hud->HudWidget->InventoryWidget->IsVisible()) Player->Hud->ShowInventory(false);
 	else Player->Hud->ShowInventory(true);
+}
+
+void AHero::StartMenu()
+{
+	if (Player->Hud->HudWidget->WorldMapWidget->IsVisible()) Player->Hud->ShowWorldMap(false);
+	else Player->Hud->ShowWorldMap(true);
 }
 
 void AHero::StartAction1()

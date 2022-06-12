@@ -12,6 +12,8 @@ public:
 	TArray<class UMarkerComponent*> Marker;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int DrawDistance = 1000000;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<FName> Discovered;
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void Init();

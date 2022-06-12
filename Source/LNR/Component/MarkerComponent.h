@@ -14,8 +14,6 @@ public:
 	UTexture2D* Icon;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FLinearColor Color;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	bool Discovered;
 	UPROPERTY(BlueprintReadWrite)
 	class UControlPoint* ControlPoint;
 };

@@ -1,12 +1,10 @@
 ﻿#include "CompassWidget.h"
 #include "SlotWidget.h"
 #include "MarkerWidget.h"
-#include "Components/CanvasPanel.h"
 #include "Components/Image.h"
 #include "Components/Overlay.h"
-#include "Components/ProgressBar.h"
+#include "Components/OverlaySlot.h"
 #include "Components/TextBlock.h"
-#include "Components/WrapBox.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/NavigationComponent.h"
@@ -55,7 +53,9 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	if (index == -1)
 	{
 		UWidget* widget = CreateWidget(this, MarkerTemplate);
-		Panel->AddChild(widget);
+		UOverlaySlot* slot = Panel->AddChildToOverlay(widget);
+		slot->SetHorizontalAlignment(HAlign_Center);
+		slot->SetVerticalAlignment(VAlign_Center);
 		UMarkerWidget* mark = Cast<UMarkerWidget>(widget);
 		mark->Init(nMarker);
 		index = Marker.Add(mark);
@@ -69,9 +69,9 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	if (loc < -300 || loc > 300) Marker[index]->SetVisibility(ESlateVisibility::Hidden);
 	else
 	{
-		const float dist = UKismetMathLibrary::Vector_Distance(heroLoc, mLoc);
+		const float dist = UKismetMathLibrary::Vector_Distance(heroLoc, mLoc) / 100;
 		Marker[index]->Distance->SetText(FText::FromString(FString::FromInt(dist)));
-		Marker[index]->SetRenderTranslation(FVector2D(300 + loc, 0));;
+		Marker[index]->SetRenderTranslation(FVector2D(loc, 0));;
 		Marker[index]->SetVisibility(ESlateVisibility::HitTestInvisible);
 	}
 }
