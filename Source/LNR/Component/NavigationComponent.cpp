@@ -17,6 +17,7 @@ UNavigationComponent::UNavigationComponent()
 	Discovered.Add("Port");
 	Discovered.Add("Station");
 	Discovered.Add("Utopy");
+	Discovered.Add("Airport");
 	Discovered.Add("Tekan00");
 	Discovered.Add("Tekan01");
 	Discovered.Add("Tekan02");
