@@ -54,7 +54,7 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	}
 	if (index == -1)
 	{
-		UWidget* widget = CreateWidget(this, MarkerTemplate, nMarker->Id);
+		UWidget* widget = CreateWidget(this, MarkerTemplate);
 		Panel->AddChild(widget);
 		UMarkerWidget* mark = Cast<UMarkerWidget>(widget);
 		mark->Init(nMarker);
@@ -65,8 +65,7 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	const FVector mLoc = Marker[index]->Marker->GetOwner()->GetActorLocation();
 	int loc = ((heroRot.Yaw - UKismetMathLibrary::FindLookAtRotation(mLoc, heroLoc).Yaw) / 360) * 600;
 	if (loc < 0) loc = 600 + loc;
-	loc %= 600;
-	loc = UKismetMathLibrary::MapRangeClamped(loc, 0, 600, 600, -600);
+	loc = UKismetMathLibrary::MapRangeClamped(loc % 600, 0, 600, 600, -600);
 	if (loc < -300 || loc > 300) Marker[index]->SetVisibility(ESlateVisibility::Hidden);
 	else
 	{
@@ -77,12 +76,12 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	}
 }
 
-void UCompassWidget::HideMarker(UMarkerComponent* marker)
+void UCompassWidget::HideMarker(const UMarkerComponent* nMarker)
 {
 	int index = -1;
 	for (int i = 0; i < Marker.Num(); i++)
 	{
-		if (Marker[i]->Marker == marker)
+		if (Marker[i]->Marker == nMarker)
 		{
 			index = i;
 			break;

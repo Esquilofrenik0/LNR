@@ -22,7 +22,7 @@ public:
 	float IncrementAmount;
 	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle InfluenceTimer;
-
+	
 	UFUNCTION(BlueprintCallable)
 	void AddBody(ABody* body);
 	UFUNCTION(BlueprintCallable)

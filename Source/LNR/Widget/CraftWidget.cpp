@@ -29,7 +29,7 @@ void UCraftWidget::Refresh()
 	{
 		if (i >= Slots.Num())
 		{
-			UWidget* widget = CreateWidget(this, SlotTemplate, "cs");
+			UWidget* widget = CreateWidget(this, SlotTemplate);
 			SlotBox->AddChild(widget);
 			USlotCraftWidget* slot = Cast<USlotCraftWidget>(widget);
 			slot->SlotNumber = i;

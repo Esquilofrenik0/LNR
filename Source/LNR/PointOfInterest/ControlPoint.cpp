@@ -76,7 +76,7 @@ EFaction UControlPoint::GetWinningFaction()
 	TArray<int> FactionPoints;
 	FactionPoints.Init(0, Faction->Bitloner->FactionGlobals.Faction.Num());
 	int i = 0;
-	for (ABody* body : Bodies)
+	for (const ABody* body : Bodies)
 	{
 		if (body->Combat->State != Dead) FactionPoints[body->Faction->Faction] += 1;
 		i++;

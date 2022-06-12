@@ -28,4 +28,6 @@ public:
 	void ShowInteractionIcon(bool val, TEnumAsByte<EInteractionType> interactionType = None);
 	UFUNCTION(BlueprintCallable)
 	void ShowInventory(bool val);
+	UFUNCTION(BlueprintCallable)
+	void ShowWorldMap(bool val);
 };

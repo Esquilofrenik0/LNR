@@ -1,10 +1,10 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CompassWidget.generated.h"
+#include "WorldMapWidget.generated.h"
 
 UCLASS(Abstract)
-class LNR_API UCompassWidget : public UUserWidget
+class LNR_API UWorldMapWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
@@ -14,15 +14,10 @@ public:
 	class APlayor* Player;
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UMarkerWidget*> Marker;
-
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UOverlay* Panel;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class UImage* Compass;
-
-	UPROPERTY(BlueprintReadWrite)
-	class UMaterialInstanceDynamic* CompassMaterial;
-	
+	class UImage* WorldMap;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(class APlayor* playor);
 	void Refresh();

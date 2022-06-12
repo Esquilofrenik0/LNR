@@ -3,6 +3,7 @@
 #include "AttributesWidget.h"
 #include "CompassWidget.h"
 #include "InventoryWidget.h"
+#include "WorldMapWidget.h"
 #include "LNR/Body/Hero.h"
 
 void UHudWidget::Init(AHudBitloner* nHud)
@@ -11,8 +12,10 @@ void UHudWidget::Init(AHudBitloner* nHud)
 	ActionBarWidget->Init(Hud->Hero);
 	AttributesWidget->Init(Hud->Hero);
 	CompassWidget->Init(Hud->Hero->Player);
+	WorldMapWidget->Init(Hud->Hero->Player);
 	InventoryWidget->Init(Hud->Hero);
 	WarningText->SetVisibility(ESlateVisibility::Hidden);
+	WorldMapWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UHudWidget::Print(FString txt)

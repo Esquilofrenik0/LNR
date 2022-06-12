@@ -28,13 +28,14 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UCompassWidget* CompassWidget;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UWorldMapWidget* WorldMapWidget;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UInventoryWidget* InventoryWidget;
 	void Init(AHudBitloner* nHud);
 
-    FTimerHandle PrintHandle;
+	FTimerHandle PrintHandle;
 	UFUNCTION(BlueprintCallable)
 	void Print(FString txt);
 	UFUNCTION(BlueprintCallable)
 	void ClearPrint();
-	
 };

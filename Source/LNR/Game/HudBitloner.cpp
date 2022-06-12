@@ -9,6 +9,7 @@
 #include "LNR/Widget/CraftWidget.h"
 #include "LNR/Widget/HudWidget.h"
 #include "LNR/Widget/InventoryWidget.h"
+#include "LNR/Widget/WorldMapWidget.h"
 
 AHudBitloner::AHudBitloner()
 {
@@ -79,6 +80,17 @@ void AHudBitloner::ShowInventory(bool val)
 	{
 		Hero->SetInputUi(false);
 		HudWidget->InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		HudWidget->WorldMapWidget->SetVisibility(ESlateVisibility::Hidden);
 		Hero->Container = nullptr;
+	}
+}
+
+void AHudBitloner::ShowWorldMap(bool val)
+{
+	ShowInventory(false);
+	if (val)
+	{
+		Hero->SetInputUi(true);
+		HudWidget->WorldMapWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
