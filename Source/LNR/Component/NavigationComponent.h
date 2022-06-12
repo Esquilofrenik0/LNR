@@ -17,4 +17,6 @@ public:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void Init();
+
+	FTimerHandle InitHandle;
 };

@@ -8,6 +8,11 @@ UControlPoint::UControlPoint()
 {
 	Influence = 1;
 	IncrementAmount = 0.01;
+}
+
+void UControlPoint::BeginPlay()
+{
+	Super::BeginPlay();
 	Marker->ControlPoint = this;
 }
 

@@ -12,6 +12,6 @@ void UFactionPoint::BeginPlay()
 {
 	Super::BeginPlay();
 	Faction->Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
-	Marker->Icon = Faction->GetFactionIcon();
+	if (Marker->Icon == nullptr) Marker->Icon = Faction->GetFactionIcon();
 	Marker->Color = Faction->GetFactionColor();
 }

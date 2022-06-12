@@ -56,10 +56,8 @@ void UWorldMapWidget::DrawMarker(UMarkerComponent* nMarker)
 		mark->Init(nMarker);
 		index = Marker.Add(mark);
 	}
-	const FVector heroLoc = Player->Hero->GetActorLocation();
 	const FVector mLoc = Marker[index]->Marker->GetOwner()->GetActorLocation();
-	const float dist = UKismetMathLibrary::Vector_Distance(heroLoc, mLoc) / 100;
-	Marker[index]->Distance->SetText(FText::FromString(FString::FromInt(dist)));
+	Marker[index]->Distance->SetText(FText::FromName(Marker[index]->Marker->Id));
 	const float x = UKismetMathLibrary::MapRangeClamped(mLoc.X, -400000, 400000, -500, 500);
 	const float y = UKismetMathLibrary::MapRangeClamped(mLoc.Y, -400000, 400000, -500, 500);
 	Marker[index]->SetRenderTranslation(FVector2D(x, y));;
