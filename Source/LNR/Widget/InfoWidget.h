@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "InfoWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UInfoWidget : public UUserWidget
 {
 	GENERATED_BODY()

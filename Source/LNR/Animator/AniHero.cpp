@@ -11,15 +11,6 @@ void UAniHero::NativeInitializeAnimation()
 	CamSocketRotation = t.GetRotation().Rotator();
 }
 
-void UAniHero::NativeUpdateAnimation(const float deltaTimeX)
-{
-	Super::NativeUpdateAnimation(deltaTimeX);
-	if (Hero)
-	{
-		PitchPerBone = UKismetMathLibrary::MakeRotator(Body->Pitch / 4, 0, 0);
-	}
-}
-
 void UAniHero::InterpolateSights(const FTransform newSight)
 {
 	if (LastSight.GetLocation() != newSight.GetLocation())

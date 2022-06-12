@@ -6,7 +6,7 @@
 UCLASS()
 class LNR_API UEquipmentWidget : public UUserWidget
 {
-	GENERATED_BODY()
+	GENERATED_BODY(Abstract)
 public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;

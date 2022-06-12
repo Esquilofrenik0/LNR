@@ -1,13 +1,16 @@
 ﻿#include "HudWidget.h"
 #include "ActionBarWidget.h"
 #include "AttributesWidget.h"
+#include "CompassWidget.h"
 #include "InventoryWidget.h"
+#include "LNR/Body/Hero.h"
 
 void UHudWidget::Init(AHudBitloner* nHud)
 {
 	Hud = nHud;
 	ActionBarWidget->Init(Hud->Hero);
 	AttributesWidget->Init(Hud->Hero);
+	CompassWidget->Init(Hud->Hero->Player);
 	InventoryWidget->Init(Hud->Hero);
 	WarningText->SetVisibility(ESlateVisibility::Hidden);
 }

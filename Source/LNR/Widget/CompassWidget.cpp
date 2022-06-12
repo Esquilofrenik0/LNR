@@ -1,0 +1,89 @@
+﻿#include "CompassWidget.h"
+#include "SlotWidget.h"
+#include "MarkerWidget.h"
+#include "Components/CanvasPanel.h"
+#include "Components/Image.h"
+#include "Components/Overlay.h"
+#include "Components/WrapBox.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "LNR/Body/Hero.h"
+#include "LNR/Component/NavigationComponent.h"
+#include "LNR/Game/Playor.h"
+#include "LNR/Component/MarkerComponent.h"
+
+void UCompassWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	Refresh();
+}
+
+void UCompassWidget::Init(APlayor* playor)
+{
+	Player = playor;
+	CompassMaterial = Compass->GetDynamicMaterial();
+}
+
+void UCompassWidget::Refresh()
+{
+	CompassMaterial->SetScalarParameterValue("PlayerInput", Player->GetControlRotation().Yaw / 360);
+	for (int i = 0; i < Player->Navigation->Marker.Num(); i++)
+	{
+		if (UKismetMathLibrary::Vector_Distance(Player->Hero->GetActorLocation(),
+		                                        Player->Navigation->Marker[i]->
+		                                        GetOwner()->GetActorLocation()) < Player->Navigation->DrawDistance)
+		{
+			DrawMarker(Player->Navigation->Marker[i]);
+		}
+		else HideMarker(Player->Navigation->Marker[i]);
+	}
+}
+
+void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
+{
+	int index = -1;
+	for (int i = 0; i < Marker.Num(); i++)
+	{
+		if (Marker[i]->Marker == nMarker)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index == -1)
+	{
+		UWidget* widget = CreateWidget(this, MarkerTemplate, nMarker->Id);
+		Panel->AddChild(widget);
+		UMarkerWidget* mark = Cast<UMarkerWidget>(widget);
+		mark->Init(nMarker);
+		index = Marker.Add(mark);
+	}
+	const FVector heroLoc = Player->Hero->GetActorLocation();
+	const FRotator heroRot = Player->GetControlRotation();
+	const FVector mLoc = Marker[index]->Marker->GetOwner()->GetActorLocation();
+	int loc = ((heroRot.Yaw - UKismetMathLibrary::FindLookAtRotation(mLoc, heroLoc).Yaw) / 360) * 600;
+	if (loc < 0) loc = 600 + loc;
+	loc %= 600;
+	loc = UKismetMathLibrary::MapRangeClamped(loc, 0, 600, 600, -600);
+	if (loc < -300 || loc > 300) Marker[index]->SetVisibility(ESlateVisibility::Hidden);
+	else Marker[index]->SetVisibility(ESlateVisibility::HitTestInvisible);
+	loc = 300 + loc;
+	Marker[index]->SetRenderTranslation(FVector2D(loc, 0));;
+}
+
+void UCompassWidget::HideMarker(UMarkerComponent* marker)
+{
+	int index = -1;
+	for (int i = 0; i < Marker.Num(); i++)
+	{
+		if (Marker[i]->Marker == marker)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index != -1)
+	{
+		Marker[index]->Destruct();
+		Marker.RemoveAt(index);
+	}
+}

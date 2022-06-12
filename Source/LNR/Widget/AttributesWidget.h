@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "AttributesWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UAttributesWidget : public UUserWidget
 {
 	GENERATED_BODY()

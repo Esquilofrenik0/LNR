@@ -25,17 +25,28 @@ void UCraftWidget::Init(AHero* nHero)
 
 void UCraftWidget::Refresh()
 {
-	// for (int i = 0; i < Hero->Crafting->Book.Num(); i++)
-	// {
-		// if (i >= Slots.Num())
-		// {
-			// USlotCraftWidget* slot = CreateWidget<USlotCraftWidget>(this, USlotCraftWidget::StaticClass(), "cs");
-			// slot->SlotNumber = i;
-			// slot->Init(Hero);
-			// Slots.Add(slot);
-			// SlotBox->AddChild(slot);
-		// }
-		// Slots[i]->SetIsEnabled(true);
-		// Slots[i]->Setup(Hero->Crafting->Book[i].GetDefaultObject()->Icon, 1);
-	// }
+	for (int i = 0; i < Hero->Crafting->Book.Num(); i++)
+	{
+		if (i >= Slots.Num())
+		{
+			UWidget* widget = CreateWidget(this, SlotTemplate, "cs");
+			SlotBox->AddChild(widget);
+			USlotCraftWidget* slot = Cast<USlotCraftWidget>(widget);
+			slot->SlotNumber = i;
+			slot->Init(Hero);
+			Slots.Add(slot);
+		}
+		Slots[i]->SetIsEnabled(true);
+		Slots[i]->Setup(Hero->Crafting->Book[i].GetDefaultObject()->Icon, 1);
+	}
+	TArray<int> toRemove;
+	for (int i = 0; i < Slots.Num(); i++)
+	{
+		if (i >= Hero->Crafting->Book.Num()) toRemove.Add(i);
+	}
+	for (int i = 0; i < toRemove.Num(); i++)
+	{
+		Slots[i]->Destruct();
+		Slots.RemoveAt(i);
+	}
 }

@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ActionBarWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UActionBarWidget : public UUserWidget
 {
 	GENERATED_BODY()

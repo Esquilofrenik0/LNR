@@ -6,7 +6,7 @@
 #include "LNR/Game/HudBitloner.h"
 #include "HudWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UHudWidget : public UUserWidget
 {
 	GENERATED_BODY()
@@ -25,6 +25,8 @@ public:
 	class UActionBarWidget* ActionBarWidget;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UAttributesWidget* AttributesWidget;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UCompassWidget* CompassWidget;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UInventoryWidget* InventoryWidget;
 	void Init(AHudBitloner* nHud);

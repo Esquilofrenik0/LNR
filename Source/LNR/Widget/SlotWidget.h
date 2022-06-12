@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "SlotWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API USlotWidget : public UUserWidget
 {
 	GENERATED_BODY()

@@ -25,10 +25,7 @@ public:
 	FVector SightLocation = FVector(-15,30,0);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTimerHandle InterpolateSightHandle;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FRotator PitchPerBone;
 	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(const float deltaTimeX) override;
 	UFUNCTION(BlueprintCallable)
 	void InterpolateSights(const FTransform newSight);
 	UFUNCTION(BlueprintCallable)

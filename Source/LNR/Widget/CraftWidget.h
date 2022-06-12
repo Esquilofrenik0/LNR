@@ -3,11 +3,13 @@
 #include "Blueprint/UserWidget.h"
 #include "CraftWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UCraftWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSubclassOf<class USlotCraftWidget> SlotTemplate;
 	UPROPERTY(BlueprintReadWrite)
 	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
@@ -17,7 +19,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
 	class UTextBlock* InfoText;
 	UPROPERTY(BlueprintReadWrite)
-	TArray<class USlotCraftWidget*> Slots;
+	TArray<USlotCraftWidget*> Slots;
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	void Init(AHero* nHero);

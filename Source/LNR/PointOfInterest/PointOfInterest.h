@@ -7,4 +7,8 @@ UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
 class LNR_API UPointOfInterest : public UCapsuleComponent
 {
 	GENERATED_BODY()
+public:
+	UPointOfInterest();
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
+	class UMarkerComponent* Marker;
 };

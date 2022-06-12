@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "HudAvatarWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UHudAvatarWidget : public UUserWidget
 {
 	GENERATED_BODY()

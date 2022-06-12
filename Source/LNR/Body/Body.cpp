@@ -169,7 +169,7 @@ void ABody::RefreshPitch()
 	if (Combat->State != Climbing)
 	{
 		FRotator rot = UKismetMathLibrary::ComposeRotators(GetControlRotation(), FRotator(0, -180, 0));
-		Pitch = -rot.Pitch;
+		Pitch = -rot.Pitch / 4;
 	}
 	else Pitch = 0;
 }

@@ -3,7 +3,7 @@
 #include "Blueprint/UserWidget.h"
 #include "InventoryWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()

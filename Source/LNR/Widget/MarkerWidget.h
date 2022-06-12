@@ -1,24 +1,24 @@
 ﻿#pragma once
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "BagWidget.generated.h"
+#include "MarkerWidget.generated.h"
 
 UCLASS(Abstract)
-class LNR_API UBagWidget : public UUserWidget
+class LNR_API UMarkerWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	class AHero* Hero;
+	class UMarkerComponent* Marker;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class UTextBlock* LabelText;
+	class UImage* Image;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class UWrapBox* SlotBox;
+	class UTextBlock* Distance;
 	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
-	class UTextBlock* InfoText;
-	UPROPERTY(BlueprintReadWrite)
-	TArray<class USlotInventoryWidget*> Slots;
+	class UProgressBar* ProgressBar;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	void Init(AHero* nHero);
+	UFUNCTION(BlueprintCallable)
+	void Init(UMarkerComponent* nMarker);
+	UFUNCTION(BlueprintCallable)
 	void Refresh() const;
 };

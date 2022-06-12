@@ -22,6 +22,7 @@
 #include "FoliagePluginActor.h"
 #include "LNR/Animator/AniHero.h"
 #include "LNR/Component/CraftingComponent.h"
+#include "LNR/Component/NavigationComponent.h"
 #include "LNR/Foliage/FoliageNode.h"
 #include "LNR/Foliage/RockNode.h"
 #include "LNR/Foliage/PickupNode.h"

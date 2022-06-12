@@ -2,7 +2,7 @@
 #include "SlotWidget.h"
 #include "SlotInventoryWidget.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class LNR_API USlotInventoryWidget : public USlotWidget
 {
 	GENERATED_BODY()

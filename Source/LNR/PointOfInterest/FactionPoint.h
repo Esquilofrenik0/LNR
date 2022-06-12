@@ -1,8 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "PointOfInterest.h"
-#include "LNR/Component/FactionComponent.h"
-#include "LNR/Data/SpawnData.h"
 #include "FactionPoint.generated.h"
 
 UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
@@ -12,5 +10,6 @@ class LNR_API UFactionPoint : public UPointOfInterest
 public:
 	UFactionPoint();
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
-	UFactionComponent* Faction;
+	class UFactionComponent* Faction;
+	virtual void BeginPlay() override;
 };
