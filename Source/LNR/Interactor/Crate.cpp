@@ -9,17 +9,15 @@ void ACrate::GenerateLoot()
 {
 	if (HasAuthority())
 	{
-		if (Dropables != nullptr)
+		if (Dropables != nullptr && LootGenerated == false)
 		{
+			LootGenerated = true;
 			for (auto row : Dropables->GetRowMap())
 			{
 				FString rowName = (row.Key).ToString();
 				FDropable* dropable = (FDropable*)row.Value;
 				int rand = FMath::RandRange(0, 100);
-				if (dropable->Chance >= rand)
-				{
-					Inventory->Add(dropable->Item.GetDefaultObject(), dropable->Amount);
-				}
+				if (dropable->Chance >= rand) Inventory->Add(dropable->Item.GetDefaultObject(), dropable->Amount);
 			}
 		}
 	}

@@ -10,9 +10,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UDataTable* Dropables;
 	UPROPERTY(BlueprintReadWrite)
-	int MaxAliveTime = 60;
+	int MaxAliveTime = 30;
 	UPROPERTY(BlueprintReadWrite)
 	FTimerHandle DestroyHandle;
+	UPROPERTY(BlueprintReadWrite)
+	bool LootGenerated = false;
 	
 	virtual void OnInteract_Implementation(class AHero* nHero) override;
 	virtual void Close() override;
