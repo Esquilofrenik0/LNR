@@ -4,12 +4,15 @@
 #include "Components/CanvasPanel.h"
 #include "Components/Image.h"
 #include "Components/Overlay.h"
+#include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
 #include "Components/WrapBox.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/NavigationComponent.h"
 #include "LNR/Game/Playor.h"
 #include "LNR/Component/MarkerComponent.h"
+#include "LNR/PointOfInterest/ControlPoint.h"
 
 void UCompassWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -65,9 +68,13 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 	loc %= 600;
 	loc = UKismetMathLibrary::MapRangeClamped(loc, 0, 600, 600, -600);
 	if (loc < -300 || loc > 300) Marker[index]->SetVisibility(ESlateVisibility::Hidden);
-	else Marker[index]->SetVisibility(ESlateVisibility::HitTestInvisible);
-	loc = 300 + loc;
-	Marker[index]->SetRenderTranslation(FVector2D(loc, 0));;
+	else
+	{
+		const float dist = UKismetMathLibrary::Vector_Distance(heroLoc, mLoc);
+		Marker[index]->Distance->SetText(FText::FromString(FString::FromInt(dist)));
+		Marker[index]->SetRenderTranslation(FVector2D(300 + loc, 0));;
+		Marker[index]->SetVisibility(ESlateVisibility::HitTestInvisible);
+	}
 }
 
 void UCompassWidget::HideMarker(UMarkerComponent* marker)

@@ -16,4 +16,6 @@ public:
 	FLinearColor Color = FLinearColor(1, 1, 1, 1);
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	bool Discovered = false;
+	UPROPERTY(BlueprintReadWrite)
+	class UControlPoint* ControlPoint;
 };

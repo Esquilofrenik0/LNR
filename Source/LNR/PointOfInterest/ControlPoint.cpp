@@ -1,12 +1,14 @@
 #include "ControlPoint.h"
 #include "LNR/Body/Body.h"
 #include "LNR/Component/CombatComponent.h"
+#include "LNR/Component/MarkerComponent.h"
 #include "LNR/Game/Bitloner.h"
 
 UControlPoint::UControlPoint()
 {
 	Influence = 1;
 	IncrementAmount = 0.01;
+	Marker->ControlPoint = this;
 }
 
 void UControlPoint::AddBody(ABody* body)
@@ -61,6 +63,8 @@ void UControlPoint::DecreaseInfluence()
 	{
 		Influence = 0;
 		Faction->Faction = ContestingFaction;
+		Marker->Icon = Faction->GetFactionIcon();
+		Marker->Color = Faction->GetFactionColor();
 		SetControl.Broadcast();
 		GetWorld()->GetTimerManager().ClearTimer(InfluenceTimer);
 		GetWorld()->GetTimerManager().SetTimer(InfluenceTimer, this, &UControlPoint::IncreaseInfluence, 0.1f, true);
