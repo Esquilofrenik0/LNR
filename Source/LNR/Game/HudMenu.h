@@ -8,10 +8,16 @@ class LNR_API AHudMenu : public AHUD
 	GENERATED_BODY()
 public:
 	AHudMenu();
-	virtual void DrawHUD() override;
-	virtual void BeginPlay() override;
+	UPROPERTY(BlueprintReadWrite)
+	class AAvatar* Avatar;
+	UPROPERTY(BlueprintReadWrite)
+	class APlayerMenu* Player;
+
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UHudMenuWidget> HudMenuTemplate;
 	UPROPERTY(BlueprintReadWrite)
-	class UHudMenuWidget* HudMenuWidget;
+	UHudMenuWidget* HudMenuWidget;
+
+	virtual void DrawHUD() override;
+	virtual void BeginPlay() override;
 };

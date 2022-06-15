@@ -33,8 +33,8 @@ void AAvatar::BeginPlay()
 void AAvatar::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	check(PlayerInputComponent);
-	PlayerInputComponent->BindAxis("Move Forward / Backward", this, &AAvatar::Zoom);
-	PlayerInputComponent->BindAxis("Move Right / Left", this, &AAvatar::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("MoveForward", this, &AAvatar::Zoom);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AAvatar::AddControllerYawInput);
 }
 
 void AAvatar::Zoom(float val)

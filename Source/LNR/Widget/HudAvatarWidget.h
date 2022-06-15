@@ -9,6 +9,6 @@ class LNR_API UHudAvatarWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	class AHudAvatar* Hud;
-	void Init(AHudAvatar* nHud);
+	class AHudMenu* Hud;
+	void Init(AHudMenu* nHud);
 };

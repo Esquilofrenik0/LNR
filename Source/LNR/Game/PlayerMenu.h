@@ -9,6 +9,8 @@ class LNR_API APlayerMenu : public APlayerController
 public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHudMenu* Hud;
-	UFUNCTION(BlueprintCallable)
+	UPROPERTY(BlueprintReadWrite)
+	FString ClientIp;
+	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 };

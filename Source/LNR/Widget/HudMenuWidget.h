@@ -10,5 +10,21 @@ class LNR_API UHudMenuWidget : public UUserWidget
 public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHudMenu* Hud;
-	void Init(AHudMenu* nHud);
+	UPROPERTY(BlueprintReadWrite)
+	class APlayerMenu* Player;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UHudAvatarWidget> HudAvatarTemplate;
+	UPROPERTY(BlueprintReadWrite)
+	UHudAvatarWidget* HudAvatarWidget;
+
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UWidgetSwitcher* Switch;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UOverlay* MenuOverlay;
+	UPROPERTY(BlueprintReadWrite, meta=(BindWidget))
+	class UOverlay* AvatarOverlay;
+
+	void Init(AHudMenu* nHud, APlayerMenu* nPlayer);
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartHud();
 };
