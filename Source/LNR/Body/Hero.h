@@ -10,6 +10,8 @@ class LNR_API AHero : public AHuman, public IFoliagePluginInterface
 public:
 	AHero();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
+	class UNavigationComponent* Navigation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UInventoryComponent* Inventory;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced)
 	class UCraftingComponent* Crafting;
@@ -70,6 +72,11 @@ public:
 	void ResetCamera();
 
 	UFUNCTION(BlueprintCallable)
+	void OnHeadBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION(BlueprintCallable)
+	void OnHeadEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintCallable)
 	void TryWeaponSwap();
 	UFUNCTION(BlueprintCallable)
 	void SetInputUi(bool val);
@@ -101,6 +108,8 @@ private:
 	void StopWeaponSwap();
 	void StartReload();
 	void StopReload();
+	void StartCrouch();
+	void StopCrouch();
 
 	void StartDodge();
 	void StartInteract();

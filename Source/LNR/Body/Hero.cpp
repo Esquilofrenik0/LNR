@@ -20,8 +20,10 @@
 #include "LNR/Widget/InventoryWidget.h"
 #include "LNR/Widget/SlotWidget.h"
 #include "FoliagePluginActor.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "LNR/Animator/AniHero.h"
 #include "LNR/Component/CraftingComponent.h"
+#include "LNR/Component/HeadSphereComponent.h"
 #include "LNR/Component/NavigationComponent.h"
 #include "LNR/Foliage/FoliageNode.h"
 #include "LNR/Foliage/RockNode.h"
@@ -38,6 +40,7 @@ AHero::AHero()
 	PrimaryActorTick.bCanEverTick = true;
 	TurnRateGamepad = 50.f;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	Navigation = CreateDefaultSubobject<UNavigationComponent>("Navigation");
 	Inventory = CreateDefaultSubobject<UInventoryComponent>("Inventory");
 	Crafting = CreateDefaultSubobject<UCraftingComponent>("Crafting");
 	TpArm = CreateDefaultSubobject<USpringArmComponent>("TpArm");
@@ -62,6 +65,29 @@ AHero::AHero()
 	Flashlight->SetRelativeLocation(FVector(5, 0, 0));
 	FlashlightActive = false;
 	Respawns = false;
+
+	Head->OnComponentBeginOverlap.AddDynamic(this, &AHero::OnHeadBeginOverlap);
+	Head->OnComponentEndOverlap.AddDynamic(this, &AHero::OnHeadEndOverlap);
+}
+
+void AHero::OnHeadBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                               int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherComp->GetCollisionProfileName() == "WaterBodyCollision")
+	{
+		Combat->SetState(Swimming);
+		Movement->SetMovementMode(MOVE_Flying);
+	}
+}
+
+void AHero::OnHeadEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+                             int32 OtherBodyIndex)
+{
+	if (OtherComp->GetCollisionProfileName() == "WaterBodyCollision")
+	{
+		Combat->SetState(Idle);
+		Movement->SetMovementMode(MOVE_Walking);
+	}
 }
 
 void AHero::OnConstruction(const FTransform& Transform)
@@ -122,6 +148,8 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("WeaponSwap", IE_Released, this, &AHero::StopWeaponSwap);
 	PlayerInputComponent->BindAction("Reload", IE_Pressed, this, &AHero::StartReload);
 	PlayerInputComponent->BindAction("Reload", IE_Released, this, &AHero::StopReload);
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AHero::StartCrouch);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AHero::StopCrouch);
 
 	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &AHero::StartDodge);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AHero::StartInteract);
@@ -319,6 +347,16 @@ void AHero::StopReload()
 	GetWorldTimerManager().ClearTimer(ReloadHeldTimer);
 }
 
+void AHero::StartCrouch()
+{
+	Crouch();
+}
+
+void AHero::StopCrouch()
+{
+	UnCrouch();
+}
+
 void AHero::StartFlashlight()
 {
 	if (ReloadHeld)
@@ -466,8 +504,22 @@ void AHero::MoveForward(float Value)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(Direction, Value);
+		if (Combat->State == Climbing)
+		{
+			const FVector WorldDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Z);
+			AddMovementInput(WorldDirection, Value);
+			Attributes->Stamina -= 0.1;
+		}
+		else if (Combat->State == Swimming)
+		{
+			const FVector WorldDirection = GetControlRotation().Vector();
+			AddMovementInput(WorldDirection, Value);
+		}
+		else
+		{
+			const FVector WorldDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			AddMovementInput(WorldDirection, Value);
+		}
 	}
 }
 
@@ -477,8 +529,9 @@ void AHero::MoveRight(float Value)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0, Rotation.Yaw, 0);
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		AddMovementInput(Direction, Value);
+		const FVector WorldDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(WorldDirection, Value);
+		if (Combat->State == Climbing) Attributes->Stamina -= 0.1;
 	}
 }
 

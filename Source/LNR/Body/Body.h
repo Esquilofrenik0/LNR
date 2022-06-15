@@ -20,7 +20,10 @@ public:
 	class UAttributesComponent* Attributes;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
 	class UCombatComponent* Combat;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Instanced)
+	class UHeadSphereComponent* Head;
 
+	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	class UDataTable* Dropables;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)

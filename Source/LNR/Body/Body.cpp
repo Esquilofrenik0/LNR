@@ -12,6 +12,7 @@
 #include "LNR/Component/AttributesComponent.h"
 #include "LNR/Component/CombatComponent.h"
 #include "LNR/Component/FactionComponent.h"
+#include "LNR/Component/HeadSphereComponent.h"
 #include "LNR/DamageType/MeleeDamage.h"
 #include "LNR/Component/InfoComponent.h"
 #include "LNR/Component/InventoryComponent.h"
@@ -29,6 +30,8 @@ ABody::ABody()
 	Action->SetReplicationMode(EGameplayEffectReplicationMode::Full);
 	Attributes = CreateDefaultSubobject<UAttributesComponent>("Attributes");
 	Combat = CreateDefaultSubobject<UCombatComponent>("Combat");
+	Head = CreateDefaultSubobject<UHeadSphereComponent>("Head");
+	Head->SetupAttachment(GetMesh(), "Head");
 	Respawns = true;
 }
 

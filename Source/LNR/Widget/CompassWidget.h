@@ -11,7 +11,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSubclassOf<class UMarkerWidget> MarkerTemplate;
 	UPROPERTY(BlueprintReadWrite)
-	class APlayor* Player;
+	class AHero* Hero;
 	UPROPERTY(BlueprintReadWrite)
 	TArray<UMarkerWidget*> Marker;
 
@@ -24,7 +24,7 @@ public:
 	class UMaterialInstanceDynamic* CompassMaterial;
 	
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	void Init(class APlayor* playor);
+	void Init(class AHero* nHero);
 	void Refresh();
 	void DrawMarker(class UMarkerComponent* nMarker);
 	void HideMarker(const class UMarkerComponent* nMarker);

@@ -9,11 +9,11 @@ class LNR_API UMarkerComponent : public UActorComponent
 public:
 	UMarkerComponent();
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FName Id;
+	FName Id = "Marker";
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UTexture2D* Icon;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FLinearColor Color;
+	FLinearColor Color = FLinearColor(1, 1, 1, 1);
 	UPROPERTY(BlueprintReadWrite)
 	class UControlPoint* ControlPoint;
 };

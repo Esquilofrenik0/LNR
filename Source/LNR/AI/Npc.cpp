@@ -59,7 +59,7 @@ void ANpc::OnPawnDetected(const TArray<AActor*>& DetectedPawns)
 		{
 			if (ABody* body = Cast<ABody>(DetectedPawns[i])) if (TryTarget(body)) return;
 		}
-	}
+	} 
 }
 
 void ANpc::CanSeeTarget()

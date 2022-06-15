@@ -2,6 +2,6 @@
 
 UMarkerComponent::UMarkerComponent()
 {
-	Id = "Marker";
-	Color = FLinearColor(1, 1, 1, 1);
+		SetIsReplicatedByDefault(true);
+		PrimaryComponentTick.bCanEverTick = false;
 }

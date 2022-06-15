@@ -3,5 +3,7 @@
 
 UPointOfInterest::UPointOfInterest()
 {
+	SetIsReplicatedByDefault(true);
+	PrimaryComponentTick.bCanEverTick = false;
 	Marker = CreateDefaultSubobject<UMarkerComponent>("Marker");
 }

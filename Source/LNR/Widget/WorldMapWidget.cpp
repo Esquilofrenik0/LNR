@@ -8,30 +8,29 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/NavigationComponent.h"
-#include "LNR/Game/Playor.h"
 #include "LNR/Component/MarkerComponent.h"
 
 void UWorldMapWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	Refresh();
+	if (Hero) Refresh();
 }
 
-void UWorldMapWidget::Init(APlayor* playor)
+void UWorldMapWidget::Init(AHero* nHero)
 {
-	Player = playor;
+	Hero = nHero;
 }
 
 void UWorldMapWidget::Refresh()
 {
 	DrawPlayerMarker();
-	for (int i = 0; i < Player->Navigation->Marker.Num(); i++)
+	for (int i = 0; i < Hero->Navigation->Marker.Num(); i++)
 	{
-		if (Player->Navigation->Discovered.Contains(Player->Navigation->Marker[i]->Id))
+		if (Hero->Navigation->Discovered.Contains(Hero->Navigation->Marker[i]->Id))
 		{
-			DrawMarker(Player->Navigation->Marker[i]);
+			DrawMarker(Hero->Navigation->Marker[i]);
 		}
-		else HideMarker(Player->Navigation->Marker[i]);
+		else HideMarker(Hero->Navigation->Marker[i]);
 	}
 }
 
@@ -83,7 +82,7 @@ void UWorldMapWidget::HideMarker(const UMarkerComponent* nMarker)
 
 void UWorldMapWidget::DrawPlayerMarker() const
 {
-	const FVector heroLoc = Player->Hero->GetActorLocation();
+	const FVector heroLoc = Hero->GetActorLocation();
 	const float x = UKismetMathLibrary::MapRangeClamped(heroLoc.X, -400000, 400000, -500, 500);
 	const float y = UKismetMathLibrary::MapRangeClamped(heroLoc.Y, -400000, 400000, -500, 500);
 	PlayerMarker->SetRenderTranslation(FVector2D(x, y));;

@@ -8,34 +8,33 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "LNR/Body/Hero.h"
 #include "LNR/Component/NavigationComponent.h"
-#include "LNR/Game/Playor.h"
 #include "LNR/Component/MarkerComponent.h"
 #include "LNR/PointOfInterest/ControlPoint.h"
 
 void UCompassWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
-	Refresh();
+	if (Hero) Refresh();
 }
 
-void UCompassWidget::Init(APlayor* playor)
+void UCompassWidget::Init(AHero* nHero)
 {
-	Player = playor;
+	Hero = nHero;
 	CompassMaterial = Compass->GetDynamicMaterial();
 }
 
 void UCompassWidget::Refresh()
 {
-	CompassMaterial->SetScalarParameterValue("PlayerInput", Player->GetControlRotation().Yaw / 360);
-	for (int i = 0; i < Player->Navigation->Marker.Num(); i++)
+	CompassMaterial->SetScalarParameterValue("PlayerInput", Hero->GetControlRotation().Yaw / 360);
+	for (int i = 0; i < Hero->Navigation->Marker.Num(); i++)
 	{
-		if (UKismetMathLibrary::Vector_Distance(Player->Hero->GetActorLocation(),
-		                                        Player->Navigation->Marker[i]->
-		                                        GetOwner()->GetActorLocation()) < Player->Navigation->DrawDistance)
+		if (UKismetMathLibrary::Vector_Distance(Hero->GetActorLocation(),
+		                                        Hero->Navigation->Marker[i]->
+		                                        GetOwner()->GetActorLocation()) < Hero->Navigation->DrawDistance)
 		{
-			DrawMarker(Player->Navigation->Marker[i]);
+			DrawMarker(Hero->Navigation->Marker[i]);
 		}
-		else HideMarker(Player->Navigation->Marker[i]);
+		else HideMarker(Hero->Navigation->Marker[i]);
 	}
 }
 
@@ -60,8 +59,8 @@ void UCompassWidget::DrawMarker(UMarkerComponent* nMarker)
 		mark->Init(nMarker);
 		index = Marker.Add(mark);
 	}
-	const FVector heroLoc = Player->Hero->GetActorLocation();
-	const FRotator heroRot = Player->GetControlRotation();
+	const FVector heroLoc = Hero->GetActorLocation();
+	const FRotator heroRot = Hero->GetControlRotation();
 	const FVector mLoc = Marker[index]->Marker->GetOwner()->GetActorLocation();
 	int loc = ((heroRot.Yaw - UKismetMathLibrary::FindLookAtRotation(mLoc, heroLoc).Yaw) / 360) * 600;
 	if (loc < 0) loc = 600 + loc;

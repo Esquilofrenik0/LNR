@@ -11,6 +11,7 @@ void UAttributesComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Health, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Stamina, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Energy, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttributesComponent, Wanted, COND_None, REPNOTIFY_Always);
@@ -79,16 +80,16 @@ void UAttributesComponent::ChangeWanted(float value)
 	else if (Wanted < 0) Wanted = 0;
 }
 
-FString UAttributesComponent::GetStatsText()
+FString UAttributesComponent::GetAttributesText()
 {
 	return GetStrengthText() + "\n" + GetCharismaText() + "\n" + GetVitalityText() + "\n"
 		+ GetAgilityText() + "\n" + GetWisdomText();
 }
 
-FString UAttributesComponent::GetAttributesText()
+FString UAttributesComponent::GetStatsText()
 {
 	return GetHealthText() + "\n" + GetStaminaText() + "\n" + GetEnergyText() + "\n"
-		+ GetDamageText() + "\n" + GetDefenseText();
+		+ GetDamageText() + "\n" + GetDefenseText() + "\n" + GetWantedText();
 }
 
 FString UAttributesComponent::GetHealthText()
@@ -117,6 +118,16 @@ FString UAttributesComponent::GetDamageText()
 FString UAttributesComponent::GetDefenseText()
 {
 	return "Defense: " + FString::FromInt(Defense) + " (Base: " + FString::FromInt(BaseDefense) + ")";
+}
+
+FString UAttributesComponent::GetWantedText()
+{
+	return "Wanted: " + FString::FromInt(Wanted) + "/ 100";
+}
+
+void UAttributesComponent::OnRep_MaxHealth(float oldMaxHealth)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributesComponent, MaxHealth, oldMaxHealth);	
 }
 
 void UAttributesComponent::OnRep_Health(float oldHealth)

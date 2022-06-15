@@ -24,7 +24,7 @@ public:
 	int Level = 1;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float Xp = 0;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Strength = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -40,8 +40,10 @@ public:
 	float BaseDamage;
 	UPROPERTY(BlueprintReadWrite)
 	float BaseDefense;
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_MaxHealth)
 	float MaxHealth;
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(float oldMaxHealth);
 	UPROPERTY(BlueprintReadWrite)
 	float MaxStamina;
 	UPROPERTY(BlueprintReadWrite)
@@ -56,7 +58,7 @@ public:
 	float EnergyRegeneration;
 	UPROPERTY(BlueprintReadWrite)
 	float WantedRegeneration;
-	
+
 	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_Health)
 	float Health;
 	UFUNCTION()
@@ -108,9 +110,9 @@ public:
 	float GetWantedPercent() { return Wanted / MaxWanted; };
 
 	UFUNCTION(BlueprintCallable)
-	FString GetStatsText();
-	UFUNCTION(BlueprintCallable)
 	FString GetAttributesText();
+	UFUNCTION(BlueprintCallable)
+	FString GetStatsText();
 
 	UFUNCTION(BlueprintCallable)
 	FString GetStrengthText() { return "Strength: " + FString::FromInt(Strength); };
@@ -133,4 +135,6 @@ public:
 	FString GetDamageText();
 	UFUNCTION(BlueprintCallable)
 	FString GetDefenseText();
+	UFUNCTION(BlueprintCallable)
+	FString GetWantedText();
 };
