@@ -13,7 +13,8 @@ public class LNR : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] {"Foliage", "AnimGraphRuntime"});
 		PublicDependencyModuleNames.AddRange(new string[] {"AIModule", "NavigationSystem", "AIOptimizer"});
 		PublicDependencyModuleNames.AddRange(new string[] {"FoliagePlugin"});
-		PublicDependencyModuleNames.AddRange(new string[] {"XFire", "XForce", "XProjectile", "XHoverCar", "XShip"});
+		PublicDependencyModuleNames.AddRange(new string[] {"XFire", "XForce", "XProjectile", "XHoverCar", "XShip"});	
+		PublicDependencyModuleNames.AddRange(new string[] {"OnlineSubsystem", "OnlineSubsystemUtils",});
 		// PublicDependencyModuleNames.AddRange(new string[] {"RD", "RiderLink"});
 
 		// Uncomment if you are using Slate UI

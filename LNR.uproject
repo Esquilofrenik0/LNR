@@ -88,24 +88,14 @@
 			"Enabled": true
 		},
 		{
-			"Name": "EOSShared",
-			"Enabled": true
+			"Name": "EOSCore",
+			"Enabled": false,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/af157f773f084ca89036cd7bc03fb416"
 		},
 		{
-			"Name": "EOSVoiceChat",
-			"Enabled": true
-		},
-		{
-			"Name": "OnlineServicesEOS",
-			"Enabled": true
-		},
-		{
-			"Name": "OnlineSubsystemEOS",
-			"Enabled": true
-		},
-		{
-			"Name": "SocketSubsystemEOS",
-			"Enabled": true
+			"Name": "OnlineSubsystemRedpointEOS",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/2c92594ce5aa416c8bfbd79275389e3b"
 		}
 	]
 }
