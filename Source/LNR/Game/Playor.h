@@ -12,6 +12,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class AHudBitloner* Hud;
 
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
 	UFUNCTION(BlueprintCallable)
 	void Print(FString txt);
 };

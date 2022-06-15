@@ -101,7 +101,6 @@ void AHero::Restart()
 	AniHero = Cast<UAniHero>(Animator);
 	Player = Cast<APlayor>(GetController());
 	Player->Hero = this;
-	if (AHUD* nHud = Player->GetHUD()) Player->Hud = Cast<AHudBitloner>(nHud);
 	if (IsLocallyControlled())
 	{
 		GetWorldTimerManager().ClearTimer(ClientTickTimer);
