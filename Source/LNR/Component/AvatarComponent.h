@@ -19,6 +19,8 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	class UBitloner* Bitloner;
 	UPROPERTY(BlueprintReadWrite)
+    class ACharacter* Character;
+	UPROPERTY(BlueprintReadWrite)
 	class UApparelComponent* Apparel;
 
 	virtual void BeginPlay() override;

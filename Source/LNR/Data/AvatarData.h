@@ -32,3 +32,14 @@ struct LNR_API FAvatarGlobals : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<TSubclassOf<UOutfit>> Outfit;
 };
+
+USTRUCT(BlueprintType)
+struct LNR_API FMorphPageData : public FTableRowBase
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName Title;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FName> MorphNames;
+};
+

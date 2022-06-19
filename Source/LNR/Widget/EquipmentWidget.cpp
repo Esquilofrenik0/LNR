@@ -18,26 +18,22 @@ void UEquipmentWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 void UEquipmentWidget::Init(AHero* nHero)
 {
 	Hero = nHero;
-
 	WeaponSwapSlot->OnClick.AddDynamic(Hero, &AHero::TryWeaponSwap);
 	RightHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipRightHand);
 	LeftHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipLeftHand);
 	RightOffHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipRightOffHand);
 	LeftOffHandSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipLeftOffHand);
-
+	AmmoSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipAmmo);
+	Consumable1Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable1);
+	Consumable2Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable2);
+	Consumable3Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable3);
+	Consumable4Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable4);
 	HeadSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipHead);
 	BackSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipBack);
 	ChestSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipChest);
 	LegsSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipLegs);
 	FeetSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipFeet);
-
 	OutfitSlot->OnClick.AddDynamic(Hero->Apparel, &UApparelComponent::UnequipOutfit);
-	AmmoSlot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipAmmo);
-
-	Consumable1Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable1);
-	Consumable2Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable2);
-	Consumable3Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable3);
-	Consumable4Slot->OnClick.AddDynamic(Hero->Equipment, &UEquipmentComponent::UnequipConsumable4);
 }
 
 void UEquipmentWidget::Refresh() const

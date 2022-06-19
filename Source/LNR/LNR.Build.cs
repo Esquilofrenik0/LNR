@@ -12,8 +12,8 @@ public class LNR : ModuleRules
 		PublicDependencyModuleNames.AddRange(new string[] {"GameplayAbilities", "GameplayTags", "GameplayTasks"});
 		PublicDependencyModuleNames.AddRange(new string[] {"Foliage", "AnimGraphRuntime"});
 		PublicDependencyModuleNames.AddRange(new string[] {"AIModule", "NavigationSystem", "AIOptimizer"});
-		PublicDependencyModuleNames.AddRange(new string[] {"FoliagePlugin", "EOSCore"});
 		PublicDependencyModuleNames.AddRange(new string[] {"XFire", "XForce", "XProjectile", "XHoverCar", "XShip"});
+		PublicDependencyModuleNames.AddRange(new string[] {"FoliagePlugin", "EOSCore"});
 		PrivateDependencyModuleNames.AddRange(new string[] {"EOSCore"});
 		// PublicDependencyModuleNames.AddRange(new string[] {"RD", "RiderLink"});
 

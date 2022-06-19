@@ -26,6 +26,7 @@ void UAvatarComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
+	Character = Cast<ACharacter>(GetOwner());
 	RefreshAvatar();
 }
 
@@ -38,6 +39,10 @@ void UAvatarComponent::RefreshAvatar()
 {
 	if (Bitloner == nullptr) Bitloner = Cast<UBitloner>(UGameplayStatics::GetGameInstance(this));
 	Apparel->Mesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Body[AvatarData.Body]);
+
+	if (AvatarData.Body == 0) Character->GetMesh()->SetWorldScale3D(FVector(1, 1, 1));
+	else Character->GetMesh()->SetWorldScale3D(FVector(1.05, 1.05, 1.05));
+
 	// Apparel->UnderwearMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Underwear[AvatarData.Body]);
 	Apparel->HairMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Hair[AvatarData.Hair]);
 	Apparel->BeardMesh->SetSkeletalMesh(Bitloner->AvatarGlobals.Beard[AvatarData.Beard]);
